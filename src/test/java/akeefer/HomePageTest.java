@@ -1,5 +1,7 @@
 package akeefer;
 
+import org.apache.wicket.authroles.authentication.pages.SignInPage;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +33,14 @@ public class HomePageTest {
     public void homepageRendersSuccessfully() {
         //start and render the test page
         tester.startPage(HomePage.class);
+
+        tester.assertRenderedPage(SignInPage.class);
+
+        FormTester formTester
+                = tester.newFormTester("signInPanel:signInForm");
+        formTester.setValue("username", "foo");
+        formTester.setValue("password", "bar");
+        formTester.submit();
 
         //assert rendered page class
         tester.assertRenderedPage(HomePage.class);

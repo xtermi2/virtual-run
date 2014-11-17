@@ -1,5 +1,8 @@
 package akeefer;
 
+import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
+import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @see akeefer.Start#main(String[])
  */
 @Component
-public class WicketApplication extends WebApplication implements ApplicationContextAware {
+public class WicketApplication extends AuthenticatedWebApplication implements ApplicationContextAware {
 
     private ApplicationContext ctx;
 
@@ -40,6 +43,16 @@ public class WicketApplication extends WebApplication implements ApplicationCont
             // In Unittest Fall
             getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         }
+    }
+
+    @Override
+    protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
+        return VRSession.class;
+    }
+
+    @Override
+    protected Class<? extends WebPage> getSignInPageClass() {
+        return SignInPage.class;
     }
 
     @Override

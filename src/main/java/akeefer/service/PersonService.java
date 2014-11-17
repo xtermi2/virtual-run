@@ -1,17 +1,16 @@
 package akeefer.service;
 
-import org.springframework.stereotype.Service;
+import akeefer.model.User;
 
-@Service
-public class PersonService {
+import java.util.List;
 
-    public String createPersonScript() {
-        return "var personen = [\n" +
-                "        {id: 'andi', distance: 1500000, done: false},\n" +
-                "        {id: 'sabine', distance: 500000, done: false},\n" +
-                "//        {id: 'uli_hans', distance: 1000000, done: false},\n" +
-                "        {id: 'roland', distance: 2500000, done: false},\n" +
-                "        {id: 'norbert', distance: 2000000, done: false}\n" +
-                "    ];";
-    }
+/**
+ * Created by akeefer on 17.11.14.
+ */
+public interface PersonService {
+    List<User> getAll();
+
+    User getUserByUsername(String username);
+
+    String createPersonScript(User user);
 }
