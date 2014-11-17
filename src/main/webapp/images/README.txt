@@ -1,0 +1,1 @@
+fuer das Template wird 36px breite und 24px hoehe benoetigt.
