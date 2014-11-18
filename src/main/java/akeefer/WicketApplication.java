@@ -3,6 +3,7 @@ package akeefer;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
+import org.apache.wicket.authroles.authentication.pages.SignOutPage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -43,6 +44,10 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
             // In Unittest Fall
             getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         }
+
+        mountPage("/login", SignInPage.class);
+        mountPage("/logout", SignOutPage.class);
+        mountPage("/create", CreateAktPage.class);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package akeefer.test.service;
 
+import akeefer.model.Aktivitaet;
 import akeefer.model.SecurityRole;
 import akeefer.model.User;
 import akeefer.service.PersonService;
@@ -29,5 +30,22 @@ public class PersonServiceMock implements PersonService {
     @Override
     public String createPersonScript(User user) {
         return "";
+    }
+
+    @Override
+    public int berechneDistanzInMeter(User user) {
+        return 4711;
+    }
+
+    @Override
+    public List<Aktivitaet> getAktivitaetenByUser(User user) {
+        Aktivitaet aktivitaet = new Aktivitaet();
+        aktivitaet.setMeter(4711);
+        return Arrays.asList(aktivitaet);
+    }
+
+    @Override
+    public void createAktivitaet(Aktivitaet akt, User user) {
+
     }
 }

@@ -1,5 +1,6 @@
 package akeefer.service;
 
+import akeefer.model.Aktivitaet;
 import akeefer.model.User;
 
 import java.util.List;
@@ -13,4 +14,10 @@ public interface PersonService {
     User getUserByUsername(String username);
 
     String createPersonScript(User user);
+
+    int berechneDistanzInMeter(User user);
+
+    List<Aktivitaet> getAktivitaetenByUser(User user);
+
+    void createAktivitaet(Aktivitaet akt, User user);
 }

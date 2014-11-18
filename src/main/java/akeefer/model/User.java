@@ -3,11 +3,10 @@ package akeefer.model;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User implements Serializable {
@@ -20,6 +19,8 @@ public class User implements Serializable {
     private String username;
     private String password;
     private SecurityRole role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
 
     public User() {
     }
@@ -58,6 +59,14 @@ public class User implements Serializable {
 
     public void setRole(SecurityRole role) {
         this.role = role;
+    }
+
+    public List<Aktivitaet> getAktivitaeten() {
+        return aktivitaeten;
+    }
+
+    public void setAktivitaeten(List<Aktivitaet> aktivitaeten) {
+        this.aktivitaeten = aktivitaeten;
     }
 
     @Override

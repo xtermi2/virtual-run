@@ -1,5 +1,6 @@
 package akeefer.service.impl;
 
+import akeefer.model.Aktivitaet;
 import akeefer.model.User;
 import akeefer.service.PersonService;
 import org.springframework.stereotype.Service;
@@ -40,12 +41,12 @@ public class PersonServiceImpl implements PersonService {
         for (User user : users) {
             // TODO (ak) berechnung von KM
             personScript.append("        {id: '").append(user.getUsername())
-                    .append("', distance: ").append("0").append("},\n");
+                    .append("', distance: ").append(berechneDistanzInMeter(user)).append("},\n");
         }
         // der eingeloggte user kommt als letztes, damit falls mehrere personen an der gleichen stelle sein der
         // eingeloggte oben gerendert wird
         personScript.append("        {id: '").append(logedInUser.getUsername())
-                .append("', distance: ").append("0").append("}\n");
+                .append("', distance: ").append(berechneDistanzInMeter(logedInUser)).append("}\n");
         personScript.append("    ];");
         return personScript.toString();
 //        return "var personen = [\n" +
@@ -55,6 +56,40 @@ public class PersonServiceImpl implements PersonService {
 //                "        {id: 'roland', distance: 2500000, done: false},\n" +
 //                "        {id: 'norbert', distance: 2000000, done: false}\n" +
 //                "    ];";
+    }
+
+    @Override
+    public int berechneDistanzInMeter(User user) {
+        int distanz = 0;
+        //for (Aktivitaet akt : getAktivitaetenByUser(user)) {
+        for (Aktivitaet akt : user.getAktivitaeten()) {
+            distanz = distanz + akt.getMeter();
+        }
+        return distanz;
+    }
+
+    @Override
+    public List<Aktivitaet> getAktivitaetenByUser(User user) {
+        EntityManager em = EMFService.get().createEntityManager();
+        Query q = em.createQuery("select akt from Aktivitaet akt where akt.user = :user");
+        q.setParameter("user", user);
+        List<Aktivitaet> aktivitaeten = q.getResultList();
+        return aktivitaeten;
+    }
+
+    @Override
+    public void createAktivitaet(Aktivitaet akt, User user) {
+        EntityManager em = EMFService.get().createEntityManager();
+        em.getTransaction().begin();
+        try {
+            //em.persist(user);
+            em.persist(akt);
+            em.getTransaction().commit();
+        } finally {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        }
     }
 
     //@PersistenceContext
