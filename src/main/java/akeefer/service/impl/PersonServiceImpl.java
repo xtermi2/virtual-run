@@ -3,11 +3,12 @@ package akeefer.service.impl;
 import akeefer.model.Aktivitaet;
 import akeefer.model.User;
 import akeefer.service.PersonService;
+import org.apache.commons.collections.set.ListOrderedSet;
+import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class PersonServiceImpl implements PersonService {
     private EntityManager em;
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUser() {
         EntityManager em = EMFService.get().createEntityManager();
         Query q = em.createQuery("select u from User u");
         List<User> users = q.getResultList();
@@ -35,27 +36,22 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public String createPersonScript(User logedInUser) {
+        Validate.notNull(logedInUser);
+
         StringBuilder personScript = new StringBuilder("var personen = [\n");
-        Set<User> users = new HashSet<User>(getAll());
+        Set<User> users = new ListOrderedSet();
+        users.addAll(getAllUser());
+        // LogedInUser enfernen und ganz ans ende haengen
         users.remove(logedInUser);
+        users.add(logedInUser);
         for (User user : users) {
-            // TODO (ak) berechnung von KM
             personScript.append("        {id: '").append(user.getUsername())
                     .append("', distance: ").append(berechneDistanzInMeter(user)).append("},\n");
         }
-        // der eingeloggte user kommt als letztes, damit falls mehrere personen an der gleichen stelle sein der
-        // eingeloggte oben gerendert wird
-        personScript.append("        {id: '").append(logedInUser.getUsername())
-                .append("', distance: ").append(berechneDistanzInMeter(logedInUser)).append("}\n");
+        //das letzte ',' enfernen
+        personScript.deleteCharAt(personScript.length() - 2);
         personScript.append("    ];");
         return personScript.toString();
-//        return "var personen = [\n" +
-//                "        {id: 'andi', distance: 1500000, done: false},\n" +
-//                "        {id: 'sabine', distance: 500000, done: false},\n" +
-//                "//        {id: 'uli-hans', distance: 1000000, done: false},\n" +
-//                "        {id: 'roland', distance: 2500000, done: false},\n" +
-//                "        {id: 'norbert', distance: 2000000, done: false}\n" +
-//                "    ];";
     }
 
     @Override
@@ -79,17 +75,58 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void createAktivitaet(Aktivitaet akt, User user) {
+        if (null == akt.getId()) {
+            // Relationen herstellen bei neuer Akt
+            akt.setUser(user);
+            user.getAktivitaeten().add(akt);
+        }
+
         EntityManager em = EMFService.get().createEntityManager();
         em.getTransaction().begin();
         try {
-            //em.persist(user);
-            em.persist(akt);
+            if (null == akt.getId()) {
+                // save new Akt
+                em.persist(akt);
+            } else {
+                // update existing Akt
+                em.merge(akt);
+            }
             em.getTransaction().commit();
         } finally {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
         }
+    }
+
+    @Override
+    public User createUserIfAbsent(User user) {
+        EntityManager em = EMFService.get().createEntityManager();
+        User userInDb = findUserByUsername(getAllUser(), user.getUsername());
+        if (null != userInDb) {
+            return userInDb;
+        }
+
+        em.getTransaction().begin();
+        try {
+            em.persist(user);
+            em.getTransaction().commit();
+        } finally {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+        }
+
+        return user;
+    }
+
+    private User findUserByUsername(Iterable<User> users, String username) {
+        for (User user : users) {
+            if (username.equals(user.getUsername())) {
+                return user;
+            }
+        }
+        return null;
     }
 
     //@PersistenceContext

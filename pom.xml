@@ -13,7 +13,7 @@
 
     <licenses>
         <license>
-           
+
         </license>
     </licenses>
     <properties>
@@ -54,9 +54,9 @@
             <version>${spring.version}</version>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-orm</artifactId>-->
-            <!--<version>${spring.version}</version>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-orm</artifactId>-->
+        <!--<version>${spring.version}</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -100,30 +100,30 @@
 
         <!-- Javax persistence -->
         <!--<dependency>-->
-            <!--<groupId>org.datanucleus</groupId>-->
-            <!--<artifactId>datanucleus-core</artifactId>-->
-            <!--<version>${datanucleus-core.version}</version>-->
-            <!--<scope>runtime</scope>-->
+        <!--<groupId>org.datanucleus</groupId>-->
+        <!--<artifactId>datanucleus-core</artifactId>-->
+        <!--<version>${datanucleus-core.version}</version>-->
+        <!--<scope>runtime</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.datanucleus</groupId>-->
-            <!--<artifactId>datanucleus-enhancer</artifactId>-->
-            <!--<version>3.1.1</version>-->
+        <!--<groupId>org.datanucleus</groupId>-->
+        <!--<artifactId>datanucleus-enhancer</artifactId>-->
+        <!--<version>3.1.1</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.apache.geronimo.specs</groupId>-->
-            <!--<artifactId>geronimo-jpa_2.0_spec</artifactId>-->
-            <!--<version>1.1</version>-->
+        <!--<groupId>org.apache.geronimo.specs</groupId>-->
+        <!--<artifactId>geronimo-jpa_2.0_spec</artifactId>-->
+        <!--<version>1.1</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.datanucleus</groupId>-->
-            <!--<artifactId>datanucleus-api-jpa</artifactId>-->
-            <!--<version>3.2.0-release</version>-->
+        <!--<groupId>org.datanucleus</groupId>-->
+        <!--<artifactId>datanucleus-api-jpa</artifactId>-->
+        <!--<version>3.2.0-release</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.google.appengine.orm</groupId>-->
-            <!--<artifactId>datanucleus-appengine</artifactId>-->
-            <!--<version>2.1.2</version>-->
+        <!--<groupId>com.google.appengine.orm</groupId>-->
+        <!--<artifactId>datanucleus-appengine</artifactId>-->
+        <!--<version>2.1.2</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.google.appengine.orm</groupId>
@@ -183,6 +183,11 @@
             <artifactId>wicket-auth-roles</artifactId>
             <version>${wicket.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-datetime</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>
@@ -224,6 +229,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
         </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -231,6 +241,7 @@
             <version>13.0.1</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
     <build>
         <resources>

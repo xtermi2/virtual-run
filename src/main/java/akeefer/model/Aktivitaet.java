@@ -6,15 +6,19 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 @Entity
 public class Aktivitaet implements Serializable {
 
     private static final long serialVersionUID = 0;
+    public static final BigDecimal TAUSEND = BigDecimal.valueOf(1000L);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
     private int meter;
     private AktivitaetsTyp typ;
@@ -39,6 +43,18 @@ public class Aktivitaet implements Serializable {
     public void setMeter(int meter) {
         this.meter = meter;
     }
+
+    @Transient
+    public BigDecimal getKilometer() {
+        return new BigDecimal(meter).divide(TAUSEND, 2, RoundingMode.HALF_UP);
+    }
+
+    public void setKilometer(BigDecimal km) {
+        if (null != km) {
+            this.meter = km.multiply(TAUSEND).intValue();
+        }
+    }
+
 
     public AktivitaetsTyp getTyp() {
         return typ;

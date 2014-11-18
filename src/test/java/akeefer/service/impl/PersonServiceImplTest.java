@@ -27,7 +27,7 @@ public class PersonServiceImplTest {
     public void testCreatePersonScript() throws Exception {
         PersonServiceImpl spy = spy(personService);
         // Mocks
-        doReturn(new PersonServiceMock().getAll()).when(spy).getAll();
+        doReturn(new PersonServiceMock().getAllUser()).when(spy).getAllUser();
         doReturn(new PersonServiceMock().getAktivitaetenByUser(new User(1L))).when(spy).getAktivitaetenByUser(any(User.class));
 
         User logedIn = new User(1L);

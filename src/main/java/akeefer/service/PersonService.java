@@ -9,7 +9,7 @@ import java.util.List;
  * Created by akeefer on 17.11.14.
  */
 public interface PersonService {
-    List<User> getAll();
+    List<User> getAllUser();
 
     User getUserByUsername(String username);
 
@@ -20,4 +20,6 @@ public interface PersonService {
     List<Aktivitaet> getAktivitaetenByUser(User user);
 
     void createAktivitaet(Aktivitaet akt, User user);
+
+    User createUserIfAbsent(User user);
 }
