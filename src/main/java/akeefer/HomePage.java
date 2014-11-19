@@ -20,6 +20,12 @@ public class HomePage extends WebPage {
     public HomePage(final PageParameters parameters) {
         super(parameters);
 
+        add(new Link("neueAktivitaet") {
+            @Override
+            public void onClick() {
+                setResponsePage(AktEditPage.class);
+            }
+        });
         add(new Link("logoutButton") {
             @Override
             public void onClick() {

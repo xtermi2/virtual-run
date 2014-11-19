@@ -13,12 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Field;
 
-/**
- * Simple test using the WicketTester
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
-public class HomePageTest {
+public class AktEditPageTest {
 
     private WicketTester tester;
 
@@ -26,7 +23,7 @@ public class HomePageTest {
     private WicketApplication myWebApplication;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception{
         // Workaround, da Applikation eine Spring Bean ist und der name beim erzeugen des testers gesetzt wird
         // die Applikation aber ein überschreiben des namen nicht erlaubt.
         Field nameField = Application.class.getDeclaredField("name");
@@ -37,9 +34,9 @@ public class HomePageTest {
     }
 
     @Test
-    public void homepageRendersSuccessfully() {
+    public void testRendersSuccessfully() {
         //start and render the test page
-        tester.startPage(HomePage.class);
+        tester.startPage(AktEditPage.class);
 
         tester.assertRenderedPage(SignInPage.class);
 
@@ -50,6 +47,6 @@ public class HomePageTest {
         formTester.submit();
 
         //assert rendered page class
-        tester.assertRenderedPage(HomePage.class);
+        tester.assertRenderedPage(AktEditPage.class);
     }
 }

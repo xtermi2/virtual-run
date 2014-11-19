@@ -41,7 +41,15 @@ public class AktiEditPanel extends Panel {
 
         form.add(new TextField<String>("meter"));
 
-        form.add(new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())));
+        form.add(new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())) {
+            @Override
+            protected CharSequence getDefaultChoice(String selectedValue) {
+                // Dadurch kommt die "Bitte Waehlen" auswahl nicht
+                return "";
+            }
+        });
+
+        form.add(new TextField<String>("bezeichnung"));
 
         DatePicker datePicker = new DatePicker();
         datePicker.setShowOnFieldClick(true);
@@ -49,8 +57,12 @@ public class AktiEditPanel extends Panel {
         form.add(new DateTextField("aktivitaetsDatum", "dd.MM.yyyy").add(datePicker));
 
         form.add(new DropDownChoice<AktivitaetsAufzeichnung>("aufzeichnungsart",
-                Arrays.asList(AktivitaetsAufzeichnung.values())));
-
-
+                Arrays.asList(AktivitaetsAufzeichnung.values())) {
+            @Override
+            protected CharSequence getDefaultChoice(String selectedValue) {
+                // Dadurch kommt die "Bitte Waehlen" auswahl nicht
+                return "";
+            }
+        });
     }
 }

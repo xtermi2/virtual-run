@@ -34,17 +34,18 @@ public class AktivitaetTest {
     @Test
     public void testSetKilometer() throws Exception {
         Aktivitaet akt = new Aktivitaet();
+        akt.setMeter(1);
 
         akt.setKilometer(null);
-        assertEquals(0, akt.getMeter());
+        assertEquals(null, akt.getMeter());
 
         akt.setKilometer(new BigDecimal(1.5));
-        assertEquals(1500, akt.getMeter());
+        assertEquals(Integer.valueOf(1500), akt.getMeter());
 
         akt.setKilometer(new BigDecimal(0.54321));
-        assertEquals(543, akt.getMeter());
+        assertEquals(Integer.valueOf(543), akt.getMeter());
 
         akt.setKilometer(new BigDecimal(1.9999));
-        assertEquals(1999, akt.getMeter());
+        assertEquals(Integer.valueOf(1999), akt.getMeter());
     }
 }

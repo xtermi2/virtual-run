@@ -20,13 +20,14 @@ public class Aktivitaet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
-    private int meter;
+    private Integer meter;
     private AktivitaetsTyp typ;
     private Date aktivitaetsDatum;
     private Date eingabeDatum;
     private AktivitaetsAufzeichnung aufzeichnungsart;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    private String bezeichnung;
 
     public Key getId() {
         return id;
@@ -36,22 +37,27 @@ public class Aktivitaet implements Serializable {
         this.id = id;
     }
 
-    public int getMeter() {
+    public Integer getMeter() {
         return meter;
     }
 
-    public void setMeter(int meter) {
+    public void setMeter(Integer meter) {
         this.meter = meter;
     }
 
     @Transient
     public BigDecimal getKilometer() {
+        if(null == meter){
+            return null;
+        }
         return new BigDecimal(meter).divide(TAUSEND, 2, RoundingMode.HALF_UP);
     }
 
     public void setKilometer(BigDecimal km) {
         if (null != km) {
             this.meter = km.multiply(TAUSEND).intValue();
+        } else {
+            this.meter = null;
         }
     }
 
@@ -94,6 +100,14 @@ public class Aktivitaet implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getBezeichnung() {
+        return bezeichnung;
+    }
+
+    public void setBezeichnung(String bezeichnung) {
+        this.bezeichnung = bezeichnung;
     }
 
     @Override

@@ -15,22 +15,24 @@ import java.util.Set;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    private EntityManager em;
+    private EntityManager em = EMFService.get().createEntityManager();
 
     @Override
     public List<User> getAllUser() {
-        EntityManager em = EMFService.get().createEntityManager();
+        //EntityManager em = EMFService.get().createEntityManager();
         Query q = em.createQuery("select u from User u");
         List<User> users = q.getResultList();
+        //em.close();
         return users;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        EntityManager em = EMFService.get().createEntityManager();
+        //EntityManager em = EMFService.get().createEntityManager();
         Query q = em.createQuery("select u from User u where u.username = :username");
         q.setParameter("username", username);
         User user = (User) q.getSingleResult();
+        //em.close();
         return user;
     }
 
@@ -59,17 +61,20 @@ public class PersonServiceImpl implements PersonService {
         int distanz = 0;
         //for (Aktivitaet akt : getAktivitaetenByUser(user)) {
         for (Aktivitaet akt : user.getAktivitaeten()) {
-            distanz = distanz + akt.getMeter();
+            if (null != akt.getMeter()) {
+                distanz = distanz + akt.getMeter();
+            }
         }
         return distanz;
     }
 
     @Override
     public List<Aktivitaet> getAktivitaetenByUser(User user) {
-        EntityManager em = EMFService.get().createEntityManager();
+        //EntityManager em = EMFService.get().createEntityManager();
         Query q = em.createQuery("select akt from Aktivitaet akt where akt.user = :user");
         q.setParameter("user", user);
         List<Aktivitaet> aktivitaeten = q.getResultList();
+        //em.close();
         return aktivitaeten;
     }
 
@@ -81,8 +86,9 @@ public class PersonServiceImpl implements PersonService {
             user.getAktivitaeten().add(akt);
         }
 
-        EntityManager em = EMFService.get().createEntityManager();
+        //EntityManager em = EMFService.get().createEntityManager();
         em.getTransaction().begin();
+        em.refresh(user);
         try {
             if (null == akt.getId()) {
                 // save new Akt
@@ -96,17 +102,19 @@ public class PersonServiceImpl implements PersonService {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
+            //em.close();
         }
     }
 
     @Override
     public User createUserIfAbsent(User user) {
-        EntityManager em = EMFService.get().createEntityManager();
+
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
             return userInDb;
         }
 
+        //EntityManager em = EMFService.get().createEntityManager();
         em.getTransaction().begin();
         try {
             em.persist(user);
@@ -115,6 +123,7 @@ public class PersonServiceImpl implements PersonService {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
+            //em.close();
         }
 
         return user;
@@ -130,7 +139,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     //@PersistenceContext
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
+//    public void setEm(EntityManager em) {
+//        this.em = em;
+//    }
 }
