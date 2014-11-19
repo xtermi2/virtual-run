@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,13 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String username;
+    @NotNull
     private String password;
+    @NotNull
     private SecurityRole role;
+    @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
 

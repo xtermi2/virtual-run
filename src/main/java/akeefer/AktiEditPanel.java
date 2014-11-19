@@ -4,6 +4,7 @@ import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
+import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -39,7 +40,7 @@ public class AktiEditPanel extends Panel {
         };
         add(form);
 
-        form.add(new TextField<String>("meter"));
+        form.add(new TextField<String>("meter").add(new PropertyValidator()));
 
         form.add(new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())) {
             @Override
@@ -47,14 +48,14 @@ public class AktiEditPanel extends Panel {
                 // Dadurch kommt die "Bitte Waehlen" auswahl nicht
                 return "";
             }
-        });
+        }.add(new PropertyValidator()));
 
-        form.add(new TextField<String>("bezeichnung"));
+        form.add(new TextField<String>("bezeichnung").add(new PropertyValidator()));
 
         DatePicker datePicker = new DatePicker();
         datePicker.setShowOnFieldClick(true);
         datePicker.setAutoHide(true);
-        form.add(new DateTextField("aktivitaetsDatum", "dd.MM.yyyy").add(datePicker));
+        form.add(new DateTextField("aktivitaetsDatum", "dd.MM.yyyy").add(datePicker).add(new PropertyValidator()));
 
         form.add(new DropDownChoice<AktivitaetsAufzeichnung>("aufzeichnungsart",
                 Arrays.asList(AktivitaetsAufzeichnung.values())) {
@@ -63,6 +64,6 @@ public class AktiEditPanel extends Panel {
                 // Dadurch kommt die "Bitte Waehlen" auswahl nicht
                 return "";
             }
-        });
+        }.add(new PropertyValidator()));
     }
 }

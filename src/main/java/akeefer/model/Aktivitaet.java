@@ -3,8 +3,10 @@ package akeefer.model;
 import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,10 +22,16 @@ public class Aktivitaet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
+    @NotNull(message = "Bitte eine Distanz eingeben")
+    @Min(value = 1, message = "Distanz muss groesser 0 sein")
+    @Max(value = 1000000, message = "Mehr als 1000 km, ist das dein ernst?")
     private Integer meter;
+    @NotNull(message = "Bitte einen Aktivitaetstyp angeben")
     private AktivitaetsTyp typ;
+    @Past(message = "Datum darf nicht in der Zukungt liegen")
     private Date aktivitaetsDatum;
     private Date eingabeDatum;
+    @NotNull(message = "Bitte eine Aufzeichnungsart angeben")
     private AktivitaetsAufzeichnung aufzeichnungsart;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -46,6 +54,9 @@ public class Aktivitaet implements Serializable {
     }
 
     @Transient
+    //@NotNull(message = "Bitte eine Distanz eingeben")
+    //@DecimalMin(value = "0.001", message = "Diszanz muss mindestens 0.001 km sein")
+    //@Max(value = 1000, message = "Mehr als 1000 km, ist das dein ernst?")
     public BigDecimal getKilometer() {
         if(null == meter){
             return null;

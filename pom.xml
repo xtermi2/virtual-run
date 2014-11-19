@@ -188,6 +188,17 @@
             <artifactId>wicket-datetime</artifactId>
             <version>${wicket.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-bean-validation</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>4.3.2.Final</version>
+        </dependency>
 
         <!-- LOGGING DEPENDENCIES - LOG4J -->
         <dependency>

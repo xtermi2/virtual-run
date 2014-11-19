@@ -4,6 +4,7 @@ import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSessio
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.authroles.authentication.pages.SignOutPage;
+import org.apache.wicket.bean.validation.BeanValidationConfiguration;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
@@ -45,10 +46,11 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
             getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         }
 
+        new BeanValidationConfiguration().configure(this);
+
         mountPage("/login", SignInPage.class);
         mountPage("/logout", SignOutPage.class);
-        mountPage("/create", CreateAktPage.class);
-        mountPage("/newAkt", AktEditPage.class);
+        mountPage("/create", AktEditPage.class);
         mountPage("/init", InitDatabasePage.class);
     }
 
