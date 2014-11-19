@@ -23,7 +23,7 @@ public class AktEditPageTest {
     private WicketApplication myWebApplication;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         // Workaround, da Applikation eine Spring Bean ist und der name beim erzeugen des testers gesetzt wird
         // die Applikation aber ein überschreiben des namen nicht erlaubt.
         Field nameField = Application.class.getDeclaredField("name");

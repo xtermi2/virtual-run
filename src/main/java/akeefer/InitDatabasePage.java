@@ -1,15 +1,13 @@
 package akeefer;
 
-import akeefer.model.*;
+import akeefer.model.SecurityRole;
+import akeefer.model.User;
 import akeefer.service.PersonService;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import java.util.Date;
-
-public class InitDatabasePage extends WebPage{
+public class InitDatabasePage extends WebPage {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,7 +23,7 @@ public class InitDatabasePage extends WebPage{
         create("uli-hans");
     }
 
-    private void create(String username){
+    private void create(String username) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(username);

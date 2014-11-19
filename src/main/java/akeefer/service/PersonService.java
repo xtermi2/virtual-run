@@ -17,9 +17,7 @@ public interface PersonService {
 
     int berechneDistanzInMeter(User user);
 
-    List<Aktivitaet> getAktivitaetenByUser(User user);
-
-    void createAktivitaet(Aktivitaet akt, User user);
+    Aktivitaet createAktivitaet(Aktivitaet akt, User user);
 
     User createUserIfAbsent(User user);
 }

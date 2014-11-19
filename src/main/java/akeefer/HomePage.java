@@ -1,6 +1,7 @@
 package akeefer;
 
 import akeefer.service.PersonService;
+import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.authroles.authentication.pages.SignOutPage;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -29,7 +30,8 @@ public class HomePage extends WebPage {
         add(new Link("logoutButton") {
             @Override
             public void onClick() {
-                setResponsePage(SignOutPage.class);
+                getSession().invalidate();
+                setResponsePage(SignInPage.class);
             }
         });
     }

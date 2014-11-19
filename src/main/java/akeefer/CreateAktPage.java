@@ -3,7 +3,6 @@ package akeefer;
 import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
-import akeefer.model.User;
 import akeefer.service.PersonService;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
@@ -13,7 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import java.util.Date;
 
 @AuthorizeInstantiation("USER")
-public class CreateAktPage extends WebPage{
+public class CreateAktPage extends WebPage {
 
     private static final long serialVersionUID = 1L;
 

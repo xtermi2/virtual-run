@@ -7,11 +7,18 @@
 
     <persistence-unit name="transactions-optional">
         <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        <class>akeefer.model.Aktivitaet</class>
+        <class>akeefer.model.User</class>
+        <class>akeefer.model.Parent</class>
+        <exclude-unlisted-classes/>
         <properties>
-            <property name="datanucleus.NontransactionalRead" value="true"/>
-            <property name="datanucleus.NontransactionalWrite" value="true"/>
             <property name="datanucleus.ConnectionURL" value="appengine"/>
-            <property name="datanucleus.singletonEMFForName" value="true"/>
+
+            <!--<property name="datanucleus.NontransactionalRead" value="true"/>-->
+            <!--<property name="datanucleus.NontransactionalWrite" value="true"/>-->
+            <!--<property name="datanucleus.singletonEMFForName" value="true"/>-->
+
+            <property name="datanucleus.appengine.ignorableMetaDataBehavior" value="NONE" />
         </properties>
 
     </persistence-unit>

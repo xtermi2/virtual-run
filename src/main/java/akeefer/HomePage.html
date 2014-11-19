@@ -99,18 +99,18 @@
                 // Typ DirectionsStep
                 var directionsStepAktuell = myRoute.steps[i];
                 //if (i > 0) {
-                    //var directionsStepVorher = myRoute.steps[i - 1];
-                    distanceSum = distanceSum + directionsStepAktuell.distance.value;
-                    for (var personIndex = 0; personIndex < personen.length; personIndex++) {
-                        var person = personen[personIndex];
-                        if (!person.done && person.distance < distanceSum) {
-                            person.done = true;
-                            // erstmal einen ungenaue Positionierung, die ist aber immer zu weit
-                            person.location = directionsStepAktuell.start_location;
-                            positionPerson(person);
+                //var directionsStepVorher = myRoute.steps[i - 1];
+                distanceSum = distanceSum + directionsStepAktuell.distance.value;
+                for (var personIndex = 0; personIndex < personen.length; personIndex++) {
+                    var person = personen[personIndex];
+                    if (!person.done && person.distance < distanceSum) {
+                        person.done = true;
+                        // erstmal einen ungenaue Positionierung, die ist aber immer zu weit
+                        person.location = directionsStepAktuell.start_location;
+                        positionPerson(person);
 
 
-                            // detailpositionierung
+                        // detailpositionierung
 //                            if (null != directionsStepVorher.steps) {
 //                                var distanceDetail = distanceSum - directionsStepVorher.distance.value;
 //                                for (var j = 0; j < directionsStepVorher.steps.length; i++) {
@@ -121,8 +121,8 @@
 //                                    }
 //                                }
 //                            }
-                        }
                     }
+                }
                 //}
 //                    var marker = new google.maps.Marker({
 //                        position: directionsStepAktuell.start_location,

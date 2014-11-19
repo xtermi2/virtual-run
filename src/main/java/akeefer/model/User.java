@@ -1,5 +1,6 @@
 package akeefer.model;
 
+import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -16,29 +17,31 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Key id;
     @NotNull
     private String username;
     @NotNull
     private String password;
     @NotNull
     private SecurityRole role;
+    @ManyToOne
+    private Parent parent;
     @NotNull
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
 
     public User() {
     }
 
-    public User(Long id) {
+    public User(Key id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Key getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Key id) {
         this.id = id;
     }
 
@@ -64,6 +67,14 @@ public class User implements Serializable {
 
     public void setRole(SecurityRole role) {
         this.role = role;
+    }
+
+    public Parent getParent() {
+        return parent;
+    }
+
+    public void setParent(Parent parent) {
+        this.parent = parent;
     }
 
     public List<Aktivitaet> getAktivitaeten() {

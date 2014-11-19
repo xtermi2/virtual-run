@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
@@ -28,9 +27,8 @@ public class PersonServiceImplTest {
         PersonServiceImpl spy = spy(personService);
         // Mocks
         doReturn(new PersonServiceMock().getAllUser()).when(spy).getAllUser();
-        doReturn(new PersonServiceMock().getAktivitaetenByUser(new User(1L))).when(spy).getAktivitaetenByUser(any(User.class));
 
-        User logedIn = new User(1L);
+        User logedIn = new User(null);
         logedIn.setUsername("foo");
         Aktivitaet aktivitaet = new Aktivitaet();
         aktivitaet.setMeter(4711);

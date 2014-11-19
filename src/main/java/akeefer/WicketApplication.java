@@ -6,7 +6,6 @@ import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.authroles.authentication.pages.SignOutPage;
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

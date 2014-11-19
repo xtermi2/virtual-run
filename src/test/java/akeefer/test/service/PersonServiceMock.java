@@ -6,9 +6,7 @@ import akeefer.model.User;
 import akeefer.service.PersonService;
 import akeefer.test.TestScopedComponent;
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.RandomStringUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 @TestScopedComponent
@@ -21,7 +19,7 @@ public class PersonServiceMock implements PersonService {
     @Override
     public User getUserByUsername(String username) {
         User user = new User();
-        user.setId(1L);
+        user.setId(null);
         user.setUsername(username);
         user.setPassword("bar");
         user.setRole(SecurityRole.USER);
@@ -39,20 +37,13 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public List<Aktivitaet> getAktivitaetenByUser(User user) {
-        Aktivitaet aktivitaet = new Aktivitaet();
-        aktivitaet.setMeter(4711);
-        return Arrays.asList(aktivitaet);
-    }
-
-    @Override
-    public void createAktivitaet(Aktivitaet akt, User user) {
-
+    public Aktivitaet createAktivitaet(Aktivitaet akt, User user) {
+        return akt;
     }
 
     @Override
     public User createUserIfAbsent(User user) {
-        user.setId(Long.valueOf(RandomStringUtils.randomNumeric(8)));
+        user.setId(null);
         return user;
     }
 }

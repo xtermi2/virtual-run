@@ -34,7 +34,8 @@ public class AktiEditPanel extends Panel {
             protected void onSubmit() {
                 Aktivitaet akt = getModel().getObject();
                 akt.setEingabeDatum(new Date());
-                personService.createAktivitaet(akt, VRSession.get().getUser());
+                akt = personService.createAktivitaet(akt, VRSession.get().getUser());
+                setModelObject(akt);
                 setResponsePage(HomePage.class);
             }
         };

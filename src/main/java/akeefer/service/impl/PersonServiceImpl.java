@@ -1,42 +1,59 @@
 package akeefer.service.impl;
 
 import akeefer.model.Aktivitaet;
+import akeefer.model.Parent;
 import akeefer.model.User;
+import akeefer.repository.AktivitaetRepository;
+import akeefer.repository.ParentRepository;
+import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.set.ListOrderedSet;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
+@Transactional
 public class PersonServiceImpl implements PersonService {
 
-    private EntityManager em = EMFService.get().createEntityManager();
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonServiceImpl.class);
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AktivitaetRepository aktivitaetRepository;
+
+    @Autowired
+    private ParentRepository parentRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUser() {
-        //EntityManager em = EMFService.get().createEntityManager();
-        Query q = em.createQuery("select u from User u");
-        List<User> users = q.getResultList();
-        //em.close();
-        return users;
+        return userRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
-        //EntityManager em = EMFService.get().createEntityManager();
-        Query q = em.createQuery("select u from User u where u.username = :username");
-        q.setParameter("username", username);
-        User user = (User) q.getSingleResult();
-        //em.close();
+        User user = userRepository.findByUsername(username);
+        if (null != user) {
+            LOGGER.info(String.format("Anzahl Aktivitaeten von user '%s': %s", username,
+                    null == user.getAktivitaeten() ? "null" : user.getAktivitaeten().size()));
+        }
         return user;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String createPersonScript(User logedInUser) {
         Validate.notNull(logedInUser);
 
@@ -57,75 +74,58 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public int berechneDistanzInMeter(User user) {
         int distanz = 0;
-        //for (Aktivitaet akt : getAktivitaetenByUser(user)) {
-        for (Aktivitaet akt : user.getAktivitaeten()) {
-            if (null != akt.getMeter()) {
-                distanz = distanz + akt.getMeter();
+        if (null != user.getAktivitaeten()) {
+            for (Aktivitaet akt : user.getAktivitaeten()) {
+                if (null != akt.getMeter()) {
+                    distanz = distanz + akt.getMeter();
+                }
             }
         }
         return distanz;
     }
 
     @Override
-    public List<Aktivitaet> getAktivitaetenByUser(User user) {
-        //EntityManager em = EMFService.get().createEntityManager();
-        Query q = em.createQuery("select akt from Aktivitaet akt where akt.user = :user");
-        q.setParameter("user", user);
-        List<Aktivitaet> aktivitaeten = q.getResultList();
-        //em.close();
-        return aktivitaeten;
-    }
-
-    @Override
-    public void createAktivitaet(Aktivitaet akt, User user) {
+    public Aktivitaet createAktivitaet(Aktivitaet akt, final User user) {
+        User userTmp = userRepository.findOne(user.getId());
         if (null == akt.getId()) {
             // Relationen herstellen bei neuer Akt
-            akt.setUser(user);
-            user.getAktivitaeten().add(akt);
+            akt.setUser(userTmp);
+            if (null == userTmp.getAktivitaeten()) {
+                userTmp.setAktivitaeten(new ArrayList<Aktivitaet>());
+            }
+            userTmp.getAktivitaeten().add(akt);
         }
+        akt = aktivitaetRepository.save(akt);
 
-        //EntityManager em = EMFService.get().createEntityManager();
-        em.getTransaction().begin();
-        try {
-            if (null == akt.getId()) {
-                // save new Akt
-                em.persist(akt);
-            } else {
-                // update existing Akt
-                em.merge(akt);
-            }
-            em.getTransaction().commit();
-        } finally {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            //em.close();
-        }
+        user.setAktivitaeten(userTmp.getAktivitaeten());
+        return akt;
     }
 
     @Override
     public User createUserIfAbsent(User user) {
-
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
             return userInDb;
         }
+        Parent parent = getParent();
+        user.setParent(parent);
 
-        //EntityManager em = EMFService.get().createEntityManager();
-        em.getTransaction().begin();
-        try {
-            em.persist(user);
-            em.getTransaction().commit();
-        } finally {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            //em.close();
+        return userRepository.save(user);
+    }
+
+    private Parent getParent() {
+        List<Parent> parents = parentRepository.findAll();
+        final Parent parent;
+        if (CollectionUtils.isEmpty(parents)) {
+            parent = parentRepository.save(new Parent());
+        } else {
+            parent = parents.get(0);
         }
 
-        return user;
+        return parent;
     }
 
     private User findUserByUsername(Iterable<User> users, String username) {

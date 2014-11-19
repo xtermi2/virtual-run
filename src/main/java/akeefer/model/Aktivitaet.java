@@ -3,10 +3,12 @@ package akeefer.model;
 import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,9 +35,10 @@ public class Aktivitaet implements Serializable {
     private Date eingabeDatum;
     @NotNull(message = "Bitte eine Aufzeichnungsart angeben")
     private AktivitaetsAufzeichnung aufzeichnungsart;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private String bezeichnung;
+    private String owner;
 
     public Key getId() {
         return id;
@@ -58,7 +61,7 @@ public class Aktivitaet implements Serializable {
     //@DecimalMin(value = "0.001", message = "Diszanz muss mindestens 0.001 km sein")
     //@Max(value = 1000, message = "Mehr als 1000 km, ist das dein ernst?")
     public BigDecimal getKilometer() {
-        if(null == meter){
+        if (null == meter) {
             return null;
         }
         return new BigDecimal(meter).divide(TAUSEND, 2, RoundingMode.HALF_UP);
@@ -111,6 +114,11 @@ public class Aktivitaet implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+        if (null == user) {
+            this.owner = null;
+        } else {
+            this.owner = user.getUsername();
+        }
     }
 
     public String getBezeichnung() {
@@ -119,6 +127,14 @@ public class Aktivitaet implements Serializable {
 
     public void setBezeichnung(String bezeichnung) {
         this.bezeichnung = bezeichnung;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Override
