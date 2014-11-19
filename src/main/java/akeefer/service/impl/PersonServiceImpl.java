@@ -88,7 +88,6 @@ public class PersonServiceImpl implements PersonService {
 
         //EntityManager em = EMFService.get().createEntityManager();
         em.getTransaction().begin();
-        em.refresh(user);
         try {
             if (null == akt.getId()) {
                 // save new Akt
