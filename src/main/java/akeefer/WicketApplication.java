@@ -1,5 +1,7 @@
 package akeefer;
 
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
@@ -7,10 +9,15 @@ import org.apache.wicket.authroles.authentication.pages.SignOutPage;
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Locale;
 
 /**
  * Application object for your web application.
@@ -66,5 +73,23 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.ctx = applicationContext;
+    }
+
+    @Override
+    protected IConverterLocator newConverterLocator() {
+        ConverterLocator converterLocator = new ConverterLocator();
+        converterLocator.set(BigDecimal.class, new BigDecimalConverter() {
+            @Override
+            public BigDecimal convertToObject(String value, Locale locale) {
+                // NB: this isn't universal & your mileage problably varies!
+                // (Specifically, this breaks if '.' is used as thousands separator)
+                if ("de".equals(locale.getLanguage())) {
+                    value = value.replace('.', ',');
+                }
+                BigDecimal bigDecimal = super.convertToObject(value, locale);
+                return bigDecimal.setScale(3, RoundingMode.HALF_UP);
+            }
+        });
+        return converterLocator;
     }
 }

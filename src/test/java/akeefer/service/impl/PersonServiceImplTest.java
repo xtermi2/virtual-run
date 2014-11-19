@@ -31,7 +31,7 @@ public class PersonServiceImplTest {
         User logedIn = new User(null);
         logedIn.setUsername("foo");
         Aktivitaet aktivitaet = new Aktivitaet();
-        aktivitaet.setMeter(4711);
+        aktivitaet.setDistanzInMeter(4711);
         logedIn.getAktivitaeten().add(aktivitaet);
         String personScript = spy.createPersonScript(logedIn);
         System.out.println(personScript);

@@ -79,8 +79,8 @@ public class PersonServiceImpl implements PersonService {
         int distanz = 0;
         if (null != user.getAktivitaeten()) {
             for (Aktivitaet akt : user.getAktivitaeten()) {
-                if (null != akt.getMeter()) {
-                    distanz = distanz + akt.getMeter();
+                if (null != akt.getDistanzInMeter()) {
+                    distanz = distanz + akt.getDistanzInMeter();
                 }
             }
         }

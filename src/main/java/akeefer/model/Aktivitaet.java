@@ -5,8 +5,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.io.Serializable;
@@ -24,10 +24,14 @@ public class Aktivitaet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
+    //    @NotNull(message = "Bitte eine Distanz eingeben")
+//    @Min(value = 1, message = "Distanz muss groesser 0 sein")
+//    @Max(value = 1000000, message = "Mehr als 1000 km, ist das dein ernst?")
+//    private Integer meter;
     @NotNull(message = "Bitte eine Distanz eingeben")
-    @Min(value = 1, message = "Distanz muss groesser 0 sein")
-    @Max(value = 1000000, message = "Mehr als 1000 km, ist das dein ernst?")
-    private Integer meter;
+    @DecimalMin(value = "0.001", message = "Diszanz muss mindestens 0.001 km sein")
+    @Max(value = 1000, message = "Mehr als 1000 km, ist das dein ernst?")
+    private BigDecimal distanzInKilometer;
     @NotNull(message = "Bitte einen Aktivitaetstyp angeben")
     private AktivitaetsTyp typ;
     @Past(message = "Datum darf nicht in der Zukungt liegen")
@@ -48,31 +52,28 @@ public class Aktivitaet implements Serializable {
         this.id = id;
     }
 
-    public Integer getMeter() {
-        return meter;
-    }
-
-    public void setMeter(Integer meter) {
-        this.meter = meter;
-    }
-
     @Transient
-    //@NotNull(message = "Bitte eine Distanz eingeben")
-    //@DecimalMin(value = "0.001", message = "Diszanz muss mindestens 0.001 km sein")
-    //@Max(value = 1000, message = "Mehr als 1000 km, ist das dein ernst?")
-    public BigDecimal getKilometer() {
-        if (null == meter) {
-            return null;
+    public Integer getDistanzInMeter() {
+        if (null != distanzInKilometer) {
+            return distanzInKilometer.multiply(TAUSEND).intValue();
         }
-        return new BigDecimal(meter).divide(TAUSEND, 2, RoundingMode.HALF_UP);
+        return null;
     }
 
-    public void setKilometer(BigDecimal km) {
-        if (null != km) {
-            this.meter = km.multiply(TAUSEND).intValue();
+    public void setDistanzInMeter(Integer meter) {
+        if (null == meter) {
+            distanzInKilometer = null;
         } else {
-            this.meter = null;
+            this.distanzInKilometer = new BigDecimal(meter).divide(TAUSEND, 3, RoundingMode.HALF_UP);
         }
+    }
+
+    public BigDecimal getDistanzInKilometer() {
+        return this.distanzInKilometer;
+    }
+
+    public void setDistanzInKilometer(BigDecimal kilometer) {
+        this.distanzInKilometer = kilometer;
     }
 
 
