@@ -1,9 +1,11 @@
-package akeefer;
+package akeefer.web.components;
 
 import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
+import akeefer.web.VRSession;
+import akeefer.web.pages.MapPage;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
@@ -21,6 +23,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
+/**
+ * Erfassen neuer Aktivitaeten und editieren bestehender Aktivitaeten
+ */
 public class AktiEditPanel extends Panel {
 
     @SpringBean
@@ -38,7 +43,7 @@ public class AktiEditPanel extends Panel {
                 akt.setEingabeDatum(new Date());
                 akt = personService.createAktivitaet(akt, VRSession.get().getUser());
                 setModelObject(akt);
-                setResponsePage(HomePage.class);
+                setResponsePage(MapPage.class);
             }
         };
         add(form);

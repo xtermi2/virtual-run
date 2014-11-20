@@ -1,4 +1,4 @@
-package akeefer;
+package akeefer.web.pages;
 
 import akeefer.model.SecurityRole;
 import akeefer.model.User;

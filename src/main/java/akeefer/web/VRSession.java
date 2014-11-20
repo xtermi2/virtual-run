@@ -1,4 +1,4 @@
-package akeefer;
+package akeefer.web;
 
 import akeefer.model.User;
 import akeefer.service.PersonService;

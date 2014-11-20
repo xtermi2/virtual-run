@@ -1,5 +1,9 @@
-package akeefer;
+package akeefer.web;
 
+import akeefer.web.pages.AktEditPage;
+import akeefer.web.pages.FeaturePage;
+import akeefer.web.pages.InitDatabasePage;
+import akeefer.web.pages.MapPage;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
@@ -17,6 +21,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Locale;
@@ -34,34 +39,34 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
 
     private ApplicationContext ctx;
 
-    /**
-     * @see org.apache.wicket.Application#getHomePage()
-     */
     @Override
     public Class<? extends WebPage> getHomePage() {
-        return HomePage.class;
+        return MapPage.class;
     }
 
-    /**
-     * @see org.apache.wicket.Application#init()
-     */
     @Override
     public void init() {
         super.init();
         if (null == ctx) {
             // im Produktiv Fall
+            LOGGER.info("init Spring without Context");
             getComponentInstantiationListeners().add(new SpringComponentInjector(this));
         } else {
             // In Unittest Fall
+            LOGGER.info("init Spring with Context");
             getComponentInstantiationListeners().add(new SpringComponentInjector(this, ctx, true));
         }
 
-        new BeanValidationConfiguration().configure(this);
+        // Bean Validation
+        BeanValidationConfiguration beanValidationConfiguration = new BeanValidationConfiguration();
+        beanValidationConfiguration.register(NotNull.class, new RequiredTagModifier());
+        beanValidationConfiguration.configure(this);
 
         mountPage("/login", SignInPage.class);
         mountPage("/logout", SignOutPage.class);
         mountPage("/create", AktEditPage.class);
         mountPage("/init", InitDatabasePage.class);
+        mountPage("/features", FeaturePage.class);
     }
 
     @Override

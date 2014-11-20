@@ -1,5 +1,6 @@
-package akeefer;
+package akeefer.web.pages;
 
+import akeefer.web.WicketApplication;
 import org.apache.wicket.Application;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.util.tester.FormTester;
@@ -15,8 +16,7 @@ import java.lang.reflect.Field;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
-public class AktEditPageTest {
-
+public class FeaturePageTest {
     private WicketTester tester;
 
     @Autowired
@@ -36,7 +36,7 @@ public class AktEditPageTest {
     @Test
     public void testRendersSuccessfully() {
         //start and render the test page
-        tester.startPage(AktEditPage.class);
+        tester.startPage(FeaturePage.class);
 
         tester.assertRenderedPage(SignInPage.class);
 
@@ -47,6 +47,6 @@ public class AktEditPageTest {
         formTester.submit();
 
         //assert rendered page class
-        tester.assertRenderedPage(AktEditPage.class);
+        tester.assertRenderedPage(FeaturePage.class);
     }
 }
