@@ -10,6 +10,8 @@ import org.apache.wicket.bean.validation.BeanValidationConfiguration;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.BigDecimalConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -27,6 +29,8 @@ import java.util.Locale;
  */
 @Component
 public class WicketApplication extends AuthenticatedWebApplication implements ApplicationContextAware {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WicketApplication.class);
 
     private ApplicationContext ctx;
 
@@ -81,12 +85,15 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         converterLocator.set(BigDecimal.class, new BigDecimalConverter() {
             @Override
             public BigDecimal convertToObject(String value, Locale locale) {
+                LOGGER.info(String.format("BigDecimalConverter#convertToObject(value='%s', locale='%s')", value, locale));
                 // NB: this isn't universal & your mileage problably varies!
                 // (Specifically, this breaks if '.' is used as thousands separator)
-                if ("de".equals(locale.getLanguage())) {
-                    value = value.replace('.', ',');
-                }
-                BigDecimal bigDecimal = super.convertToObject(value, locale);
+                value = value.replace('.', ',');
+                // die Locale wird hart auf Germany gesetzt, da andere Locales anders parsen (z.B. Englisch)
+                // und dann anstann ein , einen . erwarten und dann ein seltsames ergebnis vom parser zurueck kommt
+                // Beispiel: Locale=ENGLISH value 1,6 wird zu 16; Da hätte ich eigentlich einen Parsingfehler erwartet, anstatt das ,
+                // einfach zu entfernen
+                BigDecimal bigDecimal = super.convertToObject(value, Locale.GERMANY);
                 return bigDecimal.setScale(3, RoundingMode.HALF_UP);
             }
         });
