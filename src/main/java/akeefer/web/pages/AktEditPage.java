@@ -5,7 +5,6 @@ import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.components.AktiEditPanel;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -15,8 +14,7 @@ import java.util.Date;
 /**
  * Erfassen neuer Aktivitaeten und editieren bestehender Aktivitaeten
  */
-@AuthorizeInstantiation("USER")
-public class AktEditPage extends AbstractBasePage {
+public class AktEditPage extends AbstractAuthenticatedBasePage {
 
     private static final long serialVersionUID = 1L;
 

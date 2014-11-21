@@ -1,9 +1,6 @@
 package akeefer.web;
 
-import akeefer.web.pages.AktEditPage;
-import akeefer.web.pages.FeaturePage;
-import akeefer.web.pages.InitDatabasePage;
-import akeefer.web.pages.MapPage;
+import akeefer.web.pages.*;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
@@ -67,6 +64,7 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         mountPage("/create", AktEditPage.class);
         mountPage("/init", InitDatabasePage.class);
         mountPage("/features", FeaturePage.class);
+        mountPage("/impressum", ImpressumPage.class);
     }
 
     @Override

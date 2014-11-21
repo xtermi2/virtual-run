@@ -74,10 +74,13 @@
     </style>
 </head>
 <body>
-<header></header>
-<wicket:child/>
-<footer>
-    <a wicket:id="impressumLink" href="#">Impressum</a>
-</footer>
+<wicket:extend>
+    <nav>
+        <span wicket:id="menuPanel"/>
+    </nav>
+    <section>
+        <wicket:child/>
+    </section>
+</wicket:extend>
 </body>
 </html>

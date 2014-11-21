@@ -8,8 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-@AuthorizeInstantiation("USER")
-public class MapPage extends AbstractBasePage {
+public class MapPage extends AbstractAuthenticatedBasePage {
     private static final long serialVersionUID = 1L;
 
     private static final JavaScriptResourceReference MAPPAGE_JS = new JavaScriptResourceReference(MapPage.class, "MapPage.js");
