@@ -24,7 +24,7 @@ import java.util.Set;
 @Transactional
 public class PersonServiceImpl implements PersonService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersonServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -46,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
     public User getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (null != user) {
-            LOGGER.info(String.format("Anzahl Aktivitaeten von user '%s': %s", username,
+            logger.info(String.format("user (username='%s') has %s Aktivitaeten", username,
                     null == user.getAktivitaeten() ? "null" : user.getAktivitaeten().size()));
         }
         return user;
@@ -108,6 +108,7 @@ public class PersonServiceImpl implements PersonService {
     public User createUserIfAbsent(User user) {
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
+            logger.info(String.format("User username='%s' already exists, i will not create a new one", user.getUsername()));
             return userInDb;
         }
         Parent parent = getParent();
@@ -120,8 +121,10 @@ public class PersonServiceImpl implements PersonService {
         List<Parent> parents = parentRepository.findAll();
         final Parent parent;
         if (CollectionUtils.isEmpty(parents)) {
+            logger.info("Parent will be created...");
             parent = parentRepository.save(new Parent());
         } else {
+            logger.info("using existing Parent from Database");
             parent = parents.get(0);
         }
 

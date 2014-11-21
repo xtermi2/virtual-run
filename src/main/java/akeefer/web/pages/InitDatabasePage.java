@@ -21,6 +21,9 @@ public class InitDatabasePage extends WebPage {
         create("roland");
         create("norbert");
         create("uli-hans");
+
+        // Startseite anzeigen
+        setResponsePage(MapPage.class);
     }
 
     private void create(String username) {
