@@ -62,6 +62,7 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         mountPage("/login", SignInPage.class);
         mountPage("/logout", SignOutPage.class);
         mountPage("/create", AktEditPage.class);
+        mountPage("/uebersicht", AktUebersichtPage.class);
         mountPage("/init", InitDatabasePage.class);
         mountPage("/features", FeaturePage.class);
         mountPage("/impressum", ImpressumPage.class);

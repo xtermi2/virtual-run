@@ -7,8 +7,8 @@ import akeefer.repository.AktivitaetRepository;
 import akeefer.repository.ParentRepository;
 import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
+import com.google.appengine.api.datastore.Key;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.set.ListOrderedSet;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -58,11 +56,12 @@ public class PersonServiceImpl implements PersonService {
         Validate.notNull(logedInUser);
 
         StringBuilder personScript = new StringBuilder("var personen = [\n");
-        Set<User> users = new ListOrderedSet();
-        users.addAll(getAllUser());
+        Set<User> users = new TreeSet<User>(new UserHintenComparator(logedInUser.getId()));
+        List<User> allUser = getAllUser();
+        users.addAll(allUser);
         // LogedInUser enfernen und ganz ans ende haengen
-        users.remove(logedInUser);
-        users.add(logedInUser);
+        //users.remove(logedInUser);
+        //users.add(logedInUser);
         for (User user : users) {
             personScript.append("        {id: '").append(user.getUsername())
                     .append("', distance: ").append(berechneDistanzInMeter(user)).append("},\n");
@@ -71,6 +70,29 @@ public class PersonServiceImpl implements PersonService {
         personScript.deleteCharAt(personScript.length() - 2);
         personScript.append("    ];");
         return personScript.toString();
+    }
+
+    // Sortiert den user mit dem Key nach unten
+    static class UserHintenComparator implements Comparator<User> {
+
+        private Key userKey;
+
+        UserHintenComparator(Key userKey) {
+
+            this.userKey = userKey;
+        }
+
+        @Override
+        public int compare(User o1, User o2) {
+            if (null == userKey) {
+                return o1.compareTo(o2);
+            } else if (userKey.equals(o1.getId())) {
+                return 1;
+            } else if (userKey.equals(o2.getId())) {
+                return -1;
+            }
+            return o1.compareTo(o2);
+        }
     }
 
     @Override
@@ -90,17 +112,27 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Aktivitaet createAktivitaet(Aktivitaet akt, final User user) {
         User userTmp = userRepository.findOne(user.getId());
+        final boolean newAkt;
         if (null == akt.getId()) {
+            newAkt = true;
+            // neue Aktivitaet
+            akt.setEingabeDatum(new Date());
             // Relationen herstellen bei neuer Akt
             akt.setUser(userTmp);
             if (null == userTmp.getAktivitaeten()) {
                 userTmp.setAktivitaeten(new ArrayList<Aktivitaet>());
             }
             userTmp.getAktivitaeten().add(akt);
+        } else {
+            newAkt = false;
+            akt.setUpdatedDatum(new Date());
         }
+
         akt = aktivitaetRepository.save(akt);
 
-        user.setAktivitaeten(userTmp.getAktivitaeten());
+        if (newAkt) {
+            user.setAktivitaeten(userTmp.getAktivitaeten());
+        }
         return akt;
     }
 

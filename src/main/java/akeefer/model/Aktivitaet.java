@@ -3,6 +3,7 @@ package akeefer.model;
 import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -36,7 +37,10 @@ public class Aktivitaet implements Serializable {
     private AktivitaetsTyp typ;
     @Past(message = "Datum darf nicht in der Zukungt liegen")
     private Date aktivitaetsDatum;
+    // wird nur ein mal initial gesetzt
     private Date eingabeDatum;
+    // wird immer aktualisiert, wenn die Aktivitaet bearbeitet wurde.
+    private Date updatedDatum;
     @NotNull(message = "Bitte eine Aufzeichnungsart angeben")
     private AktivitaetsAufzeichnung aufzeichnungsart;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -101,6 +105,14 @@ public class Aktivitaet implements Serializable {
         this.eingabeDatum = eingabeDatum;
     }
 
+    public Date getUpdatedDatum() {
+        return updatedDatum;
+    }
+
+    public void setUpdatedDatum(Date updatedDatum) {
+        this.updatedDatum = updatedDatum;
+    }
+
     public AktivitaetsAufzeichnung getAufzeichnungsart() {
         return aufzeichnungsart;
     }
@@ -160,5 +172,19 @@ public class Aktivitaet implements Serializable {
         return new HashCodeBuilder()
                 .append(id)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("distanzInKilometer", distanzInKilometer)
+                .append("typ", typ)
+                .append("aktivitaetsDatum", aktivitaetsDatum)
+                .append("eingabeDatum", eingabeDatum)
+                .append("updatedDatum", updatedDatum)
+                .append("bezeichnung", bezeichnung)
+                .append("owner", owner)
+                .toString();
     }
 }

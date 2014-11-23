@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
 
     private static final long serialVersionUID = 0;
 
@@ -107,5 +107,10 @@ public class User implements Serializable {
         return new HashCodeBuilder()
                 .append(id)
                 .toHashCode();
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return id.compareTo(o.getId());
     }
 }

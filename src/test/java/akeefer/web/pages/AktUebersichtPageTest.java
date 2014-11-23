@@ -14,12 +14,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Field;
 
-/**
- * Simple test using the WicketTester
- */
+import static org.junit.Assert.*;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
-public class MapPageTest {
+public class AktUebersichtPageTest {
 
     private WicketTester tester;
 
@@ -40,7 +39,7 @@ public class MapPageTest {
     @Test
     public void testRendersSuccessfully() {
         //start and render the test page
-        tester.startPage(MapPage.class);
+        tester.startPage(AktUebersichtPage.class);
 
         tester.assertRenderedPage(SignInPage.class);
 
@@ -51,6 +50,6 @@ public class MapPageTest {
         formTester.submit();
 
         //assert rendered page class
-        tester.assertRenderedPage(MapPage.class);
+        tester.assertRenderedPage(AktUebersichtPage.class);
     }
 }

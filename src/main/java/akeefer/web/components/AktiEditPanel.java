@@ -5,6 +5,7 @@ import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
+import akeefer.web.pages.AktUebersichtPage;
 import akeefer.web.pages.MapPage;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
@@ -40,10 +41,9 @@ public class AktiEditPanel extends Panel {
             @Override
             protected void onSubmit() {
                 Aktivitaet akt = getModel().getObject();
-                akt.setEingabeDatum(new Date());
                 akt = personService.createAktivitaet(akt, VRSession.get().getUser());
                 setModelObject(akt);
-                setResponsePage(MapPage.class);
+                setResponsePage(AktUebersichtPage.class);
             }
         };
         add(form);

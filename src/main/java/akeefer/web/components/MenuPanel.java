@@ -1,6 +1,7 @@
 package akeefer.web.components;
 
 import akeefer.web.pages.AktEditPage;
+import akeefer.web.pages.AktUebersichtPage;
 import akeefer.web.pages.MapPage;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.markup.html.form.Button;
@@ -29,13 +30,22 @@ public class MenuPanel extends Panel {
         gesamtansicht.setVisible(mapView);
         add(gesamtansicht);
 
+        final Link aktUebersicht = new Link("aktUebersicht") {
+            @Override
+            public void onClick() {
+                setResponsePage(AktUebersichtPage.class);
+            }
+        };
+        aktUebersicht.setEnabled(!aktView);
+        add(aktUebersicht);
+
         final Link neueAktivitaet = new Link("neueAktivitaet") {
             @Override
             public void onClick() {
                 setResponsePage(AktEditPage.class);
             }
         };
-        neueAktivitaet.setEnabled(!aktView);
+        neueAktivitaet.setVisible(aktView);
         add(neueAktivitaet);
 
         // der Logout Button ist immer sichtbar
