@@ -3,6 +3,7 @@ package akeefer.web;
 import akeefer.web.pages.*;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
@@ -33,6 +34,9 @@ import java.util.Locale;
 public class WicketApplication extends AuthenticatedWebApplication implements ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WicketApplication.class);
+    private final boolean isProd =
+            "Production".equalsIgnoreCase(
+                    System.getProperty("com.google.appengine.runtime.environment"));
 
     private ApplicationContext ctx;
 
@@ -102,5 +106,10 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
             }
         });
         return converterLocator;
+    }
+
+    @Override
+    public RuntimeConfigurationType getConfigurationType() {
+        return isProd ? RuntimeConfigurationType.DEPLOYMENT : RuntimeConfigurationType.DEVELOPMENT;
     }
 }
