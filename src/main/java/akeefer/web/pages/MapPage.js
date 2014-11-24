@@ -69,43 +69,41 @@ function showSteps(directionResult) {
     // can keep track of it and remove it when calculating new
     // routes.
     // myRoute ist vom Typ DirectionsLeg
+    // Iterieren ueber Routenabschnitte (unterteilt durch waypoints)
     for (var legIndex = 0; legIndex < directionResult.routes[0].legs.length; legIndex++) {
+        // Teilroute (bis waypoint)
         var myRoute = directionResult.routes[0].legs[legIndex];
 
+        // Iterieren ueber alle Teilroutenabschnitte
         for (var i = 0; i < myRoute.steps.length; i++) {
             // Typ DirectionsStep
             var directionsStepAktuell = myRoute.steps[i];
-            //if (i > 0) {
-            //var directionsStepVorher = myRoute.steps[i - 1];
             distanceSum = distanceSum + directionsStepAktuell.distance.value;
             for (var personIndex = 0; personIndex < personen.length; personIndex++) {
                 var person = personen[personIndex];
                 if (!person.done && person.distance < distanceSum) {
-                    person.done = true;
-                    // erstmal einen ungenaue Positionierung, die ist aber immer zu weit
-                    person.location = directionsStepAktuell.start_location;
-                    positionPerson(person);
-
-
                     // detailpositionierung
-//                            if (null != directionsStepVorher.steps) {
-//                                var distanceDetail = distanceSum - directionsStepVorher.distance.value;
-//                                for (var j = 0; j < directionsStepVorher.steps.length; i++) {
-//                                    var directionsStepDetail = directionsStepVorher.steps[j];
-//                                    distanceDetail = distanceDetail + directionsStepDetail.distance.value;
-//                                    if (person.distance < distanceDetail) {
-//                                        positionPerson(person.id, directionsStepDetail.start_location, person.distance);
-//                                    }
-//                                }
-//                            }
+                    var distanceDetailSum = distanceSum - directionsStepAktuell.distance.value;
+                    var latLngVorher = directionsStepAktuell.start_location;
+                    // iterieren ueber den Pfad des Abschnitts. Der Pfad besteht aus einem array von latLng objekten
+                    for (var pathIndex = 0; pathIndex < directionsStepAktuell.path.length; pathIndex++) {
+                        var latLngAktuell = directionsStepAktuell.path[pathIndex];
+                        var pathLengthMeter = google.maps.geometry.spherical.computeDistanceBetween(latLngVorher, latLngAktuell);
+                        distanceDetailSum = distanceDetailSum + pathLengthMeter;
+                        if (!person.done && person.distance < distanceDetailSum) {
+                            person.done = true;
+                            // genaue Position berechnen: Man nimmt die beiden Koordinaten (latLng) zwischen denen die genau Position sein muss.
+                            // dann berechnet man das verhaeltnis, also wieviel Prozent der Strecke man zwischen den beiden Punkten man schon gegangen ist,
+                            // und gibt diese 3 Parameter in die "interpolate" funktion und erhaelt die genaue Position
+                            var meterVonVorherbisExakt = person.distance - (distanceDetailSum - pathLengthMeter);
+                            var latLngGenau = google.maps.geometry.spherical.interpolate(latLngVorher, latLngAktuell, meterVonVorherbisExakt / pathLengthMeter);
+                            person.location = latLngGenau;
+                            positionPerson(person);
+                        }
+                        latLngVorher = latLngAktuell;
+                    }
                 }
             }
-            //}
-//                    var marker = new google.maps.Marker({
-//                        position: directionsStepAktuell.start_location,
-//                        map: map
-//                    });
-//                    attachInstructionText(marker, directionsStepAktuell.instructions + "\ndistanz: " + distance/1000 + "km");
         }
     }
 }

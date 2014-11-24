@@ -156,13 +156,40 @@
                 for (var personIndex = 0; personIndex < personen.length; personIndex++) {
                     var person = personen[personIndex];
                     if (!person.done && person.distance < distanceSum) {
-                        person.done = true;
-                        // erstmal einen ungenaue Positionierung, die ist aber immer zu weit
-                        person.location = directionsStepAktuell.start_location;
-                        positionPerson(person);
-
+                        //person.done = true;
+                        // erstmal einen ungenaue Positionierung, die ist aber immer zu kurz
+                        //person.location = directionsStepAktuell.start_location;
+                        //positionPerson(person);
 
                         // detailpositionierung
+                        var distanceDetailSum = distanceSum - directionsStepAktuell.distance.value;
+                        var latLngVorher = directionsStepAktuell.start_location;
+                        for (var pathIndex = 0; pathIndex < directionsStepAktuell.path.length; pathIndex++) {
+                            var latLngAktuell = directionsStepAktuell.path[pathIndex];
+                            var pathLengthMeter = google.maps.geometry.spherical.computeDistanceBetween(latLngVorher, latLngAktuell);
+                            distanceDetailSum = distanceDetailSum + pathLengthMeter;
+
+//                            var marker = new google.maps.Marker({
+//                                position: latLngAktuell,
+//                                map: map
+//                            });
+//                            attachInstructionText(marker, person.id + " pathIndex=" + pathIndex + " distanceDetailSum=" + distanceDetailSum);
+
+                            if(!person.done && person.distance < distanceDetailSum){
+                                person.done = true;
+
+                                // genaue Position berechnen:
+                                var meterVonVorherbisExakt = person.distance - (distanceDetailSum - pathLengthMeter)
+
+                                var latLngGenau = google.maps.geometry.spherical.interpolate(latLngVorher, latLngAktuell, meterVonVorherbisExakt / pathLengthMeter);
+                                // erstmal einen genauere position, die ist aber immer zu kurz.
+                                person.location = latLngGenau;
+                                positionPerson(person);
+                            }
+
+                            latLngVorher = latLngAktuell;
+                        }
+
 //                            if (null != directionsStepVorher.steps) {
 //                                var distanceDetail = distanceSum - directionsStepVorher.distance.value;
 //                                for (var j = 0; j < directionsStepVorher.steps.length; i++) {
