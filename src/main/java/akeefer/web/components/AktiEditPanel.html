@@ -12,7 +12,10 @@
         <div>Bezeichnung: <input wicket:id="bezeichnung" type="text"/></div>
         <div>Datum: <input wicket:id="aktivitaetsDatum" type="text"/></div>
         <div>Aufzeichnungsart: <select wicket:id="aufzeichnungsart"/></div>
-        <input class="button" type="submit" name="submit" value="Speichern"/>
+        <a href="#" wicket:id="saveLink">
+            <img src="images/icons/diskette.png" alt="speichern"/>
+        </a>
+        <!--<input class="button" type="submit" name="submit" value="Speichern"/>-->
     </form>
     </p>
 </wicket:panel>

@@ -46,4 +46,9 @@ public class PersonServiceMock implements PersonService {
         user.setId(null);
         return user;
     }
+
+    @Override
+    public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
+        user.getAktivitaeten().remove(aktivitaet);
+    }
 }

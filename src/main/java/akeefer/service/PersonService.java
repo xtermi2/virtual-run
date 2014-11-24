@@ -20,4 +20,6 @@ public interface PersonService {
     Aktivitaet createAktivitaet(Aktivitaet akt, User user);
 
     User createUserIfAbsent(User user);
+
+    void deleteAktivitaet(User user, Aktivitaet aktivitaet);
 }

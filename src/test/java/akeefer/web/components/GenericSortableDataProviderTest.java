@@ -8,6 +8,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.Lists;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.model.Model;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +54,7 @@ public class GenericSortableDataProviderTest {
         akt2.setBezeichnung("b");
 
         GenericSortableDataProvider<Aktivitaet> sortableDataProvider =
-                new GenericSortableDataProvider<Aktivitaet>(Arrays.asList(akt1, akt2));
+                new GenericSortableDataProvider<Aktivitaet>(new Model((java.io.Serializable) Arrays.asList(akt1, akt2)));
 
         sortableDataProvider.setSort("distanzInKilometer", SortOrder.ASCENDING);
         Iterator<? extends Aktivitaet> iterator = sortableDataProvider.iterator(0, 2);

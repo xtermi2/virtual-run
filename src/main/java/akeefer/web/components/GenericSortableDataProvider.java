@@ -2,6 +2,7 @@ package akeefer.web.components;
 
 import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -14,20 +15,20 @@ public class GenericSortableDataProvider<T extends Serializable> extends Sortabl
 
     private static final Comparator COMPARATOR = new NullComparator(true);
 
-    private final List<T> list;
+    private final IModel<List<T>> list;
 
-    public GenericSortableDataProvider(List<T> list) {
-        if (null != list) {
-            this.list = new ArrayList<T>(list);
-        } else {
-            this.list = Collections.emptyList();
+    public GenericSortableDataProvider(IModel<List<T>> list) {
+        Validate.notNull(list);
+        this.list = list;
+        if (null == list.getObject()) {
+            list.setObject(new ArrayList<T>());
         }
     }
 
     @Override
     public Iterator<? extends T> iterator(long first, long count) {
         if (null != getSort() && StringUtils.isNotBlank(getSort().getProperty())) {
-            Collections.sort(list, new Comparator<T>() {
+            Collections.sort(list.getObject(), new Comparator<T>() {
                 @Override
                 public int compare(T o1, T o2) {
                     PropertyModel o1Property = new PropertyModel<Comparable>(o1, getSort().getProperty());
@@ -37,12 +38,12 @@ public class GenericSortableDataProvider<T extends Serializable> extends Sortabl
             });
         }
 
-        return list.subList((int) first, (int) Math.min(first + count, size())).iterator();
+        return list.getObject().subList((int) first, (int) Math.min(first + count, size())).iterator();
     }
 
     @Override
     public long size() {
-        return list.size();
+        return list.getObject().size();
     }
 
     @Override

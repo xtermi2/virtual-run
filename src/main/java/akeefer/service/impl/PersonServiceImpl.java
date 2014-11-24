@@ -112,9 +112,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Aktivitaet createAktivitaet(Aktivitaet akt, final User user) {
         User userTmp = userRepository.findOne(user.getId());
-        final boolean newAkt;
         if (null == akt.getId()) {
-            newAkt = true;
             // neue Aktivitaet
             akt.setEingabeDatum(new Date());
             // Relationen herstellen bei neuer Akt
@@ -124,15 +122,14 @@ public class PersonServiceImpl implements PersonService {
             }
             userTmp.getAktivitaeten().add(akt);
         } else {
-            newAkt = false;
             akt.setUpdatedDatum(new Date());
         }
 
         akt = aktivitaetRepository.save(akt);
 
-        if (newAkt) {
-            user.setAktivitaeten(userTmp.getAktivitaeten());
-        }
+        // muss immer pasieren, sonst wird in PROD die Liste in der Uebersicht nicht aktualisiert
+        user.setAktivitaeten(userTmp.getAktivitaeten());
+
         return akt;
     }
 
@@ -147,6 +144,15 @@ public class PersonServiceImpl implements PersonService {
         user.setParent(parent);
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
+        user.getAktivitaeten().remove(aktivitaet);
+        Aktivitaet toDelete = aktivitaetRepository.findOne(aktivitaet.getId());
+        if (null != toDelete) {
+            aktivitaetRepository.delete(toDelete);
+        }
     }
 
     private Parent getParent() {
