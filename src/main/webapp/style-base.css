@@ -215,3 +215,9 @@ tr.none {
     background: transparent;
 }
 
+/* --- START Modal Window --- */
+div.wicket-modal div.w_content_3 {
+    border: 0px solid #bbb;
+    padding: 0;
+}
+/* --- END Modal Window --- */

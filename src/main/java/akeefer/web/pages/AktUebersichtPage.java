@@ -4,6 +4,7 @@ import akeefer.model.Aktivitaet;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
 import akeefer.web.components.GenericSortableDataProvider;
+import akeefer.web.components.ModalDialog;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackDefaultDataTable;
@@ -29,12 +30,14 @@ import java.util.List;
 public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
 
     private static final Logger logger = LoggerFactory.getLogger(AktUebersichtPage.class);
+    private final IModel<Aktivitaet> delAkt = new Model<>(null);
 
     @SpringBean
     private PersonService personService;
 
     public AktUebersichtPage(PageParameters parameters) {
         super(parameters, false, true);
+
         List<IColumn<Aktivitaet, String>> columns = new ArrayList<IColumn<Aktivitaet, String>>();
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Distanz (km)"), "distanzInKilometer", "distanzInKilometer"));
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Typ"), "typ", "typ"));
@@ -44,19 +47,37 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
         final GenericSortableDataProvider<Aktivitaet> dataProvider = new GenericSortableDataProvider<Aktivitaet>(new PropertyModel<List<Aktivitaet>>(VRSession.get().getUser(), "aktivitaeten"));
         dataProvider.setSort("aktivitaetsDatum", SortOrder.DESCENDING);
         final AjaxFallbackDefaultDataTable<Aktivitaet, String> table = new AjaxFallbackDefaultDataTable<Aktivitaet, String>("table", columns, dataProvider, 3);
+
+        final ModalDialog delDialog = new ModalDialog("delDialog") {
+            @Override
+            protected void onCancel(AjaxRequestTarget target) {
+                delAkt.setObject(null);
+            }
+
+            @Override
+            protected void onOK(AjaxRequestTarget target) {
+                personService.deleteAktivitaet(VRSession.get().getUser().getObject(), delAkt.getObject());
+                if (null != target) {
+                    logger.info("adding table to target");
+                    target.add(table);
+                } else {
+                    logger.info("target ist null :(");
+                }
+                delAkt.setObject(null);
+                close(target);
+            }
+        };
+        delDialog.setTitle("Wirklich Löschen?");
+        add(delDialog);
+
         columns.add(new AbstractColumn<Aktivitaet, String>(new Model<String>("Aktionen")) {
             public void populateItem(Item<ICellPopulator<Aktivitaet>> cellItem, String componentId,
                                      IModel<Aktivitaet> model) {
                 cellItem.add(new ActionPanel(componentId, model) {
                     @Override
                     void onDelete(AjaxRequestTarget target, IModel<Aktivitaet> akt) {
-                        personService.deleteAktivitaet(VRSession.get().getUser().getObject(), akt.getObject());
-                        if (null != target) {
-                            logger.info("adding table to target");
-                            target.add(table);
-                        } else {
-                            logger.info("target ist null :(");
-                        }
+                        delAkt.setObject(akt.getObject());
+                        delDialog.show(target);
                     }
                 });
             }
