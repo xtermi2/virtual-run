@@ -2,7 +2,7 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>noble-helper-766</application>
     <!--<application>afrika-run</application>-->
-    <version>5</version>
+    <version>6</version>
     <threadsafe>false</threadsafe>
     <sessions-enabled>true</sessions-enabled>
     <system-properties></system-properties>

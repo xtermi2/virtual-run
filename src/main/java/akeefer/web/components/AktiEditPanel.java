@@ -6,7 +6,6 @@ import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
 import akeefer.web.pages.AktUebersichtPage;
-import akeefer.web.pages.MapPage;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
@@ -19,7 +18,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Erfassen neuer Aktivitaeten und editieren bestehender Aktivitaeten
@@ -71,6 +69,6 @@ public class AktiEditPanel extends Panel {
             }
         }.add(new PropertyValidator()));
 
-        form.add(new SubmitLink("saveLink", form));
+//        form.add(new SubmitLink("saveLink", form));
     }
 }

@@ -2,7 +2,6 @@ package akeefer.web.pages;
 
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.head.*;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
@@ -24,6 +23,7 @@ public class MapPage extends AbstractAuthenticatedBasePage {
 
     @Override
     public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
         StringBuilder builder = new StringBuilder();
         VRSession session = VRSession.get();
         builder.append(personService.createPersonScript(session.getUser().getObject()));
