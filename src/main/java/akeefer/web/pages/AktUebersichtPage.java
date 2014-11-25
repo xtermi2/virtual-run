@@ -43,7 +43,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Aufzeichnungsart"), "aufzeichnungsart", "aufzeichnungsart"));
         final GenericSortableDataProvider<Aktivitaet> dataProvider = new GenericSortableDataProvider<Aktivitaet>(new PropertyModel<List<Aktivitaet>>(VRSession.get().getUser(), "aktivitaeten"));
         dataProvider.setSort("aktivitaetsDatum", SortOrder.DESCENDING);
-        final AjaxFallbackDefaultDataTable<Aktivitaet, String> table = new AjaxFallbackDefaultDataTable<Aktivitaet, String>("table", columns, dataProvider, 10);
+        final AjaxFallbackDefaultDataTable<Aktivitaet, String> table = new AjaxFallbackDefaultDataTable<Aktivitaet, String>("table", columns, dataProvider, 3);
         columns.add(new AbstractColumn<Aktivitaet, String>(new Model<String>("Aktionen")) {
             public void populateItem(Item<ICellPopulator<Aktivitaet>> cellItem, String componentId,
                                      IModel<Aktivitaet> model) {

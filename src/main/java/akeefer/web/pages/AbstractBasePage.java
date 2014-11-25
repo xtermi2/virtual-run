@@ -12,8 +12,6 @@ import org.apache.wicket.request.resource.CssResourceReference;
  */
 public abstract class AbstractBasePage extends WebPage {
 
-    public static final CssResourceReference CSS_BASE_REFERENCE = new CssResourceReference(AbstractBasePage.class, "AbstractBasePage.css");
-
     protected AbstractBasePage(PageParameters parameters) {
         super(parameters);
 
@@ -23,11 +21,5 @@ public abstract class AbstractBasePage extends WebPage {
                 setResponsePage(ImpressumPage.class);
             }
         });
-    }
-
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        super.renderHead(response);
-        response.render(CssHeaderItem.forReference(CSS_BASE_REFERENCE));
     }
 }
