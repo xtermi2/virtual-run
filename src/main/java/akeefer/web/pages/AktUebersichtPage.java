@@ -51,7 +51,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
         final ModalDialog delDialog = new ModalDialog("delDialog") {
             @Override
             protected void onCancel(AjaxRequestTarget target) {
-                delAkt.setObject(null);
+                close(target);
             }
 
             @Override
@@ -63,8 +63,12 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
                 } else {
                     logger.info("target ist null :(");
                 }
-                delAkt.setObject(null);
                 close(target);
+            }
+
+            @Override
+            protected void onClose(AjaxRequestTarget target) {
+                delAkt.setObject(null);
             }
         };
         delDialog.setTitle("Wirklich Löschen?");

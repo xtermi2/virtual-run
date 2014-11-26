@@ -20,7 +20,7 @@ public abstract class ModalDialog extends ModalWindow {
         setWindowClosedCallback(new WindowClosedCallback() {
             @Override
             public void onClose(AjaxRequestTarget target) {
-                onCancel(target);
+                ModalDialog.this.onClose(target);
             }
         });
     }
@@ -30,20 +30,21 @@ public abstract class ModalDialog extends ModalWindow {
 
     protected abstract void onOK(AjaxRequestTarget target);
 
+    protected abstract void onClose(AjaxRequestTarget target);
+
     class DialogPanel extends Panel {
         public DialogPanel(String id) {
             super(id);
             add(new AjaxLink("ok") {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
-                    onOK(target);
+                    ModalDialog.this.onOK(target);
                 }
             });
             add(new AjaxLink("cancel") {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
-                    onCancel(target);
-                    close(target);
+                    ModalDialog.this.onCancel(target);
                 }
             });
         }
@@ -54,11 +55,11 @@ public abstract class ModalDialog extends ModalWindow {
         super.show(pTarget);
 
         // TODO (ak) entfernt den close-Button oben rechts, funktioniert aber nicht
-        pTarget.appendJavaScript(""//
-                + "var thisWindow = Wicket.Window.get();"//
-                + "if (thisWindow) {"//
-                + "  $('.w_close').attr('style', 'display:none;');"//
-                + "}"//
-        );
+//        pTarget.appendJavaScript(""//
+//                + "var thisWindow = Wicket.Window.get();"//
+//                + "if (thisWindow) {"//
+//                + "  $('.w_close').attr('style', 'display:none;');"//
+//                + "}"//
+//        );
     }
 }
