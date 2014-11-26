@@ -72,7 +72,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
             }
         };
         delDialog.setTitle("Wirklich Löschen?");
-        add(delDialog);
+        //add(delDialog);
 
         columns.add(new AbstractColumn<Aktivitaet, String>(new Model<String>("Aktionen")) {
             public void populateItem(Item<ICellPopulator<Aktivitaet>> cellItem, String componentId,
@@ -81,7 +81,15 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
                     @Override
                     void onDelete(AjaxRequestTarget target, IModel<Aktivitaet> akt) {
                         delAkt.setObject(akt.getObject());
-                        delDialog.show(target);
+                        //delDialog.show(target);
+                        personService.deleteAktivitaet(VRSession.get().getUser().getObject(), delAkt.getObject());
+                        if (null != target) {
+                            logger.info("adding table to target");
+                            target.add(table);
+                        } else {
+                            logger.info("target ist null :(");
+                        }
+                        delAkt.setObject(null);
                     }
                 });
             }
