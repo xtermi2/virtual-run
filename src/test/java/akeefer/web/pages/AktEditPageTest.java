@@ -15,25 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.lang.reflect.Field;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
-public class AktEditPageTest {
-
-    private WicketTester tester;
-
-    @Autowired
-    private WicketApplication myWebApplication;
-
-    @Before
-    public void setUp() throws Exception {
-        // Workaround, da Applikation eine Spring Bean ist und der name beim erzeugen des testers gesetzt wird
-        // die Applikation aber ein überschreiben des namen nicht erlaubt.
-        Field nameField = Application.class.getDeclaredField("name");
-        nameField.setAccessible(true);
-        nameField.set(myWebApplication, null);
-
-        tester = new WicketTester(myWebApplication);
-    }
+public class AktEditPageTest extends AbstractWicketPageTest {
 
     @Test
     public void testRendersSuccessfully() {

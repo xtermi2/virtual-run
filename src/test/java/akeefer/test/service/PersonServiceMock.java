@@ -3,9 +3,13 @@ package akeefer.test.service;
 import akeefer.model.Aktivitaet;
 import akeefer.model.SecurityRole;
 import akeefer.model.User;
+import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import akeefer.test.TestScopedComponent;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -19,7 +23,7 @@ public class PersonServiceMock implements PersonService {
     @Override
     public User getUserByUsername(String username) {
         User user = new User();
-        user.setId(null);
+        user.setId(KeyFactory.createKey("User", "username"));
         user.setUsername(username);
         user.setPassword("bar");
         user.setRole(SecurityRole.USER);
@@ -27,13 +31,8 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public String createPersonScript(User user) {
+    public String createPersonScript(Key logedInUserId) {
         return "";
-    }
-
-    @Override
-    public int berechneDistanzInMeter(User user) {
-        return 4711;
     }
 
     @Override
@@ -50,5 +49,10 @@ public class PersonServiceMock implements PersonService {
     @Override
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
         user.getAktivitaeten().remove(aktivitaet);
+    }
+
+    @Override
+    public List<Aktivitaet> loadAktivitaeten(Key userId) {
+        return null;
     }
 }

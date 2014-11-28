@@ -52,11 +52,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional(readOnly = true)
-    public String createPersonScript(User logedInUser) {
-        Validate.notNull(logedInUser);
+    public String createPersonScript(Key logedInUserId) {
+        Validate.notNull(logedInUserId);
 
         StringBuilder personScript = new StringBuilder("var personen = [\n");
-        Set<User> users = new TreeSet<User>(new UserHintenComparator(logedInUser.getId()));
+        Set<User> users = new TreeSet<User>(new UserHintenComparator(logedInUserId));
         List<User> allUser = getAllUser();
         users.addAll(allUser);
         // LogedInUser enfernen und ganz ans ende haengen
@@ -95,14 +95,12 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public int berechneDistanzInMeter(User user) {
+    private int berechneDistanzInMeter(User user) {
         int distanz = 0;
         if (null != user.getAktivitaeten()) {
             for (Aktivitaet akt : user.getAktivitaeten()) {
                 if (null != akt.getDistanzInMeter()) {
-                    distanz = distanz + akt.getDistanzInMeter();
+                    distanz += akt.getDistanzInMeter();
                 }
             }
         }
@@ -148,11 +146,31 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
-        user.getAktivitaeten().remove(aktivitaet);
-        Aktivitaet toDelete = aktivitaetRepository.findOne(aktivitaet.getId());
-        if (null != toDelete) {
-            aktivitaetRepository.delete(toDelete);
+        if (null != aktivitaet) {
+            user.getAktivitaeten().remove(aktivitaet);
+            Aktivitaet toDelete = aktivitaetRepository.findOne(aktivitaet.getId());
+            if (null != toDelete) {
+                logger.info("loesche aktivitaet " + toDelete.getId());
+                toDelete.getUser().getAktivitaeten().remove(toDelete);
+                aktivitaetRepository.delete(toDelete);
+                aktivitaetRepository.flush();
+            } else {
+                logger.warn("akt nicht gefunden: " + aktivitaet.getId());
+            }
+        } else {
+            logger.warn("null Akt kann nicht geloescht werden!");
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Aktivitaet> loadAktivitaeten(Key userId) {
+        User user = userRepository.findOne(userId);
+        logger.info("Anzahl gefundene Aktivitaeten: " +
+                (null == user.getAktivitaeten() ?
+                        "null" :
+                        user.getAktivitaeten().size()));
+        return user.getAktivitaeten();
     }
 
     private Parent getParent() {
@@ -177,9 +195,4 @@ public class PersonServiceImpl implements PersonService {
         }
         return null;
     }
-
-    //@PersistenceContext
-//    public void setEm(EntityManager em) {
-//        this.em = em;
-//    }
 }

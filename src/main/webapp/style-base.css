@@ -168,6 +168,7 @@ table.dataview #message {
 table.dataview caption {
     padding-bottom: 2px;
 }
+
 /* --------- DATA VIEW END --------- */
 
 .feedbackPanelERROR {
@@ -182,12 +183,12 @@ table.dataview caption {
     font-weight: bold;
 }
 
-h1,h2,h3,h4,h5,h6,h7,h8 {
+h1, h2, h3, h4, h5, h6, h7, h8 {
     color: black;
     font-weight: normal;
 }
 
-h1,h2 {
+h1, h2 {
     letter-spacing: -1px;
     font-family: 'Trebuchet MS', 'sans';
 }
@@ -220,4 +221,16 @@ div.wicket-modal div.w_content_3 {
     border: 0px solid #bbb;
     padding: 0;
 }
+
 /* --- END Modal Window --- */
+
+div.modalDialog {
+    background-color: white;
+    border: 1px solid black;
+    display: block;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+}

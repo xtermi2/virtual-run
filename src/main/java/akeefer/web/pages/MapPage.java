@@ -25,8 +25,7 @@ public class MapPage extends AbstractAuthenticatedBasePage {
     public void renderHead(IHeaderResponse response) {
         super.renderHead(response);
         StringBuilder builder = new StringBuilder();
-        VRSession session = VRSession.get();
-        builder.append(personService.createPersonScript(session.getUser().getObject()));
+        builder.append(personService.createPersonScript(VRSession.get().getUser().getId()));
         response.render(JavaScriptHeaderItem.forUrl(GOOGLE_MAPS_API_URL));
         response.render(JavaScriptContentHeaderItem.forScript(builder.toString(), "scriptId"));
         response.render(JavaScriptReferenceHeaderItem.forReference(MAPPAGE_JS));

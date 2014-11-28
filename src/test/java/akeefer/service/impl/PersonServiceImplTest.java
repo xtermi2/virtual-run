@@ -30,9 +30,6 @@ public class PersonServiceImplTest {
     @Autowired
     private PersonServiceImpl personService;
 
-    //@Autowired
-    //private UserRepository userRepository;
-
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
@@ -71,7 +68,7 @@ public class PersonServiceImplTest {
         Aktivitaet aktivitaet = new Aktivitaet();
         aktivitaet.setDistanzInMeter(1234);
         logedIn.getAktivitaeten().add(aktivitaet);
-        String personScript = spy.createPersonScript(logedIn);
+        String personScript = spy.createPersonScript(logedIn.getId());
         System.out.println(personScript);
         assertEquals("var personen = [\n" +
                 "        {id: 'user2', distance: 0},\n" +

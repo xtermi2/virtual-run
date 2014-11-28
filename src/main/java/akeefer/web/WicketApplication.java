@@ -9,7 +9,12 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.authroles.authentication.pages.SignOutPage;
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptReferenceHeaderItem;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.pageStore.memory.IDataStoreEvictionStrategy;
+import org.apache.wicket.pageStore.memory.PageNumberEvictionStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.slf4j.Logger;
@@ -18,6 +23,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+import org.wicketstuff.gae.GaeApplication;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -31,7 +37,7 @@ import java.util.Locale;
  * @see akeefer.Start#main(String[])
  */
 @Component
-public class WicketApplication extends AuthenticatedWebApplication implements ApplicationContextAware {
+public class WicketApplication extends AuthenticatedWebApplication implements ApplicationContextAware, GaeApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WicketApplication.class);
     private final boolean isProd =
@@ -70,6 +76,14 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         mountPage("/init", InitDatabasePage.class);
         mountPage("/features", FeaturePage.class);
         mountPage("/impressum", ImpressumPage.class);
+
+        getHeaderContributorListenerCollection().add(new IHeaderContributor() {
+            @Override
+            public void renderHead(IHeaderResponse response) {
+                response.render(JavaScriptReferenceHeaderItem.forReference(
+                        new com.jquery.JQueryResourceReference(com.jquery.JQueryResourceReference.Version.V1_6_3)));
+            }
+        });
     }
 
     @Override
@@ -111,5 +125,10 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
     @Override
     public RuntimeConfigurationType getConfigurationType() {
         return isProd ? RuntimeConfigurationType.DEPLOYMENT : RuntimeConfigurationType.DEVELOPMENT;
+    }
+
+    @Override
+    public IDataStoreEvictionStrategy getEvictionStrategy() {
+        return new PageNumberEvictionStrategy(5);
     }
 }

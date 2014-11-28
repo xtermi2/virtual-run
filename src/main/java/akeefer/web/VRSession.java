@@ -55,7 +55,11 @@ public class VRSession extends AuthenticatedWebSession {
         return roles;
     }
 
-    public IModel<User> getUser() {
+    public IModel<User> getUserModel() {
         return user;
+    }
+
+    public User getUser() {
+        return user.getObject();
     }
 }

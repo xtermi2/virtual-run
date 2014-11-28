@@ -9,7 +9,10 @@ import akeefer.web.pages.AktUebersichtPage;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
-import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -36,7 +39,7 @@ public class AktiEditPanel extends Panel {
             @Override
             protected void onSubmit() {
                 Aktivitaet akt = getModel().getObject();
-                akt = personService.createAktivitaet(akt, VRSession.get().getUser().getObject());
+                akt = personService.createAktivitaet(akt, VRSession.get().getUser());
                 setModelObject(akt);
                 setResponsePage(AktUebersichtPage.class);
             }

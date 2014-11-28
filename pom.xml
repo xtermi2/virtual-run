@@ -87,7 +87,6 @@
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-labs</artifactId>
             <version>${appengine.target.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -95,13 +94,6 @@
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- damit Wicket in Google App Engine funktioniert muss nur diese dependency im classpath sein -->
-        <dependency>
-            <groupId>org.wicketstuff</groupId>
-            <artifactId>wicketstuff-gae-initializer</artifactId>
-            <version>${wicket.version}</version>
         </dependency>
 
         <dependency>
@@ -172,6 +164,17 @@
             <artifactId>wicket-bean-validation</artifactId>
             <version>${wicket.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>wicketstuff-lazymodel</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+        <!-- damit Wicket in Google App Engine funktioniert muss nur diese dependency im classpath sein -->
+        <dependency>
+            <groupId>org.wicketstuff</groupId>
+            <artifactId>wicketstuff-gae-initializer</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -228,10 +231,19 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0.1</version>
-            <scope>test</scope>
+            <version>18.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.visural</groupId>
+            <artifactId>visural-common</artifactId>
+            <version>0.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.visural</groupId>
+            <artifactId>visural-wicket</artifactId>
+            <version>6.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -365,6 +377,16 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>visural-common</id>
+            <name>visural-common</name>
+            <url>http://visural-common.googlecode.com/svn/trunk/visural-common/maven/</url>
+        </repository>
+        <repository>
+            <id>visural-wicket</id>
+            <name>visural-wicket</name>
+            <url>http://visural-wicket.googlecode.com/svn/trunk/visural-wicket/maven/</url>
         </repository>
     </repositories>
     <pluginRepositories>

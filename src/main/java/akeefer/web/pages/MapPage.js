@@ -142,7 +142,7 @@ function positionPerson(person) {
     // coordinate closes the poly by connecting to the first
     // coordinate.
     var shape = {
-        coords: [1, 1, 1, 30, 42, 30, 42 , 1],
+        coords: [1, 1, 1, 30, 42, 30, 42, 1],
         type: 'poly'
     };
     var title = person.id + '@' + person.distance / 1000 + 'km';

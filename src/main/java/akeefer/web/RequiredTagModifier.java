@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import javax.validation.constraints.NotNull;
 
 /**
- * Erzwugt das Required tag bei NotNull BeanValidation Constraint
+ * Erzwingt das Required tag bei NotNull BeanValidation Constraint
  */
 public class RequiredTagModifier implements ITagModifier<NotNull> {
     @Override
