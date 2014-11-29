@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 @Service
@@ -96,15 +98,15 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private int berechneDistanzInMeter(User user) {
-        int distanz = 0;
+        BigDecimal distanzInKm = BigDecimal.ZERO.setScale(3, RoundingMode.HALF_UP);
         if (null != user.getAktivitaeten()) {
             for (Aktivitaet akt : user.getAktivitaeten()) {
                 if (null != akt.getDistanzInMeter()) {
-                    distanz += akt.getDistanzInMeter();
+                    distanzInKm = distanzInKm.add(akt.getDistanzInKilometer());
                 }
             }
         }
-        return distanz;
+        return distanzInKm.multiply(BigDecimal.valueOf(1000L)).intValue();
     }
 
     @Override
