@@ -21,7 +21,7 @@
 
         <appengine.app.version>1</appengine.app.version>
         <appengine.target.version>1.9.17</appengine.target.version>
-        <appengine.target.plugin.version>${appengine.target.version}-maven3.0</appengine.target.plugin.version>
+        <appengine.target.plugin.version>${appengine.target.version}</appengine.target.plugin.version>
 
         <datanucleus-core.version>3.1.5</datanucleus-core.version>
 
@@ -283,7 +283,7 @@
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>

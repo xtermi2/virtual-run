@@ -3,13 +3,11 @@ package akeefer.test.service;
 import akeefer.model.Aktivitaet;
 import akeefer.model.SecurityRole;
 import akeefer.model.User;
-import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class PersonServiceMock implements PersonService {
         user.setId(KeyFactory.createKey("User", "username"));
         user.setUsername(username);
         user.setPassword("bar");
-        user.setRole(SecurityRole.USER);
+        user.addRole(SecurityRole.USER);
         return user;
     }
 

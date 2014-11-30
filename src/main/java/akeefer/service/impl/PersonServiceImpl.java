@@ -138,6 +138,10 @@ public class PersonServiceImpl implements PersonService {
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
             logger.info(String.format("User username='%s' already exists, i will not create a new one", user.getUsername()));
+            if (!userInDb.getRoles().containsAll(user.getRoles())) {
+                logger.info("fuege Rollen hinzu");
+                userInDb.getRoles().addAll(user.getRoles());
+            }
             return userInDb;
         }
         Parent parent = getParent();

@@ -1,5 +1,6 @@
 package akeefer.web;
 
+import akeefer.model.SecurityRole;
 import akeefer.model.User;
 import akeefer.service.PersonService;
 import org.apache.wicket.Session;
@@ -50,7 +51,11 @@ public class VRSession extends AuthenticatedWebSession {
     public Roles getRoles() {
         Roles roles = new Roles();
         if (isSignedIn()) {
-            roles.add(user.getObject().getRole().name());
+            if (null != user.getObject().getRoles()) {
+                for (SecurityRole role : user.getObject().getRoles()) {
+                    roles.add(role.name());
+                }
+            }
         }
         return roles;
     }

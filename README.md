@@ -18,6 +18,9 @@
 ### Wicket + BeanValidation
 - http://www.effectivetrainings.de/blog/2012/12/15/wicket-6-und-jsr-303-beanvalidation/ 
 
+### Wicket Erweiterungen
+- http://wicket.visural.net/examples
+
 
 
 ##CSS / Design)

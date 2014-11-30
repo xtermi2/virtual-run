@@ -8,7 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements Serializable, Comparable<User> {
@@ -23,7 +25,7 @@ public class User implements Serializable, Comparable<User> {
     @NotNull
     private String password;
     @NotNull
-    private SecurityRole role;
+    private Set<SecurityRole> roles = new HashSet<>(1);
     @ManyToOne
     private Parent parent;
     @NotNull
@@ -61,12 +63,12 @@ public class User implements Serializable, Comparable<User> {
         this.password = password;
     }
 
-    public SecurityRole getRole() {
-        return role;
+    public Set<SecurityRole> getRoles() {
+        return roles;
     }
 
-    public void setRole(SecurityRole role) {
-        this.role = role;
+    public void setRoles(Set<SecurityRole> role) {
+        this.roles = role;
     }
 
     public Parent getParent() {
@@ -112,5 +114,10 @@ public class User implements Serializable, Comparable<User> {
     @Override
     public int compareTo(User o) {
         return id.compareTo(o.getId());
+    }
+
+    public User addRole(SecurityRole role) {
+        getRoles().add(role);
+        return this;
     }
 }

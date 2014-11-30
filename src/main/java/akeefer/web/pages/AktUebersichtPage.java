@@ -71,13 +71,13 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
             final Dialog dialog = new Dialog("dialog");
             add(dialog);
 
-            add(new Link("edit") {
+            add(new Link<Aktivitaet>("edit", model) {
                 @Override
                 public void onClick() {
-                    Aktivitaet selected = (Aktivitaet) getParent().getDefaultModelObject();
-                    logger.info(String.format("selected Akt createdDate='%s' bezeichnung='%s' id=%s",
+                    Aktivitaet selected = getModelObject();
+                    logger.info(String.format("edit Akt createdDate='%s' bezeichnung='%s' id=%s",
                             selected.getEingabeDatum(), selected.getBezeichnung(), selected.getId()));
-                    setResponsePage(new AktEditPage(getPageParameters(), (IModel<Aktivitaet>) getParent().getDefaultModel()));
+                    setResponsePage(new AktEditPage(getPageParameters(), getModel()));
                 }
             });
             add(new WebMarkupContainer("delete").add(dialog.getClickToOpenBehaviour()));
