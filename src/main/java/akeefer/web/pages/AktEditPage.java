@@ -4,7 +4,7 @@ import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
-import akeefer.web.components.AktiEditPanel;
+import akeefer.web.components.AktEditPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -30,11 +30,11 @@ public class AktEditPage extends AbstractAuthenticatedBasePage {
         akt.setTyp(AktivitaetsTyp.laufen);
         akt.setAktivitaetsDatum(new Date());
         akt.setAufzeichnungsart(AktivitaetsAufzeichnung.aufgezeichnet);
-        add(new AktiEditPanel("editPanel", Model.of(akt)));
+        add(new AktEditPanel("editPanel", Model.of(akt)));
     }
 
     public AktEditPage(final PageParameters parameters, final IModel<Aktivitaet> akt) {
         super(parameters, false, true);
-        add(new AktiEditPanel("editPanel", akt));
+        add(new AktEditPanel("editPanel", akt));
     }
 }

@@ -9,14 +9,13 @@ import akeefer.web.pages.AktUebersichtPage;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
-import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RequiredTextField;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.math.BigDecimal;
@@ -25,12 +24,12 @@ import java.util.Arrays;
 /**
  * Erfassen neuer Aktivitaeten und editieren bestehender Aktivitaeten
  */
-public class AktiEditPanel extends Panel {
+public class AktEditPanel extends Panel {
 
     @SpringBean
     private PersonService personService;
 
-    public AktiEditPanel(String id, IModel<Aktivitaet> model) {
+    public AktEditPanel(String id, IModel<Aktivitaet> model) {
         super(id, model);
         // Create feedback panel and add to page
         add(new FeedbackPanel("feedback"));
@@ -46,31 +45,41 @@ public class AktiEditPanel extends Panel {
         };
         add(form);
 
-        form.add(new RequiredTextField<BigDecimal>("distanzInKilometer").add(new PropertyValidator()));
+        RequiredTextField<BigDecimal> distanzInKilometer = new RequiredTextField<>("distanzInKilometer");
+        form.add(distanzInKilometer.add(new PropertyValidator()).add(PlaceholderBehavior.ofResourceKey("distanzInKilometerPlaceholder")));
+        form.add(new FormComponentLabel("distanzInKilometerLabel", distanzInKilometer));
 
-        form.add(new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())) {
+        DropDownChoice<AktivitaetsTyp> typ = new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())) {
             @Override
             protected CharSequence getDefaultChoice(String selectedValue) {
                 // Dadurch kommt die "Bitte Waehlen" auswahl nicht
                 return "";
             }
-        }.add(new PropertyValidator()));
+        };
+        form.add(typ.add(new PropertyValidator()));
+        form.add(new FormComponentLabel("typLabel", typ));
 
-        form.add(new TextField<String>("bezeichnung").add(new PropertyValidator()));
+        TextField<String> bezeichnung = new TextField<>("bezeichnung");
+        form.add(bezeichnung.add(new PropertyValidator()).add(PlaceholderBehavior.ofResourceKey("bezeichnungPlaceholder")));
+        form.add(new FormComponentLabel("bezeichnungLabel", bezeichnung));
 
         DatePicker datePicker = new DatePicker();
         datePicker.setShowOnFieldClick(true);
         datePicker.setAutoHide(true);
-        form.add(new DateTextField("aktivitaetsDatum", "dd.MM.yyyy").add(datePicker).add(new PropertyValidator()));
+        DateTextField aktivitaetsDatum = new DateTextField("aktivitaetsDatum", "dd.MM.yyyy");
+        form.add(aktivitaetsDatum.add(datePicker).add(new PropertyValidator()));
+        form.add(new FormComponentLabel("aktivitaetsDatumLabel", aktivitaetsDatum));
 
-        form.add(new DropDownChoice<AktivitaetsAufzeichnung>("aufzeichnungsart",
+        DropDownChoice<AktivitaetsAufzeichnung> aufzeichnungsart = new DropDownChoice<AktivitaetsAufzeichnung>("aufzeichnungsart",
                 Arrays.asList(AktivitaetsAufzeichnung.values())) {
             @Override
             protected CharSequence getDefaultChoice(String selectedValue) {
                 // Dadurch kommt die "Bitte Waehlen" auswahl nicht
                 return "";
             }
-        }.add(new PropertyValidator()));
+        };
+        form.add(aufzeichnungsart.add(new PropertyValidator()));
+        form.add(new FormComponentLabel("aufzeichnungsartLabel", aufzeichnungsart));
 
 //        form.add(new SubmitLink("saveLink", form));
     }

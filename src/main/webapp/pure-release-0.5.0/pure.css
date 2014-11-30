@@ -1003,7 +1003,7 @@ since IE8 won't execute CSS that contains a CSS3 selector.
 .pure-form textarea:focus {
     outline: 0;
     outline: thin dotted \9; /* IE6-9 */
-    border-color: #129FEA;
+    border-color: #dd9f62;
 }
 
 /*
@@ -1013,14 +1013,14 @@ since IE8 won't execute CSS that contains a CSS3 selector.
 .pure-form input:not([type]):focus {
     outline: 0;
     outline: thin dotted \9; /* IE6-9 */
-    border-color: #129FEA;
+    border-color: #dd9f62;
 }
 
 .pure-form input[type="file"]:focus,
 .pure-form input[type="radio"]:focus,
 .pure-form input[type="checkbox"]:focus {
     outline: thin dotted #333;
-    outline: 1px auto #129FEA;
+    outline: 1px auto #dd9f62;
 }
 .pure-form .pure-checkbox,
 .pure-form .pure-radio {
@@ -1077,6 +1077,13 @@ since IE8 won't execute CSS that contains a CSS3 selector.
 .pure-form select:focus:invalid:focus {
     border-color: #e9322d;
 }
+
+.pure-form input:required:invalid,
+.pure-form textarea:required:invalid,
+.pure-form select:required:invalid {
+    background-color: rgba(233, 50, 45, 0.11);
+}
+
 .pure-form input[type="file"]:focus:invalid:focus,
 .pure-form input[type="radio"]:focus:invalid:focus,
 .pure-form input[type="checkbox"]:focus:invalid:focus {

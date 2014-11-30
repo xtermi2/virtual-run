@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <p>
+        <span wicket:id="feedback"/>
+
+    <form wicket:id="form" class="pure-form pure-form-aligned">
+        <fieldset>
+            <div class="pure-control-group">
+                <label wicket:id="distanzInKilometerLabel">
+                    <wicket:message key="distanzInKilometer"/>
+                </label>
+                <input wicket:id="distanzInKilometer" type="text" autofocus/>
+            </div>
+            <div class="pure-control-group">
+                <label wicket:id="typLabel">
+                    <wicket:message key="typ"/>
+                </label>
+                <select wicket:id="typ"/>
+            </div>
+            <div class="pure-control-group">
+                <label wicket:id="bezeichnungLabel">
+                    <wicket:message key="bezeichnung"/>
+                </label>
+                <input wicket:id="bezeichnung" type="text"/>
+            </div>
+            <div class="pure-control-group">
+                <label wicket:id="aktivitaetsDatumLabel">
+                    <wicket:message key="aktivitaetsDatum"/>
+                </label>
+                <input wicket:id="aktivitaetsDatum" type="text"/>
+            </div>
+            <div class="pure-control-group">
+                <label wicket:id="aufzeichnungsartLabel">
+                    <wicket:message key="aufzeichnungsart"/>
+                </label>
+                <select wicket:id="aufzeichnungsart"/>
+            </div>
+            <div class="pure-controls">
+                <button class="immageButton" type="submit"><img class="saveIcon" src="images/icons/diskette_64.png">
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</wicket:panel>
+</body>
+</html>
