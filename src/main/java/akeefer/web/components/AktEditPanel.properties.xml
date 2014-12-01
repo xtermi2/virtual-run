@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="distanzInKilometer">Distanz:</entry>
+    <entry key="distanzInKilometerPlaceholder">Distenz in km</entry>
+    <entry key="typ">Typ:</entry>
+    <entry key="bezeichnung">Bezeichnung:</entry>
+    <entry key="bezeichnungPlaceholder">Bezeichnung der Aktivitaet</entry>
+    <entry key="aktivitaetsDatum">Datum:</entry>
+    <entry key="aufzeichnungsart">Aufzeichnungsart:</entry>
+</properties>
