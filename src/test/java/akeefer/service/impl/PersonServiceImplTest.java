@@ -84,18 +84,13 @@ public class PersonServiceImplTest {
     }
 
     @Test
-    public void testMD5Test() throws Exception {
-        //Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+    public void testPasswordEncoding() throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         printHash(encoder, "andi");
         printHash(encoder, "sabine");
         printHash(encoder, "norbert");
         printHash(encoder, "roland");
         printHash(encoder, "uli-hans");
-    }
-
-    private void printHash(PasswordEncoder encoder, String user) {
-        System.out.println(user + ": " + encoder.encodePassword(user, null));
     }
 
     private void printHash(org.springframework.security.crypto.password.PasswordEncoder encoder,

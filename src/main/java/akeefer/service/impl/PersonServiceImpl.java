@@ -2,6 +2,7 @@ package akeefer.service.impl;
 
 import akeefer.model.Aktivitaet;
 import akeefer.model.Parent;
+import akeefer.model.SecurityRole;
 import akeefer.model.User;
 import akeefer.repository.AktivitaetRepository;
 import akeefer.repository.ParentRepository;
@@ -13,6 +14,12 @@ import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +29,7 @@ import java.util.*;
 
 @Service("personServiceImpl")
 @Transactional
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
 
@@ -34,6 +41,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Autowired
     private ParentRepository parentRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -72,6 +82,26 @@ public class PersonServiceImpl implements PersonService {
         personScript.deleteCharAt(personScript.length() - 2);
         personScript.append("    ];");
         return personScript.toString();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = getUserByUsername(username);
+        if (null == user) {
+            throw new UsernameNotFoundException(username + " not found in GAE Datastore.");
+        }
+
+        Set<GrantedAuthority> rollen = new HashSet<>();
+        if (null != user.getRoles()) {
+            for (SecurityRole role : user.getRoles()) {
+                SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.name());
+                rollen.add(grantedAuthority);
+            }
+        }
+        org.springframework.security.core.userdetails.User res = new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), rollen);
+
+        return res;
     }
 
     // Sortiert den user mit dem Key nach unten
@@ -142,8 +172,16 @@ public class PersonServiceImpl implements PersonService {
                 logger.info("fuege Rollen hinzu");
                 userInDb.getRoles().addAll(user.getRoles());
             }
+            if (user.getUsername().equals(user.getPassword())) {
+                logger.info("PW von user '" + user.getUsername() + "' muss encoded werden");
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+
             return userInDb;
         }
+        logger.info("PW von user '" + user.getUsername() + "' muss encoded werden");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         Parent parent = getParent();
         user.setParent(parent);
 

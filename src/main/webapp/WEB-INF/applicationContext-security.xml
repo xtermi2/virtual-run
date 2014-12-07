@@ -8,23 +8,15 @@ http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <security:http use-expressions="true" create-session="never" auto-config="true">
-        <security:remember-me />
+        <security:remember-me/>
         <!--<security:intercept-url pattern="/**"/>-->
         <!-- the login page is a wicket page mounted in WicketApplication.init() -->
-        <security:form-login login-page="/login" />
+        <security:form-login login-page="/login"/>
     </security:http>
 
     <security:authentication-manager alias="authenticationManager">
-        <security:authentication-provider>
-            <!--  TODO (ak) change this to reference a real production environment user service -->
-            <security:password-encoder hash="bcrypt"/>
-            <security:user-service>
-                <security:user name="andi" password="$2a$10$4VHiLoXnSp0qkocbs8tU3.yegdl0zaNlQ5SxGKqiLv8PhBROk.TC6" authorities="ADMIN, USER"/>
-                <security:user name="sabine" password="$2a$10$oLsioNQx1hFj6PWvx3RiEenW51r7DblpUOLE8vHUBy94GV1TuH16W" authorities="USER"/>
-                <security:user name="norbert" password="$2a$10$6rrtz5SMoyNn1ZBSqH4/p.XDb0lKUY0/rhWiGMEXcRlcodk59j4zC" authorities="USER"/>
-                <security:user name="roland" password="$2a$10$yPQAt6ptrKRAyM/EIKTDwuWJr6oy3Rkz6LEc0bblCdDLy.KfiAJo." authorities="USER"/>
-                <security:user name="uli-hans" password="$2a$10$y/aqZiQt8dQxmBDVl4mVCO3N9aNEub7hrAYNyt6DrTCR4la/E9vIO" authorities="USER"/>
-            </security:user-service>
+        <security:authentication-provider user-service-ref="personServiceImpl">
+            <security:password-encoder ref="encoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
 
@@ -34,4 +26,8 @@ http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 requests. Also see VRSession.authenticate(). -->
     <bean id="securityContextPersistenceFilter"
           class="org.springframework.security.web.context.SecurityContextPersistenceFilter"/>
+
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+        <constructor-arg name="strength" value="12"/>
+    </bean>
 </beans>
