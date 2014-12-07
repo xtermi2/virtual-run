@@ -2,7 +2,6 @@ package akeefer.service.impl;
 
 import akeefer.model.Aktivitaet;
 import akeefer.model.User;
-import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -11,12 +10,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static akeefer.test.util.ProxyUtil.getTargetObject;
 import static com.google.appengine.api.datastore.KeyFactory.createKey;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,7 +31,8 @@ import static org.mockito.Mockito.spy;
 public class PersonServiceImplTest {
 
     @Autowired
-    private PersonServiceImpl personService;
+    @Qualifier("personServiceImpl")
+    private PersonService personService;
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -45,7 +49,8 @@ public class PersonServiceImplTest {
 
     @Test
     public void testCreatePersonScript() throws Exception {
-        PersonService spy = spy(personService);
+        PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
+        PersonService spy = spy(impl);
         // Mocks
         User user1 = new User(createKey("User", "user1"));
         user1.setUsername("foo");
@@ -75,5 +80,19 @@ public class PersonServiceImplTest {
                 "        {id: 'user3', distance: 0},\n" +
                 "        {id: 'foo', distance: 4711}\n" +
                 "    ];", personScript);
+    }
+
+    @Test
+    public void testMD5Test() throws Exception {
+        Md5PasswordEncoder md5 = new Md5PasswordEncoder();
+        printHash(md5, "andi");
+        printHash(md5, "sabine");
+        printHash(md5, "norbert");
+        printHash(md5, "roland");
+        printHash(md5, "uli-hans");
+    }
+
+    private void printHash(PasswordEncoder encoder, String user) {
+        System.out.println(user + ": " + encoder.encodePassword(user, null));
     }
 }

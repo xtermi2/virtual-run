@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+http://www.springframework.org/schema/security
+http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+    <security:http use-expressions="true" create-session="never" auto-config="true">
+        <security:remember-me />
+        <!--<security:intercept-url pattern="/**"/>-->
+        <!-- the login page is a wicket page mounted in WicketApplication.init() -->
+        <security:form-login login-page="/login" />
+    </security:http>
+
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider>
+            <!--  TODO (ak) change this to reference a real production environment user service -->
+            <security:password-encoder hash="md5"/>
+            <security:user-service>
+                <security:user name="andi" password="ce0e5bf55e4f71749eade7a8b95c4e46" authorities="ADMIN, USER"/>
+                <security:user name="sabine" password="e668ab336799b9f36c47f8ce3c738d79" authorities="USER"/>
+                <security:user name="roland" password="ee21d5f27a8401788147f6f6184ddb11" authorities="USER"/>
+                <security:user name="norbert" password="3095dbfcb9273218857172b1e75e7cd5" authorities="USER"/>
+                <security:user name="uli-hans" password="54b408c55345de3a6276e1570d8be0bc" authorities="USER"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:global-method-security secured-annotations="enabled"/>
+
+    <!-- This filter is responsible for storing the SecurityContextHolder between
+requests. Also see VRSession.authenticate(). -->
+    <bean id="securityContextPersistenceFilter"
+          class="org.springframework.security.web.context.SecurityContextPersistenceFilter"/>
+</beans>

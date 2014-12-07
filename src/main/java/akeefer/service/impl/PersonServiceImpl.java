@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-@Service
+@Service("personServiceImpl")
 @Transactional
 public class PersonServiceImpl implements PersonService {
 

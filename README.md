@@ -21,6 +21,11 @@
 ### Wicket Erweiterungen
 - http://wicket.visural.net/examples
 
+### Wicket + Spring Security
+- http://www.jdev.it/integrating-wicket-with-wicket-authroles-and-spring-security/
+- https://github.com/thombergs/wicket-spring-security-example
+- http://javajeedevelopment.blogspot.nl/2011/03/integrating-spring-security-3-with.html
+- http://apache-wicket.1842946.n4.nabble.com/Spring-Security-SecurityContext-changes-td3217947.html
 
 
 ##CSS / Design)
