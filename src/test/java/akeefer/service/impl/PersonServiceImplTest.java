@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -84,15 +85,21 @@ public class PersonServiceImplTest {
 
     @Test
     public void testMD5Test() throws Exception {
-        Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-        printHash(md5, "andi");
-        printHash(md5, "sabine");
-        printHash(md5, "norbert");
-        printHash(md5, "roland");
-        printHash(md5, "uli-hans");
+        //Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        printHash(encoder, "andi");
+        printHash(encoder, "sabine");
+        printHash(encoder, "norbert");
+        printHash(encoder, "roland");
+        printHash(encoder, "uli-hans");
     }
 
     private void printHash(PasswordEncoder encoder, String user) {
         System.out.println(user + ": " + encoder.encodePassword(user, null));
+    }
+
+    private void printHash(org.springframework.security.crypto.password.PasswordEncoder encoder,
+                           String user) {
+        System.out.println(user + ": " + encoder.encode(user));
     }
 }
