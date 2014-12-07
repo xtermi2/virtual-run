@@ -16,6 +16,7 @@ public class Parent implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
+
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<User> users = new ArrayList<User>();
 

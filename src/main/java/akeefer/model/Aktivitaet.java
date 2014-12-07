@@ -25,27 +25,32 @@ public class Aktivitaet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
-    //    @NotNull(message = "Bitte eine Distanz eingeben")
-//    @Min(value = 1, message = "Distanz muss groesser 0 sein")
-//    @Max(value = 1000000, message = "Mehr als 1000 km, ist das dein ernst?")
-//    private Integer meter;
-    @NotNull(message = "Bitte eine Distanz eingeben")
-    @DecimalMin(value = "0.001", message = "Diszanz muss mindestens 0.001 km sein")
-    @Max(value = 1000, message = "Mehr als 1000 km, ist das dein ernst?")
+
+    @NotNull
+    @DecimalMin(value = "0.001")
+    @Max(value = 1000)
     private BigDecimal distanzInKilometer;
-    @NotNull(message = "Bitte einen Aktivitaetstyp angeben")
+
+    @NotNull
     private AktivitaetsTyp typ;
-    @Past(message = "Datum darf nicht in der Zukungt liegen")
+
+    @Past
     private Date aktivitaetsDatum;
+
     // wird nur ein mal initial gesetzt
     private Date eingabeDatum;
+
     // wird immer aktualisiert, wenn die Aktivitaet bearbeitet wurde.
     private Date updatedDatum;
-    @NotNull(message = "Bitte eine Aufzeichnungsart angeben")
+
+    @NotNull
     private AktivitaetsAufzeichnung aufzeichnungsart;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
+
     private String bezeichnung;
+
     private String owner;
 
     public Key getId() {

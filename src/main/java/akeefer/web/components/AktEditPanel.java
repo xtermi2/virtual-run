@@ -5,8 +5,8 @@ import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
+import akeefer.web.components.validation.LocalizedPropertyValidator;
 import akeefer.web.pages.AktUebersichtPage;
-import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.*;
@@ -44,7 +44,7 @@ public class AktEditPanel extends Panel {
         add(form);
 
         RequiredTextField<BigDecimal> distanzInKilometer = new RequiredTextField<>("distanzInKilometer");
-        form.add(distanzInKilometer.add(new PropertyValidator()).add(PlaceholderBehavior.ofResourceKey("distanzInKilometerPlaceholder")));
+        form.add(distanzInKilometer.add(new LocalizedPropertyValidator<BigDecimal>()).add(PlaceholderBehavior.ofResourceKey("distanzInKilometerPlaceholder")));
         form.add(new FormComponentLabel("distanzInKilometerLabel", distanzInKilometer));
 
         DropDownChoice<AktivitaetsTyp> typ = new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())) {
@@ -54,18 +54,18 @@ public class AktEditPanel extends Panel {
                 return "";
             }
         };
-        form.add(typ.add(new PropertyValidator()));
+        form.add(typ.add(new LocalizedPropertyValidator<AktivitaetsTyp>()));
         form.add(new FormComponentLabel("typLabel", typ));
 
         TextField<String> bezeichnung = new TextField<>("bezeichnung");
-        form.add(bezeichnung.add(new PropertyValidator()).add(PlaceholderBehavior.ofResourceKey("bezeichnungPlaceholder")));
+        form.add(bezeichnung.add(new LocalizedPropertyValidator<String>()).add(PlaceholderBehavior.ofResourceKey("bezeichnungPlaceholder")));
         form.add(new FormComponentLabel("bezeichnungLabel", bezeichnung));
 
         DatePicker datePicker = new DatePicker();
         datePicker.setShowOnFieldClick(true);
         datePicker.setAutoHide(true);
         DateTextField aktivitaetsDatum = new DateTextField("aktivitaetsDatum", "dd.MM.yyyy");
-        form.add(aktivitaetsDatum.add(datePicker).add(new PropertyValidator()));
+        form.add(aktivitaetsDatum.add(datePicker).add(new LocalizedPropertyValidator<>()));
         form.add(new FormComponentLabel("aktivitaetsDatumLabel", aktivitaetsDatum));
 
         DropDownChoice<AktivitaetsAufzeichnung> aufzeichnungsart = new DropDownChoice<AktivitaetsAufzeichnung>("aufzeichnungsart",
@@ -76,7 +76,7 @@ public class AktEditPanel extends Panel {
                 return "";
             }
         };
-        form.add(aufzeichnungsart.add(new PropertyValidator()));
+        form.add(aufzeichnungsart.add(new LocalizedPropertyValidator<AktivitaetsAufzeichnung>()));
         form.add(new FormComponentLabel("aufzeichnungsartLabel", aufzeichnungsart));
 
 //        form.add(new SubmitLink("saveLink", form));

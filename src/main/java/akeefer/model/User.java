@@ -20,14 +20,19 @@ public class User implements Serializable, Comparable<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Key id;
+
     @NotNull
     private String username;
+
     @NotNull
     private String password;
+
     @NotNull
     private Set<SecurityRole> roles = new HashSet<>(1);
+
     @ManyToOne
     private Parent parent;
+
     @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
