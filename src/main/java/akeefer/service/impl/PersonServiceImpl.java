@@ -172,14 +172,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 logger.info("fuege Rollen hinzu");
                 userInDb.getRoles().addAll(user.getRoles());
             }
-            if (user.getUsername().equals(user.getPassword())) {
-                logger.info("PW von user '" + user.getUsername() + "' muss encoded werden");
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            if (userInDb.getUsername().equals(userInDb.getPassword())) {
+                logger.info("PW von user '" + userInDb.getUsername() + "' muss encoded werden");
+                userInDb.setPassword(passwordEncoder.encode(userInDb.getPassword()));
             }
 
             return userInDb;
         }
-        logger.info("PW von user '" + user.getUsername() + "' muss encoded werden");
+        logger.info("PW von user '" + user.getUsername() + "' wird encoded");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Parent parent = getParent();
