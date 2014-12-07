@@ -25,6 +25,6 @@ http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <bean id="encoder"
           class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-        <constructor-arg name="strength" value="12"/>
+        <constructor-arg name="strength" value="10"/>
     </bean>
 </beans>

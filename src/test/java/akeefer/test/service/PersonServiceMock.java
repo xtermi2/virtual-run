@@ -8,11 +8,17 @@ import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
 @TestScopedComponent
 public class PersonServiceMock implements PersonService {
+
+    @Autowired
+    private PasswordEncoder encoder;
+
     @Override
     public List<User> getAllUser() {
         return Lists.newArrayList(getUserByUsername("foo"));
@@ -23,7 +29,7 @@ public class PersonServiceMock implements PersonService {
         User user = new User();
         user.setId(KeyFactory.createKey("User", "username"));
         user.setUsername(username);
-        user.setPassword("bar");
+        user.setPassword(encoder.encode("bar"));
         user.addRole(SecurityRole.USER);
         return user;
     }
