@@ -14,6 +14,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,37 +52,37 @@ public class VRSession extends AuthenticatedWebSession {
 
     @Override
     public boolean authenticate(String username, String password) {
-//        boolean authenticated = false;
+        boolean authenticated = false;
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            authenticated = authentication.isAuthenticated();
+            if (authenticated) {
+                //httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                //        SecurityContextHolder.getContext());
+                user.setObject(personService.getUserByUsername(username));
+            }
+        } catch (RuntimeException e) {
+            logger.warn(String.format("User '%s' failed to login. Reason: %s", username, e.getMessage()));
+            authenticated = false;
+        }
+
+        return authenticated;
+
+//        User userTmp = null;
 //        try {
-//            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            authenticated = authentication.isAuthenticated();
-//            if (authenticated) {
-//                httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-//                        SecurityContextHolder.getContext());
-//                user.setObject(personService.getUserByUsername(username));
-//            }
+//            userTmp = personService.getUserByUsername(username);
 //        } catch (RuntimeException e) {
-//            logger.warn(String.format("User '%s' failed to login. Reason: %s", username, e.getMessage()));
-//            authenticated = false;
+//            return false;
+//        }
+//        if (null != userTmp) {
+//            if (passwordEncoder.matches(password, userTmp.getPassword())) {
+//                this.user.setObject(userTmp);
+//                return true;
+//            }
 //        }
 //
-//        return authenticated;
-
-        User userTmp = null;
-        try {
-            userTmp = personService.getUserByUsername(username);
-        } catch (RuntimeException e) {
-            return false;
-        }
-        if (null != userTmp) {
-            if (passwordEncoder.matches(password, userTmp.getPassword())) {
-                this.user.setObject(userTmp);
-                return true;
-            }
-        }
-
-        return false;
+//        return false;
     }
 
     @Override
@@ -100,18 +101,18 @@ public class VRSession extends AuthenticatedWebSession {
 //        return roles;
     }
 
-    private void getRolesIfSignedIn(Roles roles) {
-        if (isSignedIn()) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            addRolesFromAuthentication(roles, authentication);
-        }
-    }
-
-    private void addRolesFromAuthentication(Roles roles, Authentication authentication) {
-        for (GrantedAuthority authority : authentication.getAuthorities()) {
-            roles.add(authority.getAuthority());
-        }
-    }
+//    private void getRolesIfSignedIn(Roles roles) {
+//        if (isSignedIn()) {
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            addRolesFromAuthentication(roles, authentication);
+//        }
+//    }
+//
+//    private void addRolesFromAuthentication(Roles roles, Authentication authentication) {
+//        for (GrantedAuthority authority : authentication.getAuthorities()) {
+//            roles.add(authority.getAuthority());
+//        }
+//    }
 
     public IModel<User> getUserModel() {
         return user;
