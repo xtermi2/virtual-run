@@ -3,6 +3,8 @@ package akeefer.model;
 import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,18 +24,20 @@ public class User implements Serializable, Comparable<User> {
     private Key id;
 
     @NotNull
+    @NotEmpty
     private String username;
 
     @NotNull
+    @NotEmpty
     private String password;
 
     @NotNull
+    @NotEmpty
     private Set<SecurityRole> roles = new HashSet<>(1);
 
     @ManyToOne
     private Parent parent;
 
-    @NotNull
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
 
@@ -124,5 +128,14 @@ public class User implements Serializable, Comparable<User> {
     public User addRole(SecurityRole role) {
         getRoles().add(role);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("username", username)
+                .append("roles", roles)
+                .toString();
     }
 }

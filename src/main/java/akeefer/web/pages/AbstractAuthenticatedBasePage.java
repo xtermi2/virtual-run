@@ -10,9 +10,12 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 @AuthorizeInstantiation("USER")
 public abstract class AbstractAuthenticatedBasePage extends AbstractBasePage {
 
-    protected AbstractAuthenticatedBasePage(PageParameters parameters, final boolean mapView, final boolean aktView) {
+    protected AbstractAuthenticatedBasePage(PageParameters parameters,
+                                            final boolean mapView,
+                                            final boolean aktView,
+                                            final boolean userView) {
         super(parameters);
 
-        add(new MenuPanel("menuPanel", mapView, aktView));
+        add(new MenuPanel("menuPanel", mapView, aktView, userView));
     }
 }

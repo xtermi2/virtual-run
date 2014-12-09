@@ -23,7 +23,7 @@ public class AktEditPage extends AbstractAuthenticatedBasePage {
     private PersonService personService;
 
     public AktEditPage(final PageParameters parameters) {
-        super(parameters, false, true);
+        super(parameters, false, true, false);
 
         Aktivitaet akt = new Aktivitaet();
         // Default Werte einer Aktivitaet.
@@ -34,7 +34,7 @@ public class AktEditPage extends AbstractAuthenticatedBasePage {
     }
 
     public AktEditPage(final PageParameters parameters, final IModel<Aktivitaet> akt) {
-        super(parameters, false, true);
+        super(parameters, false, true, false);
         add(new AktEditPanel("editPanel", akt));
     }
 }

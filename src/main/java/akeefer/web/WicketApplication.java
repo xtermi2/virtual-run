@@ -76,6 +76,7 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         mountPage("/init", InitDatabasePage.class);
         mountPage("/features", FeaturePage.class);
         mountPage("/impressum", ImpressumPage.class);
+        mountPage("/user", UserDetailsPage.class);
 
         getHeaderContributorListenerCollection().add(new IHeaderContributor() {
             @Override

@@ -20,4 +20,6 @@ public interface PersonService {
     void deleteAktivitaet(User user, Aktivitaet aktivitaet);
 
     List<Aktivitaet> loadAktivitaeten(Key userId);
+
+    void changePassword(Key userId, String cleartextPassword);
 }

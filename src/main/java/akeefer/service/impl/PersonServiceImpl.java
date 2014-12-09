@@ -217,6 +217,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         return user.getAktivitaeten();
     }
 
+    @Override
+    public void changePassword(Key userId, String cleartextPassword) {
+        User user = userRepository.findOne(userId);
+        logger.info("change password of user " + user);
+        user.setPassword(passwordEncoder.encode(cleartextPassword));
+        userRepository.save(user);
+    }
+
     private Parent getParent() {
         List<Parent> parents = parentRepository.findAll();
         final Parent parent;

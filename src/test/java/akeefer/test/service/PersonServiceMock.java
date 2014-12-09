@@ -59,4 +59,8 @@ public class PersonServiceMock implements PersonService {
     public List<Aktivitaet> loadAktivitaeten(Key userId) {
         return null;
     }
+
+    @Override
+    public void changePassword(Key userId, String cleartextPassword) {
+    }
 }

@@ -36,7 +36,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
     private PersonService personService;
 
     public AktUebersichtPage(PageParameters parameters) {
-        super(parameters, false, true);
+        super(parameters, false, true, false);
         setDefaultModel(new Model<Aktivitaet>(null));
         final IModel<List<Aktivitaet>> aktivitaetenModel = new AktLoadableDetachableModel(VRSession.get().getUser().getId());
         List<IColumn<Aktivitaet, String>> columns = new ArrayList<IColumn<Aktivitaet, String>>();

@@ -3,6 +3,7 @@ package akeefer.web.components;
 import akeefer.web.pages.AktEditPage;
 import akeefer.web.pages.AktUebersichtPage;
 import akeefer.web.pages.MapPage;
+import akeefer.web.pages.UserDetailsPage;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.link.Link;
@@ -10,7 +11,10 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 public class MenuPanel extends Panel {
 
-    public MenuPanel(final String id, final boolean mapView, final boolean aktView) {
+    public MenuPanel(final String id,
+                     final boolean mapView,
+                     final boolean aktView,
+                     final boolean userView) {
         super(id);
 
         final Link mapButton = new Link("mapButton") {
@@ -47,6 +51,15 @@ public class MenuPanel extends Panel {
         };
         neueAktivitaet.setVisible(aktView);
         add(neueAktivitaet);
+
+        final Link userSettings = new Link("userSettings") {
+            @Override
+            public void onClick() {
+                setResponsePage(UserDetailsPage.class);
+            }
+        };
+        userSettings.setEnabled(!userView);
+        add(userSettings);
 
         // der Logout Button ist immer sichtbar
         add(new Link("logoutButton") {
