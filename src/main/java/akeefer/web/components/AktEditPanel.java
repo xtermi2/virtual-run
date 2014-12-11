@@ -9,6 +9,7 @@ import akeefer.web.components.validation.LocalizedPropertyValidator;
 import akeefer.web.pages.AktUebersichtPage;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -30,7 +31,7 @@ public class AktEditPanel extends Panel {
     public AktEditPanel(String id, IModel<Aktivitaet> model) {
         super(id, model);
         // Create feedback panel and add to page
-        add(new FeedbackPanel("feedback"));
+        add(new FeedbackPanel("feedback").setFilter(new ContainerFeedbackMessageFilter(this)));
 
         Form<Aktivitaet> form = new Form<Aktivitaet>("form", new CompoundPropertyModel<Aktivitaet>(model)) {
             @Override
@@ -38,6 +39,8 @@ public class AktEditPanel extends Panel {
                 Aktivitaet akt = getModel().getObject();
                 akt = personService.createAktivitaet(akt, VRSession.get().getUser());
                 setModelObject(akt);
+                // ueber Session, dass die Meldung auf der naechsten Seite (AktUebersichtPage) angezeigt wird
+                getSession().info(getString("aktSaveSuccess"));
                 setResponsePage(AktUebersichtPage.class);
             }
         };

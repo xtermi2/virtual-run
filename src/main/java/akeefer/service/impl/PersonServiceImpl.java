@@ -225,6 +225,21 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         userRepository.save(user);
     }
 
+    @Override
+    public User updateUser(User user) {
+        user = userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User findUserById(Key userId) {
+        if (null == userId) {
+            logger.info("findUserById(null) returns null");
+            return null;
+        }
+        return userRepository.findOne(userId);
+    }
+
     private Parent getParent() {
         List<Parent> parents = parentRepository.findAll();
         final Parent parent;

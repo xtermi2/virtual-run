@@ -1,5 +1,6 @@
 package akeefer.web.components;
 
+import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -19,7 +20,7 @@ public abstract class PasswordEditPanel extends Panel {
         super(id);
 
         // Create feedback panel and add to page
-        add(new FeedbackPanel("feedback"));
+        add(new FeedbackPanel("feedback").setFilter(new ContainerFeedbackMessageFilter(this)));
 
         Model<String> pwModel = Model.of("");
         Form<String> form = new Form<String>("pwEditForm", pwModel) {

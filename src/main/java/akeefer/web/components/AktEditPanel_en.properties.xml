@@ -8,4 +8,5 @@
     <entry key="bezeichnungPlaceholder">Description of Activity</entry>
     <entry key="aktivitaetsDatum">Date:</entry>
     <entry key="aufzeichnungsart">Recording mode:</entry>
+    <entry key="aktSaveSuccess">Activity successfully saved</entry>
 </properties>

@@ -52,7 +52,10 @@ public class GenericSortableDataProvider<T extends Serializable> extends Sortabl
 
     @Override
     public long size() {
-        return list.getObject().size();
+        if (null != list.getObject()) {
+            return list.getObject().size();
+        }
+        return 0;
     }
 
     @Override

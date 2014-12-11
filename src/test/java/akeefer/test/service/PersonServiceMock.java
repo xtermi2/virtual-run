@@ -63,4 +63,14 @@ public class PersonServiceMock implements PersonService {
     @Override
     public void changePassword(Key userId, String cleartextPassword) {
     }
+
+    @Override
+    public User updateUser(User user) {
+        return user;
+    }
+
+    @Override
+    public User findUserById(Key userId) {
+        return getUserByUsername("foo");
+    }
 }

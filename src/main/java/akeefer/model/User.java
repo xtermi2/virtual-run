@@ -4,10 +4,13 @@ import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,6 +43,15 @@ public class User implements Serializable, Comparable<User> {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
+
+    @Size(min = 1)
+    private String nickname;
+
+    @Email
+    private String email;
+
+    @NotNull
+    private BenachrichtigunsIntervall benachrichtigunsIntervall = BenachrichtigunsIntervall.deaktiviert;
 
     public User() {
     }
@@ -94,6 +106,30 @@ public class User implements Serializable, Comparable<User> {
 
     public void setAktivitaeten(List<Aktivitaet> aktivitaeten) {
         this.aktivitaeten = aktivitaeten;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public BenachrichtigunsIntervall getBenachrichtigunsIntervall() {
+        return benachrichtigunsIntervall;
+    }
+
+    public void setBenachrichtigunsIntervall(BenachrichtigunsIntervall benachrichtigunsIntervall) {
+        this.benachrichtigunsIntervall = benachrichtigunsIntervall;
     }
 
     @Override

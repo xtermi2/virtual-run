@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="titel">Benutzer Einstellungen</entry>
+    <entry key="username">Anmeldename:</entry>
+    <entry key="email">E-Mail Adresse:</entry>
+    <entry key="emailPlaceholder">E-Mail Adresse</entry>
+    <entry key="nickname">Benutzername:</entry>
+    <entry key="nicknamePlaceholder">Benutzername</entry>
+    <entry key="benachrichtigunsIntervall">Benachrichtigung über neue Aktivitäten</entry>
+    <entry key="changedSuccess">Enstellungen wurde Erfolgreich geändert</entry>
+    <entry key="emailRequiredBenachrichtigunsIntervall">Es muss eine E-Mail Adresse angegeben werden wenn die Benachrichtigungsfunktion aktiviert ist</entry>
+</properties>

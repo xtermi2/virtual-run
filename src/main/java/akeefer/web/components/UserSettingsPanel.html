@@ -1,0 +1,48 @@
+<!doctype html>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <p>
+        <span wicket:id="feedback"/>
+
+    <form wicket:id="form" class="pure-form pure-form-aligned">
+        <fieldset>
+            <legend><wicket:message key="titel"/></legend>
+
+            <div class="pure-control-group">
+                <label wicket:id="usernameLabel">
+                    <wicket:message key="username"/>
+                </label>
+                <input wicket:id="username" type="text"/>
+            </div>
+
+            <div class="pure-control-group">
+                <label wicket:id="nicknameLabel">
+                    <wicket:message key="nickname"/>
+                </label>
+                <input wicket:id="nickname" type="text"/>
+            </div>
+
+            <div class="pure-control-group">
+                <label wicket:id="benachrichtigunsIntervallLabel">
+                    <wicket:message key="benachrichtigunsIntervall"/>
+                </label>
+                <select wicket:id="benachrichtigunsIntervall"/>
+            </div>
+
+            <div class="pure-control-group">
+                <label wicket:id="emailLabel">
+                    <wicket:message key="email"/>
+                </label>
+                <input wicket:id="email" type="email"/>
+            </div>
+
+            <div class="pure-controls">
+                <button class="immageButton" type="submit"><img class="saveIcon" src="images/icons/diskette_64.png">
+                </button>
+            </div>
+        </fieldset>
+    </form>
+</wicket:panel>
+</body>
+</html>

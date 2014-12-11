@@ -22,4 +22,8 @@ public interface PersonService {
     List<Aktivitaet> loadAktivitaeten(Key userId);
 
     void changePassword(Key userId, String cleartextPassword);
+
+    User updateUser(User user);
+
+    User findUserById(Key userId);
 }
