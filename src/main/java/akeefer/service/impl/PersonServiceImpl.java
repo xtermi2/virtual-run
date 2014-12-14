@@ -1,16 +1,19 @@
 package akeefer.service.impl;
 
-import akeefer.model.Aktivitaet;
-import akeefer.model.Parent;
-import akeefer.model.SecurityRole;
-import akeefer.model.User;
+import akeefer.model.*;
 import akeefer.repository.AktivitaetRepository;
 import akeefer.repository.ParentRepository;
 import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
+import akeefer.service.dto.Statistic;
 import com.google.appengine.api.datastore.Key;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +26,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+
+import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 
 @Service("personServiceImpl")
 @Transactional
@@ -76,6 +88,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         //users.add(logedInUser);
         for (User user : users) {
             personScript.append("        {id: '").append(user.getUsername())
+                    .append("', nickname: '").append(StringUtils.isBlank(user.getNickname()) ? user.getUsername() : user.getNickname())
                     .append("', distance: ").append(berechneDistanzInMeter(user)).append("},\n");
         }
         //das letzte ',' enfernen
@@ -240,6 +253,93 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         return userRepository.findOne(userId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Statistic> createStatistic(BenachrichtigunsIntervall interval) {
+        logger.info("createStatistic: " + interval);
+        List<User> users = getAllUser();
+        if (Iterables.any(users, new BenachrichtigunsIntervallPredicate(interval))) {
+            Set<Statistic> statistics = new HashSet<>(users.size());
+            Interval intervall = new Interval(new DateTime().withTimeAtStartOfDay().minusDays(interval.getTage()), new DateTime().withTimeAtStartOfDay());
+            AktErstellungsdatumPredicate aktErstellungsdatumPredicate = new AktErstellungsdatumPredicate(intervall);
+            for (User user : users) {
+                Statistic statistic = new Statistic(user);
+                statistics.add(statistic);
+                if (null != user.getAktivitaeten()) {
+                    for (Aktivitaet akt : Iterables.filter(user.getAktivitaeten(), aktErstellungsdatumPredicate)) {
+                        statistic.add(akt.getTyp(), akt.getDistanzInKilometer());
+                    }
+                }
+            }
+            return statistics;
+        } else {
+            logger.info(String.format("no user configures '%s' as NotificationInterval", interval));
+            return null;
+        }
+    }
+
+    @Override
+    public void sendStatisticMail(BenachrichtigunsIntervall interval) {
+        Validate.notNull(interval, "interval must not be null");
+        logger.info("sendStatisticMail: " + interval);
+        List<User> users = getAllUser();
+        Set<Statistic> statistics = createStatistic(interval);
+        if (CollectionUtils.isNotEmpty(statistics) && CollectionUtils.isNotEmpty(users)) {
+            logger.info("Erzeuge Mail Session...");
+            // Mail Session
+            Properties props = new Properties();
+            Session session = Session.getDefaultInstance(props, null);
+            logger.info("... Mail Session wurde erzeugt");
+            for (User user : getAllUser()) {
+                if (interval.equals(user.getBenachrichtigunsIntervall())) {
+                    logger.info("user hat passenden Intervall: " + interval);
+                    String mailBody = buildMailBody(statistics, user, interval);
+
+                    logger.info("sending statistic mail to " + user.getEmail());
+                    try {
+                        Message msg = new MimeMessage(session);
+                        msg.setFrom(new InternetAddress("statistic@noble-helper-766.appspotmail.com", "Africa Run Statistics"));
+                        msg.addRecipient(Message.RecipientType.TO,
+                                new InternetAddress(user.getEmail(), user.getAnzeigename()));
+                        msg.setSubject("Africa Run Statistics");
+                        msg.setText(mailBody);
+                        Transport.send(msg);
+                    } catch (MessagingException | UnsupportedEncodingException e) {
+                        logger.warn("Fehler beim Mailversand", e);
+                    }
+                }
+            }
+        } else {
+            logger.info("sendStatisticMail: keine passenden Daten fuer " + interval);
+        }
+    }
+
+    String buildMailBody(Set<Statistic> statistics, User user, BenachrichtigunsIntervall interval) {
+        StringBuilder mailBody = new StringBuilder("Hallo ")
+                .append(user.getAnzeigename())
+                .append(',')
+                .append(LINE_SEPARATOR)
+                .append(LINE_SEPARATOR);
+
+        StringBuilder statisticsBody = new StringBuilder();
+        for (Statistic statistic : Iterables.filter(statistics, new StatisticUserPredicate(user))) {
+            statisticsBody.append(statistic.toMailString());
+        }
+
+        if (StringUtils.isNotBlank(statisticsBody)) {
+            mailBody.append(interval.getZeitinterval())
+                    .append(" ist folgendes passiert: ")
+                    .append(LINE_SEPARATOR)
+                    .append(LINE_SEPARATOR)
+                    .append(statisticsBody);
+        } else {
+            mailBody.append(interval.getZeitinterval())
+                    .append(" ist nichts pasiert. ");
+        }
+
+        return mailBody.toString();
+    }
+
     private Parent getParent() {
         List<Parent> parents = parentRepository.findAll();
         final Parent parent;
@@ -261,5 +361,47 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             }
         }
         return null;
+    }
+
+    static class BenachrichtigunsIntervallPredicate implements Predicate<User> {
+
+        private final BenachrichtigunsIntervall intervall;
+
+        public BenachrichtigunsIntervallPredicate(BenachrichtigunsIntervall intervall) {
+            this.intervall = intervall;
+        }
+
+        @Override
+        public boolean apply(User user) {
+            return intervall.equals(user.getBenachrichtigunsIntervall());
+        }
+    }
+
+    static class AktErstellungsdatumPredicate implements Predicate<Aktivitaet> {
+
+        private final Interval interval;
+
+        public AktErstellungsdatumPredicate(Interval interval) {
+            this.interval = interval;
+        }
+
+        @Override
+        public boolean apply(Aktivitaet aktivitaet) {
+            return interval.contains(new DateTime(aktivitaet.getEingabeDatum()));
+        }
+    }
+
+    static class StatisticUserPredicate implements Predicate<Statistic> {
+
+        private final User user;
+
+        public StatisticUserPredicate(User user) {
+            this.user = user;
+        }
+
+        @Override
+        public boolean apply(Statistic input) {
+            return !user.equals(input.getUser());
+        }
     }
 }

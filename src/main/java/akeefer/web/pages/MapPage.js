@@ -145,7 +145,7 @@ function positionPerson(person) {
         coords: [1, 1, 1, 30, 42, 30, 42, 1],
         type: 'poly'
     };
-    var title = person.id + '@' + person.distance / 1000 + 'km';
+    var title = person.nickname + '@' + person.distance / 1000 + 'km';
     var personMarker = new google.maps.Marker({
         position: person.location,
         map: map,

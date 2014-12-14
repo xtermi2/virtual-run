@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
@@ -53,6 +54,41 @@ public class Aktivitaet implements Serializable {
 
     private String owner;
 
+    public Aktivitaet() {
+    }
+
+    private Aktivitaet(Builder builder) {
+        setId(builder.id);
+        setDistanzInKilometer(builder.distanzInKilometer);
+        setTyp(builder.typ);
+        setAktivitaetsDatum(builder.aktivitaetsDatum);
+        setEingabeDatum(builder.eingabeDatum);
+        setUpdatedDatum(builder.updatedDatum);
+        setAufzeichnungsart(builder.aufzeichnungsart);
+        setUser(builder.user);
+        setBezeichnung(builder.bezeichnung);
+        setOwner(builder.owner);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(Aktivitaet copy) {
+        Builder builder = new Builder();
+        builder.id = copy.id;
+        builder.distanzInKilometer = copy.distanzInKilometer;
+        builder.typ = copy.typ;
+        builder.aktivitaetsDatum = copy.aktivitaetsDatum;
+        builder.eingabeDatum = copy.eingabeDatum;
+        builder.updatedDatum = copy.updatedDatum;
+        builder.aufzeichnungsart = copy.aufzeichnungsart;
+        builder.user = copy.user;
+        builder.bezeichnung = copy.bezeichnung;
+        builder.owner = copy.owner;
+        return builder;
+    }
+
     public Key getId() {
         return id;
     }
@@ -69,12 +105,13 @@ public class Aktivitaet implements Serializable {
         return null;
     }
 
-    public void setDistanzInMeter(Integer meter) {
+    public Aktivitaet setDistanzInMeter(Integer meter) {
         if (null == meter) {
             distanzInKilometer = null;
         } else {
             this.distanzInKilometer = new BigDecimal(meter).divide(TAUSEND, 3, RoundingMode.HALF_UP);
         }
+        return this;
     }
 
     public BigDecimal getDistanzInKilometer() {
@@ -84,7 +121,6 @@ public class Aktivitaet implements Serializable {
     public void setDistanzInKilometer(BigDecimal kilometer) {
         this.distanzInKilometer = kilometer;
     }
-
 
     public AktivitaetsTyp getTyp() {
         return typ;
@@ -108,6 +144,16 @@ public class Aktivitaet implements Serializable {
 
     public void setEingabeDatum(Date eingabeDatum) {
         this.eingabeDatum = eingabeDatum;
+    }
+
+    @Transient
+    public DateTime getEingabeDatumAsDateTime() {
+        return null == eingabeDatum ? null : new DateTime(eingabeDatum);
+    }
+
+    public Aktivitaet setEingabeDatumAsDateTime(DateTime eingabeDatum) {
+        this.eingabeDatum = eingabeDatum.toDate();
+        return this;
     }
 
     public Date getUpdatedDatum() {
@@ -191,5 +237,75 @@ public class Aktivitaet implements Serializable {
                 .append("bezeichnung", bezeichnung)
                 .append("owner", owner)
                 .toString();
+    }
+
+    public static final class Builder {
+        private Key id;
+        private BigDecimal distanzInKilometer;
+        private AktivitaetsTyp typ;
+        private Date aktivitaetsDatum;
+        private Date eingabeDatum;
+        private Date updatedDatum;
+        private AktivitaetsAufzeichnung aufzeichnungsart;
+        private User user;
+        private String bezeichnung;
+        private String owner;
+
+        private Builder() {
+        }
+
+        public Builder id(Key id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder distanzInKilometer(BigDecimal distanzInKilometer) {
+            this.distanzInKilometer = distanzInKilometer;
+            return this;
+        }
+
+        public Builder typ(AktivitaetsTyp typ) {
+            this.typ = typ;
+            return this;
+        }
+
+        public Builder aktivitaetsDatum(Date aktivitaetsDatum) {
+            this.aktivitaetsDatum = aktivitaetsDatum;
+            return this;
+        }
+
+        public Builder eingabeDatum(Date eingabeDatum) {
+            this.eingabeDatum = eingabeDatum;
+            return this;
+        }
+
+        public Builder updatedDatum(Date updatedDatum) {
+            this.updatedDatum = updatedDatum;
+            return this;
+        }
+
+        public Builder aufzeichnungsart(AktivitaetsAufzeichnung aufzeichnungsart) {
+            this.aufzeichnungsart = aufzeichnungsart;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder bezeichnung(String bezeichnung) {
+            this.bezeichnung = bezeichnung;
+            return this;
+        }
+
+        public Builder owner(String owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Aktivitaet build() {
+            return new Aktivitaet(this);
+        }
     }
 }

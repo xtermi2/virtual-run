@@ -1,9 +1,7 @@
 package akeefer.web;
 
 import akeefer.web.pages.*;
-import org.apache.wicket.ConverterLocator;
-import org.apache.wicket.IConverterLocator;
-import org.apache.wicket.RuntimeConfigurationType;
+import org.apache.wicket.*;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
@@ -16,6 +14,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.pageStore.memory.IDataStoreEvictionStrategy;
 import org.apache.wicket.pageStore.memory.PageNumberEvictionStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +23,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.wicketstuff.gae.GaeApplication;
+import org.wicketstuff.rest.utils.mounting.PackageScanner;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -85,6 +85,8 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
                         new com.jquery.JQueryResourceReference(com.jquery.JQueryResourceReference.Version.V1_6_3)));
             }
         });
+
+        PackageScanner.scanPackage("akeefer.service.rest");
     }
 
     @Override

@@ -1,10 +1,13 @@
 package akeefer.service;
 
 import akeefer.model.Aktivitaet;
+import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.User;
+import akeefer.service.dto.Statistic;
 import com.google.appengine.api.datastore.Key;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PersonService {
     List<User> getAllUser();
@@ -26,4 +29,8 @@ public interface PersonService {
     User updateUser(User user);
 
     User findUserById(Key userId);
+
+    Set<Statistic> createStatistic(BenachrichtigunsIntervall interval);
+
+    void sendStatisticMail(BenachrichtigunsIntervall interval);
 }

@@ -88,9 +88,9 @@ public class UserSettingsPanel extends Panel<User> {
 
             @Override
             public void validate(Form<?> form) {
-                logger.info("input: ", benachrichtigunsIntervall.getInput());
-                logger.info("inputConverted", benachrichtigunsIntervall.getConvertedInput());
-                logger.info("input email: " + email.getInput());
+                //logger.info("input: ", benachrichtigunsIntervall.getInput());
+                //logger.info("inputConverted", benachrichtigunsIntervall.getConvertedInput());
+                //logger.info("input email: " + email.getInput());
                 if (!BenachrichtigunsIntervall.deaktiviert.equals(benachrichtigunsIntervall.getConvertedInput())) {
                     if (StringUtils.isBlank(email.getInput())) {
                         error(email, "emailRequiredBenachrichtigunsIntervall");

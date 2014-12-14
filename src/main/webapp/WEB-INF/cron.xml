@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-    <!--<cron>-->
-        <!--<url>/cron/report</url>-->
-        <!--<description>Dayly Report of Aktivities</description>-->
-        <!--<schedule>every day 01:00</schedule>-->
-        <!--<timezone>Europe/Berlin</timezone>-->
-    <!--</cron>-->
+    <cron>
+        <url>/rest/statistic/taeglich</url>
+        <description>Dayly Report of Aktivities</description>
+        <schedule>every day 01:00</schedule>
+        <timezone>Europe/Berlin</timezone>
+    </cron>
+    <cron>
+        <url>/rest/statistic/woechnetlich</url>
+        <description>Weekly Report of Aktivities</description>
+        <schedule>every monday 01:10</schedule>
+        <timezone>Europe/Berlin</timezone>
+    </cron>
 </cronentries>

@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -130,6 +129,11 @@ public class User implements Serializable, Comparable<User> {
 
     public void setBenachrichtigunsIntervall(BenachrichtigunsIntervall benachrichtigunsIntervall) {
         this.benachrichtigunsIntervall = benachrichtigunsIntervall;
+    }
+
+    @Transient
+    public String getAnzeigename() {
+        return null == nickname ? username : nickname;
     }
 
     @Override

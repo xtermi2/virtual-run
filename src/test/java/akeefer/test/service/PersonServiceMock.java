@@ -1,9 +1,11 @@
 package akeefer.test.service;
 
 import akeefer.model.Aktivitaet;
+import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.SecurityRole;
 import akeefer.model.User;
 import akeefer.service.PersonService;
+import akeefer.service.dto.Statistic;
 import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -11,7 +13,9 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @TestScopedComponent
 public class PersonServiceMock implements PersonService {
@@ -72,5 +76,14 @@ public class PersonServiceMock implements PersonService {
     @Override
     public User findUserById(Key userId) {
         return getUserByUsername("foo");
+    }
+
+    @Override
+    public Set<Statistic> createStatistic(BenachrichtigunsIntervall interval) {
+        return Collections.emptySet();
+    }
+
+    @Override
+    public void sendStatisticMail(BenachrichtigunsIntervall interval) {
     }
 }
