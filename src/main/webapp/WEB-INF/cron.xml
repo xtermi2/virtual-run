@@ -7,6 +7,18 @@
         <timezone>Europe/Berlin</timezone>
     </cron>
     <cron>
+        <url>/rest/statistic/taeglich</url>
+        <description>Dayly Report of Aktivities</description>
+        <schedule>every day 22:30</schedule>
+        <timezone>Europe/Berlin</timezone>
+    </cron>
+    <cron>
+        <url>/rest/statistic/taeglich</url>
+        <description>Dayly Report of Aktivities</description>
+        <schedule>every day 22:40</schedule>
+        <timezone>Europe/Berlin</timezone>
+    </cron>
+    <cron>
         <url>/rest/statistic/woechnetlich</url>
         <description>Weekly Report of Aktivities</description>
         <schedule>every monday 01:10</schedule>

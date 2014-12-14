@@ -34,21 +34,15 @@ public class StatisticRestService extends GsonRestResource {
             boolean isLocalMode = RuntimeConfigurationType.DEVELOPMENT.equals(WicketApplication.get().getConfigurationType());
             HttpServletRequest request = ((HttpServletRequest) RequestCycle.get().getRequest().getContainerRequest());
 
-            if (isLocalMode) {
-                logger.info("local request (RuntimeConfigurationType.DEVELOPMENT)");
-            } else {
-                logger.info("prod request (RuntimeConfigurationType.DEPLOYMENT)");
-            }
-
+            logger.info("isLocalMode: " + isLocalMode);
             String appEngineCronFlag = request.getHeader("X-AppEngine-Cron");
-            if ("true".equalsIgnoreCase(appEngineCronFlag)) {
-                logger.info("X-AppEngine-Cron=true, now we are sure this request is from GAE Cron");
-            } else {
-                logger.info("X-AppEngine-Cron=" + appEngineCronFlag);
-            }
-            // TODO (ak) Service nur lokal und wenn X-AppEngine-Cron=true ist ausfuehren
+            logger.info("X-AppEngine-Cron=" + appEngineCronFlag);
 
-            personService.sendStatisticMail(BenachrichtigunsIntervall.valueOf(intervall));
+            if (isLocalMode || "true".equalsIgnoreCase(appEngineCronFlag)) {
+                personService.sendStatisticMail(BenachrichtigunsIntervall.valueOf(intervall));
+            } else {
+                logger.warn("Request wird nicht ausgefuehrt, da er nicht lokal oder vom GAE-Cron kommt");
+            }
         } catch (Exception e) {
             logger.warn("Fehler bei sendStatisticMail: " + e.getMessage(), e);
         }
