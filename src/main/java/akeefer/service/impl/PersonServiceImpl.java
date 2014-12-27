@@ -337,6 +337,17 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                     .append(" ist nichts pasiert. ");
         }
 
+        // host URL erzeugen
+        mailBody.append(LINE_SEPARATOR)
+                .append(LINE_SEPARATOR);
+        String environment = System.getProperty("com.google.appengine.runtime.environment");
+        if ("Production".equals(environment)) {
+            String applicationId = System.getProperty("com.google.appengine.application.id");
+            mailBody.append("https://").append(applicationId).append(".appspot.com");
+        } else {
+            mailBody.append("http://localhost:8080");
+        }
+
         return mailBody.toString();
     }
 

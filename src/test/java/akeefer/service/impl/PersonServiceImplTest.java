@@ -163,7 +163,9 @@ public class PersonServiceImplTest {
         String mailBody = impl.buildMailBody(Sets.newHashSet(new Statistic(user1).add(AktivitaetsTyp.wandern, BigDecimal.TEN)), user1, BenachrichtigunsIntervall.taeglich);
         assertEquals("Hallo user1," + LINE_SEPARATOR +
                 LINE_SEPARATOR +
-                "gestern ist nichts pasiert. ", mailBody);
+                "gestern ist nichts pasiert. " + LINE_SEPARATOR + LINE_SEPARATOR +
+                "http://localhost:8080"
+                , mailBody);
     }
 
     @Test
@@ -184,7 +186,8 @@ public class PersonServiceImplTest {
                         "gestern ist folgendes passiert: " + LINE_SEPARATOR +
                         LINE_SEPARATOR +
                         "user2 ist ..." + LINE_SEPARATOR +
-                        "... 10km gewandert" + LINE_SEPARATOR,
+                        "... 10km gewandert" + LINE_SEPARATOR + LINE_SEPARATOR + LINE_SEPARATOR +
+                        "http://localhost:8080",
                 mailBody);
     }
 
@@ -206,7 +209,8 @@ public class PersonServiceImplTest {
                         "letzte Woche ist folgendes passiert: " + LINE_SEPARATOR +
                         LINE_SEPARATOR +
                         "user2 ist ..." + LINE_SEPARATOR +
-                        "... 10km gewandert" + LINE_SEPARATOR,
+                        "... 10km gewandert" + LINE_SEPARATOR + LINE_SEPARATOR + LINE_SEPARATOR +
+                        "http://localhost:8080",
                 mailBody);
     }
 
