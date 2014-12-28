@@ -334,7 +334,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                     .append(statisticsBody);
         } else {
             mailBody.append(interval.getZeitinterval())
-                    .append(" ist nichts pasiert. ");
+                    .append(" ist nichts passiert. ");
         }
 
         // host URL erzeugen
