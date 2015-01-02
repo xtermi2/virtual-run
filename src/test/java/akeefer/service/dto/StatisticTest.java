@@ -46,7 +46,7 @@ public class StatisticTest {
 
         assertThat(statistic.toMailString(), startsWith("Hans ist ..." + SystemUtils.LINE_SEPARATOR));
         assertThat(statistic.toMailString(), containsString("... 1km rad gefahren" + SystemUtils.LINE_SEPARATOR));
-        assertThat(statistic.toMailString(), containsString("... 1km spezieren gegangen" + SystemUtils.LINE_SEPARATOR));
+        assertThat(statistic.toMailString(), containsString("... 1km spazieren gegangen" + SystemUtils.LINE_SEPARATOR));
         assertThat(statistic.toMailString(), containsString("... 1km geschwommen" + SystemUtils.LINE_SEPARATOR));
         assertThat(statistic.toMailString(), containsString("... 1km ?" + SystemUtils.LINE_SEPARATOR));
         assertThat(statistic.toMailString(), containsString("... 1km gewandert" + SystemUtils.LINE_SEPARATOR));
