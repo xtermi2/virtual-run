@@ -4,7 +4,7 @@ public enum AktivitaetsTyp {
     laufen("gelaufen"),
     radfahren("rad gefahren"),
     schwimmen("geschwommen"),
-    spezierengehen("spezieren gegangen"),
+    spezierengehen("spazieren gegangen"),
     wandern("gewandert"),
     sonstiges("?");
 
