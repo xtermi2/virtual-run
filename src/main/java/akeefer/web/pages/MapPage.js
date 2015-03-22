@@ -117,6 +117,13 @@ function attachInstructionText(marker, text) {
     });
 }
 
+function attachZoomOnDoubleClick(marker) {
+    google.maps.event.addListener(marker, 'dblclick', function () {
+        map.setZoom(18);
+        map.setCenter(marker.getPosition());
+    });
+}
+
 function positionPerson(person) {
     // Add markers to the map
 
@@ -154,6 +161,7 @@ function positionPerson(person) {
         shape: shape
     });
     attachInstructionText(personMarker, title);
+    attachZoomOnDoubleClick(personMarker);
     person.marker = personMarker;
 }
 
