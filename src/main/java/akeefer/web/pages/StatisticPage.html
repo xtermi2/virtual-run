@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head lang="de">
+    <meta charset="UTF-8">
+    <title>Afrika Run</title>
+</head>
+<body>
+<wicket:extend>
+    <form wicket:id="form" class="pure-form">
+        <fieldset>
+            <label wicket:id="vonDatumLabel">
+                <wicket:message key="vonDatumLabel"/>
+            </label>
+            <input wicket:id="von" type="text"/>
+
+            <label wicket:id="bisDatumLabel">
+                <wicket:message key="bisDatumLabel"/>
+            </label>
+            <input wicket:id="bis" type="text"/>
+
+            <button wicket:id="submit" class="immageButton" type="submit">
+                <img class="saveIcon" src="images/icons/right2_64.png">
+            </button>
+        </fieldset>
+    </form>
+
+    <div wicket:id="chartPie"/>
+</wicket:extend>
+</body>
+</html>

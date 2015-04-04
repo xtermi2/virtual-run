@@ -1,20 +1,20 @@
 package akeefer.test.service;
 
-import akeefer.model.Aktivitaet;
-import akeefer.model.BenachrichtigunsIntervall;
-import akeefer.model.SecurityRole;
-import akeefer.model.User;
+import akeefer.model.*;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @TestScopedComponent
@@ -85,5 +85,10 @@ public class PersonServiceMock implements PersonService {
 
     @Override
     public void sendStatisticMail(BenachrichtigunsIntervall interval) {
+    }
+
+    @Override
+    public Map<AktivitaetsTyp, BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis) {
+        return Collections.emptyMap();
     }
 }

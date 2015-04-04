@@ -1,12 +1,16 @@
 package akeefer.service;
 
 import akeefer.model.Aktivitaet;
+import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.User;
 import akeefer.service.dto.Statistic;
 import com.google.appengine.api.datastore.Key;
+import org.joda.time.LocalDate;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface PersonService {
@@ -33,4 +37,6 @@ public interface PersonService {
     Set<Statistic> createStatistic(BenachrichtigunsIntervall interval);
 
     void sendStatisticMail(BenachrichtigunsIntervall interval);
+
+    Map<AktivitaetsTyp,BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis);
 }

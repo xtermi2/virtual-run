@@ -15,7 +15,7 @@ public class UserDetailsPage extends AbstractAuthenticatedBasePage {
     private PersonService personService;
 
     public UserDetailsPage(final PageParameters parameters) {
-        super(parameters, false, false, true);
+        super(parameters, false, false, true, false);
 
         add(new UserSettingsPanel("userSettingsPanel", new UserLoadableDetacheableModel(VRSession.get().getUser().getId())));
 

@@ -8,6 +8,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 public class FeaturePage extends AbstractAuthenticatedBasePage {
 
     public FeaturePage(PageParameters parameters) {
-        super(parameters, false, false, false);
+        super(parameters, false, false, false, false);
     }
 }

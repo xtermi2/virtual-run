@@ -8,12 +8,14 @@ import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import com.google.appengine.api.datastore.Key;
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -315,6 +317,29 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         }
     }
 
+    @Override
+    public Map<AktivitaetsTyp, BigDecimal> createPieChartData(final Key userId,
+                                                              final LocalDate von,
+                                                              final LocalDate bis) {
+        User user = findUserById(userId);
+        if (null == user || CollectionUtils.isEmpty(user.getAktivitaeten())) {
+            return Collections.emptyMap();
+        }
+        Map<AktivitaetsTyp, BigDecimal> res = new HashMap<>();
+        for (Aktivitaet akt : Collections2.filter(user.getAktivitaeten(), new AktivitaetsDatumVonBisFilter(von, bis))) {
+            BigDecimal distanz = res.get(akt.getTyp());
+            if (null == distanz) {
+                distanz = akt.getDistanzInKilometer();
+            } else {
+                distanz = distanz.add(akt.getDistanzInKilometer());
+            }
+            res.put(akt.getTyp(), distanz);
+        }
+
+        return res;
+    }
+
+
     String buildMailBody(Set<Statistic> statistics, User user, BenachrichtigunsIntervall interval) {
         StringBuilder mailBody = new StringBuilder("Hallo ")
                 .append(user.getAnzeigename())
@@ -421,6 +446,24 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         @Override
         public boolean apply(Statistic input) {
             return !user.equals(input.getUser());
+        }
+    }
+
+    static final class AktivitaetsDatumVonBisFilter implements Predicate<Aktivitaet> {
+
+        private LocalDate von;
+        private LocalDate bis;
+
+        public AktivitaetsDatumVonBisFilter(LocalDate von, LocalDate bis) {
+            this.von = von;
+            this.bis = bis;
+        }
+
+        @Override
+        public boolean apply(Aktivitaet input) {
+            LocalDate aktDatum = new LocalDate(input.getAktivitaetsDatum());
+            return aktDatum.isEqual(von) || aktDatum.isEqual(bis)
+                    || (aktDatum.isAfter(von) && aktDatum.isBefore(bis));
         }
     }
 }

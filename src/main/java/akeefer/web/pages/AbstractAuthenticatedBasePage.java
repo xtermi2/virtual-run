@@ -21,17 +21,20 @@ import java.util.List;
 public abstract class AbstractAuthenticatedBasePage extends AbstractBasePage {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractAuthenticatedBasePage.class);
+    private final FeedbackPanel pageFeedbackPanel;
 
     protected AbstractAuthenticatedBasePage(PageParameters parameters,
                                             final boolean mapView,
                                             final boolean aktView,
-                                            final boolean userView) {
+                                            final boolean userView,
+                                            final boolean statisticView) {
         super(parameters);
 
-        add(new MenuPanel("menuPanel", mapView, aktView, userView));
-        final FeedbackPanel pageFeedback = new FeedbackPanel("feedback");
+        add(new MenuPanel("menuPanel", mapView, aktView, userView, statisticView));
+        pageFeedbackPanel = new FeedbackPanel("feedback");
+        pageFeedbackPanel.setOutputMarkupId(true);
         // "Fallback"-Filter, der nur reportet, wenn kein anderer Filter eines FeedbackPanel zustaendig ist
-        add(pageFeedback.setFilter(new AllExceptFeedbackFilter() {
+        add(pageFeedbackPanel.setFilter(new AllExceptFeedbackFilter() {
 
             @Override
             protected Iterable<IFeedbackMessageFilter> loadFilters() {
@@ -44,7 +47,7 @@ public abstract class AbstractAuthenticatedBasePage extends AbstractBasePage {
 
                     @Override
                     public void component(FeedbackPanel component, IVisit<Void> visit) {
-                        if (!pageFeedback.equals(component)) {
+                        if (!pageFeedbackPanel.equals(component)) {
                             IFeedbackMessageFilter filter = component.getFilter();
                             if (null != filter) {
                                 if (logger.isDebugEnabled()) {
@@ -67,5 +70,9 @@ public abstract class AbstractAuthenticatedBasePage extends AbstractBasePage {
                 return filters;
             }
         }));
+    }
+
+    protected FeedbackPanel getPageFeedbackPanel() {
+        return pageFeedbackPanel;
     }
 }

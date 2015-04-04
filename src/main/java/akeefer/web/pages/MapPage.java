@@ -17,7 +17,7 @@ public class MapPage extends AbstractAuthenticatedBasePage {
     private PersonService personService;
 
     public MapPage(final PageParameters parameters) {
-        super(parameters, true, false, false);
+        super(parameters, true, false, false, false);
 
     }
 

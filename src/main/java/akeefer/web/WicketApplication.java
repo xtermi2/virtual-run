@@ -1,7 +1,10 @@
 package akeefer.web;
 
 import akeefer.web.pages.*;
-import org.apache.wicket.*;
+import com.googlecode.wickedcharts.wicket6.JavaScriptResourceRegistry;
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authentication.pages.SignInPage;
@@ -13,8 +16,9 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.pageStore.memory.IDataStoreEvictionStrategy;
 import org.apache.wicket.pageStore.memory.PageNumberEvictionStrategy;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +91,11 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         });
 
         PackageScanner.scanPackage("akeefer.service.rest");
+
+        JavaScriptResourceRegistry.getInstance().setHighchartsReference("highcharts-3.0.2/highcharts.js");
+        JavaScriptResourceRegistry.getInstance().setHighchartsExportingReference("highcharts-3.0.2/exporting.js");
+//        JavaScriptResourceRegistry.getInstance().setHighchartsMoreReference(...);
+//        JavaScriptResourceRegistry.getInstance().setJQueryReference(...);
     }
 
     @Override
