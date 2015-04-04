@@ -297,8 +297,9 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
                     logger.info("sending statistic mail to " + user.getEmail());
                     try {
-                        Message msg = new MimeMessage(session);
-                        msg.setFrom(new InternetAddress("statistic@noble-helper-766.appspotmail.com", "Africa Run Statistics"));
+                        final Message msg = new MimeMessage(session);
+                        final String applicationId = getGaeApplicationId();
+                        msg.setFrom(new InternetAddress("statistic@" + applicationId + ".appspotmail.com", "Africa Run Statistics"));
                         msg.addRecipient(Message.RecipientType.TO,
                                 new InternetAddress(user.getEmail(), user.getAnzeigename()));
                         msg.setSubject("Africa Run Statistics");
@@ -340,15 +341,22 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         // host URL erzeugen
         mailBody.append(LINE_SEPARATOR)
                 .append(LINE_SEPARATOR);
-        String environment = System.getProperty("com.google.appengine.runtime.environment");
-        if ("Production".equals(environment)) {
-            String applicationId = System.getProperty("com.google.appengine.application.id");
+        final String applicationId = getGaeApplicationId();
+        if (null != applicationId) {
             mailBody.append("https://").append(applicationId).append(".appspot.com");
         } else {
             mailBody.append("http://localhost:8080");
         }
 
         return mailBody.toString();
+    }
+
+    private String getGaeApplicationId() {
+        String environment = System.getProperty("com.google.appengine.runtime.environment");
+        if ("Production".equals(environment)) {
+            return System.getProperty("com.google.appengine.application.id");
+        }
+        return null;
     }
 
     private Parent getParent() {
