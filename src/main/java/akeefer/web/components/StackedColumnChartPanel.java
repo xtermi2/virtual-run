@@ -3,6 +3,7 @@ package akeefer.web.components;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
+import akeefer.web.charts.functions.StackTotalKmFormatter;
 import akeefer.web.components.layout.Panel;
 import akeefer.web.components.validation.LocalizedPropertyValidator;
 import com.googlecode.wickedcharts.highcharts.options.*;
@@ -106,7 +107,7 @@ public class StackedColumnChartPanel extends Panel {
         options.setChartOptions(new ChartOptions().setType(SeriesType.COLUMN))
                 .setTitle(new Title(new StringResourceModel("statTitel", this, null).getString()))
                 .setTooltip(new Tooltip()
-                                .setFormatter(new StackTotalFormatter())
+                                .setFormatter(new StackTotalKmFormatter())
                 )
         ;
         options.setxAxis(new Axis()
