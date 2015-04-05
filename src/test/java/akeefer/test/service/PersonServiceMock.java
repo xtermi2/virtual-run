@@ -4,9 +4,11 @@ import akeefer.model.*;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import akeefer.test.TestScopedComponent;
+import akeefer.web.components.StackedColumnChartPanel;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -89,6 +91,11 @@ public class PersonServiceMock implements PersonService {
 
     @Override
     public Map<AktivitaetsTyp, BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis) {
+        return Collections.emptyMap();
+    }
+
+    @Override
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, StackedColumnChartPanel.ChartIntervall chartIntervall) {
         return Collections.emptyMap();
     }
 }

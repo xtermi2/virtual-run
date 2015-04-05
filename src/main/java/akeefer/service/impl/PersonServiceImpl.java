@@ -6,6 +6,7 @@ import akeefer.repository.ParentRepository;
 import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
+import akeefer.web.components.StackedColumnChartPanel;
 import com.google.appengine.api.datastore.Key;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.Validate;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
+import org.joda.time.ReadablePeriod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -337,6 +339,76 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         }
 
         return res;
+    }
+
+    @Override
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, StackedColumnChartPanel.ChartIntervall chartIntervall) {
+        User user = findUserById(userId);
+        if (null == user || CollectionUtils.isEmpty(user.getAktivitaeten())) {
+            return Collections.emptyMap();
+        }
+
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = new TreeMap<>(INTERVAL_COMPARATOR);
+        Interval zeitraum = chartIntervall.getIntervall();
+        List<Aktivitaet> akts = new ArrayList<>(Collections2.filter(user.getAktivitaeten(),
+                new AktivitaetsDatumVonBisFilter(zeitraum.getStart().toLocalDate(), zeitraum.getEnd().toLocalDate())));
+
+        for (Iterator<Interval> iter = new IntervalIterator(zeitraum, chartIntervall.getIteratorResolution()); iter.hasNext(); ) {
+            Interval interval = iter.next();
+            Map<AktivitaetsTyp, BigDecimal> dataInInterval = res.get(interval);
+            if (null == dataInInterval) {
+                dataInInterval = new HashMap<>();
+                res.put(interval, dataInInterval);
+            }
+            for (Iterator<Aktivitaet> aktIter = akts.iterator(); aktIter.hasNext(); ) {
+                Aktivitaet akt = aktIter.next();
+                if (interval.contains(new DateTime(akt.getAktivitaetsDatum()))) {
+                    aktIter.remove();
+                    BigDecimal distanz = dataInInterval.get(akt.getTyp());
+                    if (null == distanz) {
+                        distanz = BigDecimal.ZERO;
+                    }
+                    dataInInterval.put(akt.getTyp(), distanz.add(akt.getDistanzInKilometer()));
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private static final Comparator<Interval> INTERVAL_COMPARATOR = new IntervalComparator();
+
+    static final class IntervalComparator implements Comparator<Interval> {
+        @Override
+        public int compare(Interval o1, Interval o2) {
+            return o1.getStart().compareTo(o2.getStart());
+        }
+    }
+
+    static final class IntervalIterator implements Iterator<Interval> {
+
+        private Interval zeitraum;
+        private ReadablePeriod resolution;
+
+        IntervalIterator(Interval zeitraum, ReadablePeriod resolution) {
+
+            this.zeitraum = zeitraum;
+            this.resolution = resolution;
+        }
+
+        @Override
+        public boolean hasNext() {
+            DateTime start = zeitraum.getEnd().minus(resolution);
+            return zeitraum.contains(start) || zeitraum.getStart().equals(start);
+        }
+
+        @Override
+        public Interval next() {
+            DateTime start = zeitraum.getEnd().minus(resolution);
+            Interval res = zeitraum.withStart(start);
+            zeitraum = zeitraum.withEnd(start);
+            return res;
+        }
     }
 
 

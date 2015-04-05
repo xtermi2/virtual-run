@@ -5,7 +5,9 @@ import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.User;
 import akeefer.service.dto.Statistic;
+import akeefer.web.components.StackedColumnChartPanel;
 import com.google.appengine.api.datastore.Key;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
@@ -39,4 +41,7 @@ public interface PersonService {
     void sendStatisticMail(BenachrichtigunsIntervall interval);
 
     Map<AktivitaetsTyp,BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis);
+
+    Map<Interval,Map<AktivitaetsTyp,BigDecimal>> createStackedColumsChartData(Key userId,
+                                                                              StackedColumnChartPanel.ChartIntervall chartIntervall);
 }
