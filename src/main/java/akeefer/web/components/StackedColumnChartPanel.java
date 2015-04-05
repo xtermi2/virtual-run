@@ -7,7 +7,6 @@ import akeefer.web.charts.functions.StackTotalKmFormatter;
 import akeefer.web.components.layout.Panel;
 import akeefer.web.components.validation.LocalizedPropertyValidator;
 import com.googlecode.wickedcharts.highcharts.options.*;
-import com.googlecode.wickedcharts.highcharts.options.functions.StackTotalFormatter;
 import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.highcharts.options.series.SimpleSeries;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
