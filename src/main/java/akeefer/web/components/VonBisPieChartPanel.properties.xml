@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+    <entry key="chartIntervall">Zeitraum</entry>
     <entry key="vonDatumLabel">Von</entry>
     <entry key="bisDatumLabel">Bis</entry>
     <entry key="statPieTitel">Verteilung der Aktivitäten nach Typ</entry>
