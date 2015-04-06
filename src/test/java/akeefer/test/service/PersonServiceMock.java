@@ -4,7 +4,7 @@ import akeefer.model.*;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import akeefer.test.TestScopedComponent;
-import akeefer.web.components.StackedColumnChartPanel;
+import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
@@ -95,7 +95,7 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, StackedColumnChartPanel.ChartIntervall chartIntervall) {
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
         return Collections.emptyMap();
     }
 }

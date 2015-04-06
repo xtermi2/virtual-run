@@ -3,6 +3,7 @@ package akeefer.web.components;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
+import akeefer.web.charts.ChartIntervall;
 import akeefer.web.charts.functions.StackTotalKmFormatter;
 import akeefer.web.components.layout.Panel;
 import akeefer.web.components.validation.LocalizedPropertyValidator;
@@ -21,12 +22,11 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.*;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class StackedColumnChartPanel extends Panel {
@@ -83,7 +83,6 @@ public class StackedColumnChartPanel extends Panel {
         Map<Interval, Map<AktivitaetsTyp, BigDecimal>> data = personService.createStackedColumsChartData(
                 VRSession.get().getUser().getId(), chartIntervall);
         List<String> xCategories = new ArrayList<>();
-        final Options options = new Options();
         Map<AktivitaetsTyp, SimpleSeries> seriesMap = new HashMap<>();
         int i = 0;
         for (Map.Entry<Interval, Map<AktivitaetsTyp, BigDecimal>> entry : data.entrySet()) {
@@ -97,40 +96,32 @@ public class StackedColumnChartPanel extends Panel {
                     seriesMap.put(entryResolution.getKey(), series);
                     initSeries(series, data.size());
                 }
-                series.getData().set(i, entryResolution.getValue());
+                series.getData().set(i, entryResolution.getValue().setScale(3, RoundingMode.HALF_UP));
             }
             i++;
         }
 
-        options.setSeries(new ArrayList<Series<?>>(seriesMap.values()));
-        options.setChartOptions(new ChartOptions().setType(SeriesType.COLUMN))
+        final Options options = new Options()
+                .setChartOptions(new ChartOptions().setType(SeriesType.COLUMN))
                 .setTitle(new Title(new StringResourceModel("statTitel", this, null).getString()))
                 .setTooltip(new Tooltip()
                                 .setFormatter(new StackTotalKmFormatter())
                 )
-        ;
-        options.setxAxis(new Axis()
-                .setCategories(xCategories));
-        options.setyAxis(new Axis()
-                .setMin(0)
-                .setTitle(new Title(new StringResourceModel("statGesamtKm", this, null).getString()))
-                .setStackLabels(new StackLabels()
-                                .setEnabled(Boolean.TRUE)
-                ));
-        options.setLegend(new Legend()
-                .setAlign(HorizontalAlignment.RIGHT)
-                .setX(-100)
-                .setVerticalAlign(VerticalAlignment.TOP)
-                .setY(20)
-                .setFloating(Boolean.TRUE)
-                .setBorderWidth(1)
-                .setShadow(Boolean.FALSE));
-        options.setPlotOptions(new PlotOptionsChoice()
-                .setColumn(new PlotOptions()
-                        .setStacking(Stacking.NORMAL)
-                        .setDataLabels(new DataLabels()
-                                        .setEnabled(Boolean.TRUE)
-                        )));
+                .setPlotOptions(new PlotOptionsChoice()
+                        .setColumn(new PlotOptions()
+                                .setStacking(Stacking.NORMAL)
+                                .setDataLabels(new DataLabels()
+                                                .setEnabled(true)
+                                )))
+                .setxAxis(new Axis()
+                        .setCategories(xCategories))
+                .setyAxis(new Axis()
+                        .setMin(new BigDecimal("0.001"))
+                        .setTitle(new Title(new StringResourceModel("statGesamtKm", this, null).getString()))
+                        .setStackLabels(new StackLabels()
+                                        .setEnabled(true)
+                        ))
+                .setSeries(new ArrayList<Series<?>>(seriesMap.values()));
         return options;
     }
 
@@ -148,57 +139,4 @@ public class StackedColumnChartPanel extends Panel {
         chart.setOptions(createChartOptions());
     }
 
-    public static enum ChartIntervall {
-        Woche(Weeks.ONE, Days.ONE, new DateTimeFormatterBuilder().
-                appendDayOfWeekShortText()
-                .appendLiteral(' ')
-                .appendDayOfMonth(1)
-                .appendLiteral('.')
-                .toFormatter()),
-        Monat(Months.ONE, Days.ONE, new DateTimeFormatterBuilder()
-                .appendDayOfMonth(1)
-                .appendLiteral(". ")
-                .appendMonthOfYearShortText()
-                .toFormatter()),
-        Jahr(Years.ONE, Months.ONE, new DateTimeFormatterBuilder()
-                .appendMonthOfYearShortText()
-                .appendLiteral(' ')
-                .appendYear(2, 2)
-                .toFormatter()),
-        Gesamt(Years.years(10), Years.ONE, new DateTimeFormatterBuilder()
-                .appendYear(4, 4)
-                .toFormatter());
-
-        private final ReadablePeriod dauer;
-        private final ReadablePeriod iteratorResolution;
-        private final DateTimeFormatter formatter;
-
-        ChartIntervall(ReadablePeriod dauer, ReadablePeriod iteratorResolution, DateTimeFormatter formatter) {
-            this.dauer = dauer;
-            this.iteratorResolution = iteratorResolution;
-            this.formatter = formatter;
-        }
-
-        public Interval getIntervall() {
-            if (Gesamt.equals(this)) {
-                return new Interval(dauer, DateTime.now().withMillisOfDay(0).withDayOfYear(1).plusYears(1));
-            } else if (Jahr.equals(this)) {
-                return new Interval(dauer, DateTime.now().withMillisOfDay(0).withDayOfMonth(1).plusMonths(1));
-            } else {
-                return new Interval(dauer, DateTime.now().withMillisOfDay(0).plusDays(1));
-            }
-        }
-
-        public ReadablePeriod getDauer() {
-            return dauer;
-        }
-
-        public ReadablePeriod getIteratorResolution() {
-            return iteratorResolution;
-        }
-
-        public String getBeschreibung(Interval interval) {
-            return formatter.print(interval.getStart());
-        }
-    }
 }

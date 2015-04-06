@@ -27,6 +27,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Map;
 
@@ -89,7 +90,7 @@ public class VonBisPieChartPanel extends Panel {
                 new LocalDate(von), new LocalDate(bis));
         PointSeries pointSeries = new PointSeries();
         for (Map.Entry<AktivitaetsTyp, BigDecimal> dataEntry : data.entrySet()) {
-            pointSeries.addPoint(new Point(dataEntry.getKey().toVergangenheit(), dataEntry.getValue())
+            pointSeries.addPoint(new Point(dataEntry.getKey().toVergangenheit(), dataEntry.getValue().setScale(3, RoundingMode.HALF_UP))
                     .setColor(new RadialGradient()
                             .setCx(0.5)
                             .setCy(0.3)
@@ -104,7 +105,8 @@ public class VonBisPieChartPanel extends Panel {
                 .setTitle(new Title(new StringResourceModel("statPieTitel", this, null).getString()))
                 .addSeries(pointSeries
                         .setType(SeriesType.PIE)
-                        .setName(new StringResourceModel("statPieSeriesTitle", this, null).getString()))
+                        .setName(new StringResourceModel("statPieSeriesTitle", this, null).getString())
+                )
                 .setChartOptions(new ChartOptions()
                         .setPlotBackgroundColor(new NullColor())
                         .setPlotBorderWidth(null)

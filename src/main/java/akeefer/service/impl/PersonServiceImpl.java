@@ -6,7 +6,7 @@ import akeefer.repository.ParentRepository;
 import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
-import akeefer.web.components.StackedColumnChartPanel;
+import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.api.datastore.Key;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -342,7 +342,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
-    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, StackedColumnChartPanel.ChartIntervall chartIntervall) {
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
         User user = findUserById(userId);
         if (null == user || CollectionUtils.isEmpty(user.getAktivitaeten())) {
             return Collections.emptyMap();
