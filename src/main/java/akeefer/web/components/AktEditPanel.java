@@ -50,7 +50,8 @@ public class AktEditPanel extends Panel {
         form.add(distanzInKilometer.add(new LocalizedPropertyValidator<BigDecimal>()).add(PlaceholderBehavior.ofResourceKey("distanzInKilometerPlaceholder")));
         form.add(new FormComponentLabel("distanzInKilometerLabel", distanzInKilometer));
 
-        DropDownChoice<AktivitaetsTyp> typ = new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values())) {
+        DropDownChoice<AktivitaetsTyp> typ = new DropDownChoice<AktivitaetsTyp>("typ", Arrays.asList(AktivitaetsTyp.values()),
+                new EnumChoiceRenderer<AktivitaetsTyp>(form)) {
             @Override
             protected CharSequence getDefaultChoice(String selectedValue) {
                 // Dadurch kommt die "Bitte Waehlen" auswahl nicht

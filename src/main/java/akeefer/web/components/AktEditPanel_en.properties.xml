@@ -9,4 +9,11 @@
     <entry key="aktivitaetsDatum">Date:</entry>
     <entry key="aufzeichnungsart">Recording mode:</entry>
     <entry key="aktSaveSuccess">Activity successfully saved</entry>
+    <entry key="AktivitaetsTyp.laufen">running</entry>
+    <entry key="AktivitaetsTyp.radfahren">cycling</entry>
+    <entry key="AktivitaetsTyp.schwimmen">swimming</entry>
+    <entry key="AktivitaetsTyp.spezierengehen">walking</entry>
+    <entry key="AktivitaetsTyp.wandern">hiking</entry>
+    <entry key="AktivitaetsTyp.inlineskaten">inline skating</entry>
+    <entry key="AktivitaetsTyp.sonstiges">other</entry>
 </properties>

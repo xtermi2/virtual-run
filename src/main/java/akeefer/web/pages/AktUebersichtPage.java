@@ -1,10 +1,12 @@
 package akeefer.web.pages;
 
 import akeefer.model.Aktivitaet;
+import akeefer.model.AktivitaetsTyp;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
 import akeefer.web.components.AktLoadableDetachableModel;
 import akeefer.web.components.GenericSortableDataProvider;
+import akeefer.web.models.EnumPropertyModel;
 import com.visural.wicket.component.dialog.Dialog;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -20,6 +22,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -41,7 +44,37 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
         final IModel<List<Aktivitaet>> aktivitaetenModel = new AktLoadableDetachableModel(VRSession.get().getUser().getId());
         List<IColumn<Aktivitaet, String>> columns = new ArrayList<IColumn<Aktivitaet, String>>();
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Distanz (km)"), "distanzInKilometer", "distanzInKilometer"));
-        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Typ"), "typ", "typ"));
+        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Typ"), "typ", "typ") {
+            @Override
+            public IModel<Object> getDataModel(IModel<Aktivitaet> rowModel) {
+                logger.info("getPropertyExpression: " + getPropertyExpression());
+                final IModel<Object> propertyModel = super.getDataModel(rowModel);
+
+                IModel<Object> model = new IModel<Object>() {
+                    @Override
+                    public Object getObject() {
+                        Object object = propertyModel.getObject();
+                        logger.info("getObject(): ", object);
+                        return object;
+                    }
+
+                    @Override
+                    public void setObject(Object object) {
+                        logger.info("setObject(): ", object);
+                        propertyModel.setObject(object);
+                    }
+
+                    @Override
+                    public void detach() {
+                        logger.info("detach()");
+                        propertyModel.detach();
+                    }
+                };
+
+                PropertyModel<Object> enumProperty = new EnumPropertyModel<AktivitaetsTyp>(rowModel, getPropertyExpression(), AktUebersichtPage.this);
+                return enumProperty;
+            }
+        });
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Bezeichnung"), "bezeichnung", "bezeichnung"));
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Datum"), "aktivitaetsDatum", "aktivitaetsDatum"));
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Aufzeichnungsart"), "aufzeichnungsart", "aufzeichnungsart"));
