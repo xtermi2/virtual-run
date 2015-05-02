@@ -52,6 +52,8 @@ public class User implements Serializable, Comparable<User> {
     @NotNull
     private BenachrichtigunsIntervall benachrichtigunsIntervall = BenachrichtigunsIntervall.deaktiviert;
 
+    private boolean includeMeInStatisticMail;
+
     public User() {
     }
 
@@ -129,6 +131,14 @@ public class User implements Serializable, Comparable<User> {
 
     public void setBenachrichtigunsIntervall(BenachrichtigunsIntervall benachrichtigunsIntervall) {
         this.benachrichtigunsIntervall = benachrichtigunsIntervall;
+    }
+
+    public boolean isIncludeMeInStatisticMail() {
+        return includeMeInStatisticMail;
+    }
+
+    public void setIncludeMeInStatisticMail(boolean includeMeInStatisticMail) {
+        this.includeMeInStatisticMail = includeMeInStatisticMail;
     }
 
     @Transient

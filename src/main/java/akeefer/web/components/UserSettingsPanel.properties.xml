@@ -8,6 +8,7 @@
     <entry key="nickname">Benutzername:</entry>
     <entry key="nicknamePlaceholder">Benutzername</entry>
     <entry key="benachrichtigunsIntervall">Benachrichtigung über neue Aktivitäten</entry>
+    <entry key="includeMeInStatisticMail">Benachrichtigung mit eigenen Aktivitäten</entry>
     <entry key="changedSuccess">Enstellungen wurde Erfolgreich geändert</entry>
     <entry key="emailRequiredBenachrichtigunsIntervall">Es muss eine E-Mail Adresse angegeben werden wenn die Benachrichtigungsfunktion aktiviert ist</entry>
 </properties>

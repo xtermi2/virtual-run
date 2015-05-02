@@ -95,8 +95,6 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
 
         JavaScriptResourceRegistry.getInstance().setHighchartsReference("highcharts-3.0.2/highcharts.js");
         JavaScriptResourceRegistry.getInstance().setHighchartsExportingReference("highcharts-3.0.2/exporting.js");
-//        JavaScriptResourceRegistry.getInstance().setHighchartsMoreReference(...);
-//        JavaScriptResourceRegistry.getInstance().setJQueryReference(...);
     }
 
     @Override

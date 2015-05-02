@@ -517,7 +517,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
         @Override
         public boolean apply(Statistic input) {
-            return !user.equals(input.getUser());
+            return !user.equals(input.getUser()) || user.isIncludeMeInStatisticMail();
         }
     }
 

@@ -66,6 +66,10 @@ public class UserSettingsPanel extends Panel<User> {
         form.add(benachrichtigunsIntervall.add(new LocalizedPropertyValidator<BenachrichtigunsIntervall>()));
         form.add(new FormComponentLabel("benachrichtigunsIntervallLabel", benachrichtigunsIntervall));
 
+        final CheckBox includeMeInStatisticMail = new CheckBox("includeMeInStatisticMail");
+        form.add(includeMeInStatisticMail);
+        form.add(new FormComponentLabel("includeMeInStatisticMailLabel", includeMeInStatisticMail));
+
         final EmailTextField email = new EmailTextField("email");
         form.add(email.add(new LocalizedPropertyValidator<String>()).add(PlaceholderBehavior.ofResourceKey("emailPlaceholder")));
         form.add(new FormComponentLabel("emailLabel", email));
@@ -88,9 +92,6 @@ public class UserSettingsPanel extends Panel<User> {
 
             @Override
             public void validate(Form<?> form) {
-                //logger.info("input: ", benachrichtigunsIntervall.getInput());
-                //logger.info("inputConverted", benachrichtigunsIntervall.getConvertedInput());
-                //logger.info("input email: " + email.getInput());
                 if (!BenachrichtigunsIntervall.deaktiviert.equals(benachrichtigunsIntervall.getConvertedInput())) {
                     if (StringUtils.isBlank(email.getInput())) {
                         error(email, "emailRequiredBenachrichtigunsIntervall");

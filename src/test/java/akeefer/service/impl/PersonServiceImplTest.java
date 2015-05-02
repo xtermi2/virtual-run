@@ -192,6 +192,36 @@ public class PersonServiceImplTest {
     }
 
     @Test
+    public void testBuildMailBodyIncludeMe() throws Exception {
+        PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
+        // Mocks
+        User user1 = new User(createKey("User", "user1"));
+        user1.setUsername("user1");
+        user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
+
+        String mailBody = impl.buildMailBody(Sets.newHashSet(new Statistic(user1).add(AktivitaetsTyp.wandern, BigDecimal.TEN)), user1, BenachrichtigunsIntervall.taeglich);
+        assertEquals("Hallo user1," + LINE_SEPARATOR +
+                        LINE_SEPARATOR +
+                        "gestern ist nichts passiert. " +
+                        LINE_SEPARATOR + LINE_SEPARATOR +
+                        "http://localhost:8080",
+                mailBody);
+
+        // user 1 wanna see his own Activities.
+        user1.setIncludeMeInStatisticMail(true);
+
+        mailBody = impl.buildMailBody(Sets.newHashSet(new Statistic(user1).add(AktivitaetsTyp.wandern, BigDecimal.TEN)), user1, BenachrichtigunsIntervall.taeglich);
+        assertEquals("Hallo user1," + LINE_SEPARATOR +
+                        LINE_SEPARATOR +
+                        "gestern ist folgendes passiert: " + LINE_SEPARATOR +
+                        LINE_SEPARATOR +
+                        "user1 ist ..." + LINE_SEPARATOR +
+                        "... 10km gewandert" + LINE_SEPARATOR + LINE_SEPARATOR + LINE_SEPARATOR +
+                        "http://localhost:8080",
+                mailBody);
+    }
+
+    @Test
     public void testBuildMailBodyWoechentlich() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         // Mocks
