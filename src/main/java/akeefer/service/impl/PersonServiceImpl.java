@@ -6,6 +6,7 @@ import akeefer.repository.ParentRepository;
 import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
+import akeefer.util.Profiling;
 import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.api.datastore.Key;
 import com.google.common.base.Predicate;
@@ -62,12 +63,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Profiling
     @Transactional(readOnly = true)
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
 
     @Override
+    @Profiling
     @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
@@ -79,6 +82,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     @Transactional(readOnly = true)
     public String createPersonScript(Key logedInUserId) {
         Validate.notNull(logedInUserId);
@@ -102,6 +106,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = getUserByUsername(username);
         if (null == user) {
@@ -157,6 +162,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public Aktivitaet createAktivitaet(Aktivitaet akt, final User user) {
         User userTmp = userRepository.findOne(user.getId());
         if (null == akt.getId()) {
@@ -181,6 +187,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public User createUserIfAbsent(User user) {
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
@@ -206,6 +213,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
         if (null != aktivitaet) {
             user.getAktivitaeten().remove(aktivitaet);
@@ -224,6 +232,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     @Transactional(readOnly = true)
     public List<Aktivitaet> loadAktivitaeten(Key userId) {
         User user = userRepository.findOne(userId);
@@ -235,6 +244,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public void changePassword(Key userId, String cleartextPassword) {
         User user = userRepository.findOne(userId);
         logger.info("change password of user " + user);
@@ -243,12 +253,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public User updateUser(User user) {
         user = userRepository.save(user);
         return user;
     }
 
     @Override
+    @Profiling
     public User findUserById(Key userId) {
         if (null == userId) {
             logger.info("findUserById(null) returns null");
@@ -258,6 +270,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     @Transactional(readOnly = true)
     public Set<Statistic> createStatistic(BenachrichtigunsIntervall interval) {
         logger.info("createStatistic: " + interval);
@@ -283,6 +296,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public void sendStatisticMail(BenachrichtigunsIntervall interval) {
         Validate.notNull(interval, "interval must not be null");
         logger.info("sendStatisticMail: " + interval);
@@ -320,6 +334,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public Map<AktivitaetsTyp, BigDecimal> createPieChartData(final Key userId,
                                                               final LocalDate von,
                                                               final LocalDate bis) {
@@ -342,6 +357,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     }
 
     @Override
+    @Profiling
     public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
         User user = findUserById(userId);
         if (null == user || CollectionUtils.isEmpty(user.getAktivitaeten())) {

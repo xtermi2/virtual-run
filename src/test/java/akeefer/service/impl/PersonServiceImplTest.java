@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -99,6 +100,7 @@ public class PersonServiceImplTest {
         printHash(encoder, "norbert");
         printHash(encoder, "roland");
         printHash(encoder, "uli-hans");
+        printHash(encoder, "frank");
     }
 
     @Test
@@ -244,8 +246,7 @@ public class PersonServiceImplTest {
                 mailBody);
     }
 
-    private void printHash(org.springframework.security.crypto.password.PasswordEncoder encoder,
-                           String user) {
+    private void printHash(PasswordEncoder encoder, String user) {
         System.out.println(user + ": " + encoder.encode(user));
     }
 }

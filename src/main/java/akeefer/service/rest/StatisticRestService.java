@@ -47,22 +47,4 @@ public class StatisticRestService extends GsonRestResource {
             logger.warn("Fehler bei sendStatisticMail: " + e.getMessage(), e);
         }
     }
-
-//    @MethodMapping(value = "/taeglich", httpMethod = HttpMethod.GET)
-//    public void taeglich() {
-//        try {
-//            personService.sendStatisticMail(BenachrichtigunsIntervall.taeglich);
-//        } catch (Exception e) {
-//            logger.warn("Fehler bei sendStatisticMail: " + e.getMessage(), e);
-//        }
-//    }
-//
-//    @MethodMapping(value = "/woechnetlich", httpMethod = HttpMethod.GET)
-//    public void woechnetlich() {
-//        try {
-//            personService.sendStatisticMail(BenachrichtigunsIntervall.woechnetlich);
-//        } catch (Exception e) {
-//            logger.warn("Fehler bei sendStatisticMail: " + e.getMessage(), e);
-//        }
-//    }
 }

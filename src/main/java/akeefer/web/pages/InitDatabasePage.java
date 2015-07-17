@@ -22,6 +22,7 @@ public class InitDatabasePage extends AbstractBasePage {
         create("roland", SecurityRole.USER);
         create("norbert", SecurityRole.USER);
         create("uli-hans", SecurityRole.USER);
+        create("frank", SecurityRole.USER);
 
         // Startseite anzeigen
         setResponsePage(MapPage.class);
