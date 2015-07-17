@@ -189,6 +189,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     public User createUserIfAbsent(User user) {
+        logger.info("createUserIfAbsent: " + user);
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
             logger.info(String.format("User username='%s' already exists, i will not create a new one", user.getUsername()));

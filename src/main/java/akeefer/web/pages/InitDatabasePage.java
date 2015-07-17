@@ -18,11 +18,11 @@ public class InitDatabasePage extends AbstractBasePage {
     public InitDatabasePage(final PageParameters parameters) {
         super(parameters);
         create("andi", SecurityRole.ADMIN, SecurityRole.USER);
+        create("frank", SecurityRole.USER);
         create("sabine", SecurityRole.USER);
         create("roland", SecurityRole.USER);
         create("norbert", SecurityRole.USER);
         create("uli-hans", SecurityRole.USER);
-        create("frank", SecurityRole.USER);
 
         // Startseite anzeigen
         setResponsePage(MapPage.class);
