@@ -3,7 +3,12 @@
     <!--<application>noble-helper-766</application>-->
     <application>afrika-run</application>
     <version>021</version>
-    <threadsafe>false</threadsafe>
+    <!-- Performancetuning: Wir haben ja eine Servletbasierte App, daher muss sie auch threadSave sein -->
+    <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
+    <!-- Performancetuning: With async session persistence turned on, App Engine will submit a Task Queue task to write session data to the
+    datastore before writing the data to memcache
+    -> "true" scheint nicht zu funktionieren :( -->
+    <async-session-persistence enabled="false"/>
     <system-properties></system-properties>
 </appengine-web-app>
