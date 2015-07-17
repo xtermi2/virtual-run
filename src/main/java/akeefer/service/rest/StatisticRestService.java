@@ -31,10 +31,9 @@ public class StatisticRestService extends GsonRestResource {
     @MethodMapping(value = "/statistic/{intervall}", httpMethod = HttpMethod.GET)
     public void get(String intervall) {
         try {
-            boolean isLocalMode = RuntimeConfigurationType.DEVELOPMENT.equals(WicketApplication.get().getConfigurationType());
+            boolean isLocalMode = WicketApplication.isLocalMode();
             HttpServletRequest request = ((HttpServletRequest) RequestCycle.get().getRequest().getContainerRequest());
 
-            logger.info("isLocalMode: " + isLocalMode);
             String appEngineCronFlag = request.getHeader("X-AppEngine-Cron");
             logger.info("X-AppEngine-Cron=" + appEngineCronFlag);
 

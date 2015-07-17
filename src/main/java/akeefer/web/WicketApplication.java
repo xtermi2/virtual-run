@@ -16,8 +16,6 @@ import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.pageStore.memory.IDataStoreEvictionStrategy;
 import org.apache.wicket.pageStore.memory.PageNumberEvictionStrategy;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.slf4j.Logger;
@@ -141,5 +139,11 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
     @Override
     public IDataStoreEvictionStrategy getEvictionStrategy() {
         return new PageNumberEvictionStrategy(5);
+    }
+
+    public static boolean isLocalMode() {
+        boolean isLocalMode = RuntimeConfigurationType.DEVELOPMENT.equals(get().getConfigurationType());
+        LOGGER.info("isLocalMode: " + isLocalMode);
+        return isLocalMode;
     }
 }
