@@ -78,6 +78,10 @@
             <web-resource-name>appstats</web-resource-name>
             <url-pattern>/appstats/*</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>init</web-resource-name>
+            <url-pattern>/init*</url-pattern>
+        </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
         </auth-constraint>
