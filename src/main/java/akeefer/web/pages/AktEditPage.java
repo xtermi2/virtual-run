@@ -19,9 +19,6 @@ public class AktEditPage extends AbstractAuthenticatedBasePage {
 
     private static final long serialVersionUID = 1L;
 
-    @SpringBean
-    private PersonService personService;
-
     public AktEditPage(final PageParameters parameters) {
         super(parameters, false, true, false, false);
 
