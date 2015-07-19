@@ -2,7 +2,7 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <!--<application>noble-helper-766</application>-->
     <application>afrika-run</application>
-    <version>021</version>
+    <version>022</version>
     <!-- Performancetuning: Wir haben ja eine Servletbasierte App, daher muss sie auch threadSave sein -->
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
@@ -11,6 +11,7 @@
     -> "true" scheint nicht zu funktionieren :( -->
     <async-session-persistence enabled="false"/>
     <system-properties></system-properties>
+
     <!-- Admin console fuer Appstats
      https://cloud.google.com/appengine/docs/java/tools/appstats
      -->

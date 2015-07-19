@@ -31,6 +31,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CacheRemove;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -74,10 +76,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
-        if (null != user) {
-            logger.info(String.format("user (username='%s') has %s Aktivitaeten", username,
-                    null == user.getAktivitaeten() ? "null" : user.getAktivitaeten().size()));
-        }
+//        if (null != user) {
+//            logger.info(String.format("user (username='%s') has %s Aktivitaeten", username,
+//                    null == user.getAktivitaeten() ? "null" : user.getAktivitaeten().size()));
+//        }
         return user;
     }
 
@@ -91,9 +93,6 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         Set<User> users = new TreeSet<User>(new UserHintenComparator(logedInUserId));
         List<User> allUser = getAllUser();
         users.addAll(allUser);
-        // LogedInUser enfernen und ganz ans ende haengen
-        //users.remove(logedInUser);
-        //users.add(logedInUser);
         for (User user : users) {
             personScript.append("        {id: '").append(user.getUsername())
                     .append("', nickname: '").append(StringUtils.isBlank(user.getNickname()) ? user.getUsername() : user.getNickname())
@@ -151,11 +150,9 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     private int berechneDistanzInMeter(User user) {
         BigDecimal distanzInKm = BigDecimal.ZERO.setScale(3, RoundingMode.HALF_UP);
-        if (null != user.getAktivitaeten()) {
-            for (Aktivitaet akt : user.getAktivitaeten()) {
-                if (null != akt.getDistanzInMeter()) {
-                    distanzInKm = distanzInKm.add(akt.getDistanzInKilometer());
-                }
+        for (Aktivitaet akt : loadAktivitaeten(user.getUsername())) {
+            if (null != akt.getDistanzInMeter()) {
+                distanzInKm = distanzInKm.add(akt.getDistanzInKilometer());
             }
         }
         return distanzInKm.multiply(BigDecimal.valueOf(1000L)).intValue();
@@ -163,13 +160,13 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public Aktivitaet createAktivitaet(Aktivitaet akt, final User user) {
+    @CacheRemove(cacheName = "aktivitaeten")
+    public Aktivitaet createAktivitaet(@CacheKey Aktivitaet akt, final User user) {
         User userTmp = userRepository.findOne(user.getId());
         if (null == akt.getId()) {
             // neue Aktivitaet
             akt.setEingabeDatum(new Date());
             // Relationen herstellen bei neuer Akt
-            akt.setUser(userTmp);
             if (null == userTmp.getAktivitaeten()) {
                 userTmp.setAktivitaeten(new ArrayList<Aktivitaet>());
             }
@@ -177,11 +174,12 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         } else {
             akt.setUpdatedDatum(new Date());
         }
+        akt.setUser(userTmp);
 
         akt = aktivitaetRepository.save(akt);
 
         // muss immer pasieren, sonst wird in PROD die Liste in der Uebersicht nicht aktualisiert
-        user.setAktivitaeten(userTmp.getAktivitaeten());
+        //user.setAktivitaeten(userTmp.getAktivitaeten());
 
         return akt;
     }
@@ -217,13 +215,12 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
         if (null != aktivitaet) {
-            user.getAktivitaeten().remove(aktivitaet);
+            //user.getAktivitaeten().remove(aktivitaet);
             Aktivitaet toDelete = aktivitaetRepository.findOne(aktivitaet.getId());
             if (null != toDelete) {
                 logger.info("loesche aktivitaet " + toDelete.getId());
                 toDelete.getUser().getAktivitaeten().remove(toDelete);
-                aktivitaetRepository.delete(toDelete);
-                aktivitaetRepository.flush();
+                aktivitaetRepository.deleteAktivitaet(toDelete);
             } else {
                 logger.warn("akt nicht gefunden: " + aktivitaet.getId());
             }
@@ -237,11 +234,16 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Transactional(readOnly = true)
     public List<Aktivitaet> loadAktivitaeten(Key userId) {
         User user = userRepository.findOne(userId);
-        logger.info("Anzahl gefundene Aktivitaeten: " +
-                (null == user.getAktivitaeten() ?
-                        "null" :
-                        user.getAktivitaeten().size()));
-        return user.getAktivitaeten();
+        if (null == user) {
+            return Collections.emptyList();
+        }
+        return loadAktivitaeten(user.getUsername());
+    }
+
+    List<Aktivitaet> loadAktivitaeten(String owner) {
+        final List<Aktivitaet> aktivitaeten = aktivitaetRepository.findAllByOwner(owner);
+        logger.info("Anzahl gefundene Aktivitaeten: " + aktivitaeten.size());
+        return aktivitaeten;
     }
 
     @Override
@@ -283,10 +285,9 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             for (User user : users) {
                 Statistic statistic = new Statistic(user);
                 statistics.add(statistic);
-                if (null != user.getAktivitaeten()) {
-                    for (Aktivitaet akt : Iterables.filter(user.getAktivitaeten(), aktErstellungsdatumPredicate)) {
-                        statistic.add(akt.getTyp(), akt.getDistanzInKilometer());
-                    }
+                List<Aktivitaet> aktivitaeten = loadAktivitaeten(user.getUsername());
+                for (Aktivitaet akt : Iterables.filter(aktivitaeten, aktErstellungsdatumPredicate)) {
+                    statistic.add(akt.getTyp(), akt.getDistanzInKilometer());
                 }
             }
             return statistics;
@@ -339,12 +340,13 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     public Map<AktivitaetsTyp, BigDecimal> createPieChartData(final Key userId,
                                                               final LocalDate von,
                                                               final LocalDate bis) {
-        User user = findUserById(userId);
-        if (null == user || CollectionUtils.isEmpty(user.getAktivitaeten())) {
+        final List<Aktivitaet> aktivitaeten = loadAktivitaeten(userId);
+        if (CollectionUtils.isEmpty(aktivitaeten)) {
             return Collections.emptyMap();
         }
+
         Map<AktivitaetsTyp, BigDecimal> res = new HashMap<>();
-        for (Aktivitaet akt : Collections2.filter(user.getAktivitaeten(), new AktivitaetsDatumVonBisFilter(von, bis))) {
+        for (Aktivitaet akt : Collections2.filter(aktivitaeten, new AktivitaetsDatumVonBisFilter(von, bis))) {
             BigDecimal distanz = res.get(akt.getTyp());
             if (null == distanz) {
                 distanz = akt.getDistanzInKilometer();
@@ -360,14 +362,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
-        User user = findUserById(userId);
-        if (null == user || CollectionUtils.isEmpty(user.getAktivitaeten())) {
+        final List<Aktivitaet> aktivitaeten = loadAktivitaeten(userId);
+        if (CollectionUtils.isEmpty(aktivitaeten)) {
             return Collections.emptyMap();
         }
 
         Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = new TreeMap<>(INTERVAL_COMPARATOR);
         Interval zeitraum = chartIntervall.getIntervall();
-        List<Aktivitaet> akts = new ArrayList<>(Collections2.filter(user.getAktivitaeten(),
+        List<Aktivitaet> akts = new ArrayList<>(Collections2.filter(aktivitaeten,
                 new AktivitaetsDatumVonBisFilter(zeitraum.getStart().toLocalDate(), zeitraum.getEnd().toLocalDate())));
 
         for (Iterator<Interval> iter = new IntervalIterator(zeitraum, chartIntervall.getIteratorResolution()); iter.hasNext(); ) {
@@ -425,6 +427,11 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             Interval res = zeitraum.withStart(start);
             zeitraum = zeitraum.withEnd(start);
             return res;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("IntervalIterator does not support remove!");
         }
     }
 

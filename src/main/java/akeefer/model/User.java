@@ -40,7 +40,7 @@ public class User implements Serializable, Comparable<User> {
     @ManyToOne
     private Parent parent;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Aktivitaet> aktivitaeten = new ArrayList<Aktivitaet>();
 
     @Size(min = 1)
@@ -59,6 +59,38 @@ public class User implements Serializable, Comparable<User> {
 
     public User(Key id) {
         this.id = id;
+    }
+
+    private User(Builder builder) {
+        setId(builder.id);
+        setUsername(builder.username);
+        setPassword(builder.password);
+        setRoles(builder.roles);
+        setParent(builder.parent);
+        setAktivitaeten(builder.aktivitaeten);
+        setNickname(builder.nickname);
+        setEmail(builder.email);
+        setBenachrichtigunsIntervall(builder.benachrichtigunsIntervall);
+        setIncludeMeInStatisticMail(builder.includeMeInStatisticMail);
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static Builder newBuilder(User copy) {
+        Builder builder = new Builder();
+        builder.id = copy.id;
+        builder.username = copy.username;
+        builder.password = copy.password;
+        builder.roles = copy.roles;
+        builder.parent = copy.parent;
+        builder.aktivitaeten = copy.aktivitaeten;
+        builder.nickname = copy.nickname;
+        builder.email = copy.email;
+        builder.benachrichtigunsIntervall = copy.benachrichtigunsIntervall;
+        builder.includeMeInStatisticMail = copy.includeMeInStatisticMail;
+        return builder;
     }
 
     public Key getId() {
@@ -187,5 +219,75 @@ public class User implements Serializable, Comparable<User> {
                 .append("username", username)
                 .append("roles", roles)
                 .toString();
+    }
+
+    public static final class Builder {
+        private Key id;
+        private String username;
+        private String password;
+        private Set<SecurityRole> roles;
+        private Parent parent;
+        private List<Aktivitaet> aktivitaeten;
+        private String nickname;
+        private String email;
+        private BenachrichtigunsIntervall benachrichtigunsIntervall;
+        private boolean includeMeInStatisticMail;
+
+        private Builder() {
+        }
+
+        public Builder withId(Key id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder withRoles(Set<SecurityRole> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public Builder withParent(Parent parent) {
+            this.parent = parent;
+            return this;
+        }
+
+        public Builder withAktivitaeten(List<Aktivitaet> aktivitaeten) {
+            this.aktivitaeten = aktivitaeten;
+            return this;
+        }
+
+        public Builder withNickname(String nickname) {
+            this.nickname = nickname;
+            return this;
+        }
+
+        public Builder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder withBenachrichtigunsIntervall(BenachrichtigunsIntervall benachrichtigunsIntervall) {
+            this.benachrichtigunsIntervall = benachrichtigunsIntervall;
+            return this;
+        }
+
+        public Builder withIncludeMeInStatisticMail(boolean includeMeInStatisticMail) {
+            this.includeMeInStatisticMail = includeMeInStatisticMail;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

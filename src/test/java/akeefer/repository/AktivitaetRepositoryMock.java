@@ -1,7 +1,6 @@
 package akeefer.repository;
 
 import akeefer.model.Aktivitaet;
-import akeefer.model.User;
 import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
 import org.springframework.data.domain.Page;
@@ -12,10 +11,6 @@ import java.util.List;
 
 @TestScopedComponent
 public class AktivitaetRepositoryMock implements AktivitaetRepository {
-    @Override
-    public List<Aktivitaet> findByUser(User user) {
-        return null;
-    }
 
     @Override
     public <S extends Aktivitaet> S save(S entity) {
@@ -100,5 +95,15 @@ public class AktivitaetRepositoryMock implements AktivitaetRepository {
     @Override
     public <S extends Aktivitaet> List<S> save(Iterable<S> entities) {
         return null;
+    }
+
+    @Override
+    public List<Aktivitaet> findAllByOwner(String username) {
+        return null;
+    }
+
+    @Override
+    public void deleteAktivitaet(Aktivitaet aktivitaet) {
+
     }
 }

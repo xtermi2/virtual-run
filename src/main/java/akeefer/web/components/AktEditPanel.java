@@ -82,7 +82,5 @@ public class AktEditPanel extends Panel {
         };
         form.add(aufzeichnungsart.add(new LocalizedPropertyValidator<AktivitaetsAufzeichnung>()));
         form.add(new FormComponentLabel("aufzeichnungsartLabel", aufzeichnungsart));
-
-//        form.add(new SubmitLink("saveLink", form));
     }
 }

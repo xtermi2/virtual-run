@@ -47,7 +47,7 @@ public class Aktivitaet implements Serializable {
     @NotNull
     private AktivitaetsAufzeichnung aufzeichnungsart;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     private String bezeichnung;
@@ -239,6 +239,12 @@ public class Aktivitaet implements Serializable {
                 .toString();
     }
 
+    public Aktivitaet cloneWithoutUser() {
+        return Aktivitaet.newBuilder(this)
+                .withUser(null)
+                .build();
+    }
+
     public static final class Builder {
         private Key id;
         private BigDecimal distanzInKilometer;
@@ -254,52 +260,52 @@ public class Aktivitaet implements Serializable {
         private Builder() {
         }
 
-        public Builder id(Key id) {
+        public Builder withId(Key id) {
             this.id = id;
             return this;
         }
 
-        public Builder distanzInKilometer(BigDecimal distanzInKilometer) {
+        public Builder withDistanzInKilometer(BigDecimal distanzInKilometer) {
             this.distanzInKilometer = distanzInKilometer;
             return this;
         }
 
-        public Builder typ(AktivitaetsTyp typ) {
+        public Builder withTyp(AktivitaetsTyp typ) {
             this.typ = typ;
             return this;
         }
 
-        public Builder aktivitaetsDatum(Date aktivitaetsDatum) {
+        public Builder withAktivitaetsDatum(Date aktivitaetsDatum) {
             this.aktivitaetsDatum = aktivitaetsDatum;
             return this;
         }
 
-        public Builder eingabeDatum(Date eingabeDatum) {
+        public Builder withEingabeDatum(Date eingabeDatum) {
             this.eingabeDatum = eingabeDatum;
             return this;
         }
 
-        public Builder updatedDatum(Date updatedDatum) {
+        public Builder withUpdatedDatum(Date updatedDatum) {
             this.updatedDatum = updatedDatum;
             return this;
         }
 
-        public Builder aufzeichnungsart(AktivitaetsAufzeichnung aufzeichnungsart) {
+        public Builder withAufzeichnungsart(AktivitaetsAufzeichnung aufzeichnungsart) {
             this.aufzeichnungsart = aufzeichnungsart;
             return this;
         }
 
-        public Builder user(User user) {
+        public Builder withUser(User user) {
             this.user = user;
             return this;
         }
 
-        public Builder bezeichnung(String bezeichnung) {
+        public Builder withBezeichnung(String bezeichnung) {
             this.bezeichnung = bezeichnung;
             return this;
         }
 
-        public Builder owner(String owner) {
+        public Builder withOwner(String owner) {
             this.owner = owner;
             return this;
         }

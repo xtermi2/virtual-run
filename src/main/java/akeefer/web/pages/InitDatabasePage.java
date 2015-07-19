@@ -34,7 +34,7 @@ public class InitDatabasePage extends AbstractBasePage {
             Random random = new Random();
             for (int userIndex = 0; userIndex < users.size(); userIndex++) {
                 final User user = users.get(userIndex);
-                final int anzahlAktivitaeten = userIndex * 10;
+                final int anzahlAktivitaeten = userIndex * 5;
                 logger.info("creating " + anzahlAktivitaeten + " Aktivitaeten for user " + user.getUsername());
                 for (int i = 0; i < anzahlAktivitaeten; i++) {
                     Aktivitaet akt = new Aktivitaet();

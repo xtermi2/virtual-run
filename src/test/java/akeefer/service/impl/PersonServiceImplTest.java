@@ -14,6 +14,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,18 +24,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static akeefer.test.util.ProxyUtil.getTargetObject;
 import static com.google.appengine.api.datastore.KeyFactory.createKey;
 import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
@@ -59,7 +58,7 @@ public class PersonServiceImplTest {
     @Test
     public void testCreatePersonScript() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
-        PersonService spy = spy(impl);
+        PersonServiceImpl spy = spy(impl);
         // Mocks
         User user1 = new User(createKey("User", "user1"));
         user1.setUsername("foo");
@@ -67,16 +66,24 @@ public class PersonServiceImplTest {
         Aktivitaet aktUser1 = new Aktivitaet();
         aktUser1.setDistanzInMeter(4711);
         user1.setAktivitaeten(Arrays.asList(aktUser1));
-        //user1 = userRepository.save(user1);
         User user2 = new User(createKey("User", "user2"));
         user2.setUsername("user2");
-        //user2 = userRepository.save(user2);
         User user3 = new User(createKey("User", "user3"));
         user3.setUsername("user3");
-        //user3 = userRepository.save(user3);
         assertFalse("user1 is equals user2", user1.equals(user2));
-        List<User> users = Arrays.asList(user3, user1, user2);
+        final List<User> users = Arrays.asList(user3, user1, user2);
         doReturn(users).when(spy).getAllUser();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                for (User user : users) {
+                    if (invocation.getArguments()[0].equals(user.getUsername())) {
+                        return user.getAktivitaeten();
+                    }
+                }
+                return Collections.emptyList();
+            }
+        }).when(spy).loadAktivitaeten(anyString());
 
         User logedIn = new User(user1.getId());
         logedIn.setUsername("hallo");
@@ -106,17 +113,17 @@ public class PersonServiceImplTest {
     @Test
     public void testCreateStatistic() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
-        PersonService spy = spy(impl);
+        PersonServiceImpl spy = spy(impl);
         // Mocks
         User user1 = new User(createKey("User", "user1"));
         user1.setUsername("user1");
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
         user1.setAktivitaeten(Arrays.asList(
-                Aktivitaet.newBuilder().distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build(),
-                Aktivitaet.newBuilder().distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build(),
-                Aktivitaet.newBuilder().distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build(),
-                Aktivitaet.newBuilder().distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build(),
-                Aktivitaet.newBuilder().distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build()
+                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.ONE).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().toDate()).build(),
+                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(2)).withTyp(AktivitaetsTyp.radfahren).withEingabeDatum(new DateTime().minusDays(1).toDate()).build(),
+                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(3)).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().minusDays(2).toDate()).build(),
+                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(4)).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().minusDays(7).toDate()).build(),
+                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(5)).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().minusDays(8).toDate()).build()
         ));
 
         User user2 = new User(createKey("User", "user2"));
@@ -129,8 +136,19 @@ public class PersonServiceImplTest {
         user3.setAktivitaeten(user1.getAktivitaeten());
         user3.setUsername("user3");
 
-        List<User> users = Arrays.asList(user3, user1, user2);
+        final List<User> users = Arrays.asList(user3, user1, user2);
         doReturn(users).when(spy).getAllUser();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                for (User user : users) {
+                    if (invocation.getArguments()[0].equals(user.getUsername())) {
+                        return user.getAktivitaeten();
+                    }
+                }
+                return Collections.emptyList();
+            }
+        }).when(spy).loadAktivitaeten(anyString());
 
         Set<Statistic> statistics = spy.createStatistic(BenachrichtigunsIntervall.deaktiviert);
         assertEquals(3, statistics.size());

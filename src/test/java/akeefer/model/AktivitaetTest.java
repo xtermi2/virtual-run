@@ -1,10 +1,13 @@
 package akeefer.model;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class AktivitaetTest {
 
@@ -47,5 +50,18 @@ public class AktivitaetTest {
 
         akt.setDistanzInKilometer(new BigDecimal(1.9999));
         assertEquals(Integer.valueOf(1999), akt.getDistanzInMeter());
+    }
+
+    @Test
+    public void testCloneWithoutUser() throws Exception {
+        User user = User.newBuilder().withUsername("username1").build();
+        Aktivitaet akt = new Aktivitaet();
+        akt.setUser(user);
+        assertThat(akt.getOwner(), Matchers.is("username1"));
+
+        Aktivitaet clone = akt.cloneWithoutUser();
+        assertThat(clone, not(sameInstance(akt)));
+        assertThat(clone.getOwner(), is("username1"));
+        assertThat(clone.getUser(), nullValue());
     }
 }
