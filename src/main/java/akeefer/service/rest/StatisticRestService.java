@@ -3,7 +3,6 @@ package akeefer.service.rest;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.service.PersonService;
 import akeefer.web.WicketApplication;
-import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -45,5 +44,10 @@ public class StatisticRestService extends GsonRestResource {
         } catch (Exception e) {
             logger.warn("Fehler bei sendStatisticMail: " + e.getMessage(), e);
         }
+    }
+
+    @MethodMapping(value = "/ping", httpMethod = HttpMethod.GET)
+    public void ping() {
+        logger.debug("ping");
     }
 }
