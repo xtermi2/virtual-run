@@ -18,7 +18,7 @@ public class MapPage extends AbstractAuthenticatedBasePage {
 
     public MapPage(final PageParameters parameters) {
         super(parameters, true, false, false, false);
-
+        add(new MapPageTotalDistanceAjaxBehavior());
     }
 
     @Override

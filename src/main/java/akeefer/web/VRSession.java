@@ -22,12 +22,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 
 public class VRSession extends AuthenticatedWebSession {
 
     private static final Logger logger = LoggerFactory.getLogger(VRSession.class);
 
     private IModel<User> user = new Model<User>();
+
+    private BigDecimal totalDistanceInKm;
 
     //private transient HttpSession httpSession;
 
@@ -120,5 +123,13 @@ public class VRSession extends AuthenticatedWebSession {
 
     public User getUser() {
         return user.getObject();
+    }
+
+    public BigDecimal getTotalDistanceInKm() {
+        return totalDistanceInKm;
+    }
+
+    public void setTotalDistanceInKm(BigDecimal totalDistanceInKm) {
+        this.totalDistanceInKm = totalDistanceInKm;
     }
 }

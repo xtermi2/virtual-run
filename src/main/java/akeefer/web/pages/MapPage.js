@@ -106,6 +106,8 @@ function showSteps(directionResult) {
             }
         }
     }
+    // defined in MapPageTotalDistanceAjaxBehavior
+    sendDistance(distanceSum);
 }
 
 function attachInstructionText(marker, text) {
