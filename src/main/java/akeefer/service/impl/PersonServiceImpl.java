@@ -15,10 +15,7 @@ import com.google.common.collect.Iterables;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.LocalDate;
-import org.joda.time.ReadablePeriod;
+import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,7 +239,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     List<Aktivitaet> loadAktivitaeten(String owner) {
         final List<Aktivitaet> aktivitaeten = aktivitaetRepository.findAllByOwner(owner);
-        logger.info("Anzahl gefundene Aktivitaeten: " + aktivitaeten.size());
+        logger.info("Anzahl gefundene Aktivitaeten(" + owner + "): " + aktivitaeten.size());
         return aktivitaeten;
     }
 
@@ -390,6 +387,53 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                     dataInInterval.put(akt.getTyp(), distanz.add(akt.getDistanzInKilometer()));
                 }
             }
+        }
+
+        return res;
+    }
+
+    @Override
+    @Profiling
+    public Map<LocalDate, BigDecimal> createForecastData(String username,
+                                                         BigDecimal totalDistanceInKm) {
+        final List<Aktivitaet> aktivitaeten = loadAktivitaeten(username);
+        if (CollectionUtils.isEmpty(aktivitaeten)) {
+            return Collections.emptyMap();
+        }
+        final NavigableMap<LocalDate, BigDecimal> res = new TreeMap<>();
+
+        for (Aktivitaet akt : aktivitaeten) {
+            final LocalDate aktDate = new LocalDate(akt.getAktivitaetsDatum());
+
+            // Tagesstatistik erstellen
+            BigDecimal dayDistance = res.get(aktDate);
+            if (null == dayDistance) {
+                dayDistance = akt.getDistanzInKilometer();
+            } else {
+                dayDistance = dayDistance.add(akt.getDistanzInKilometer());
+            }
+            res.put(aktDate, dayDistance);
+        }
+
+        // aufsummieren
+        BigDecimal distanceInKm = BigDecimal.ZERO;
+        for (Map.Entry<LocalDate, BigDecimal> entry : res.entrySet()) {
+            // Gesammtdaten berechnen
+            distanceInKm = distanceInKm.add(entry.getValue());
+            entry.setValue(distanceInKm);
+        }
+
+        final LocalDate firstAkt = res.firstKey();
+
+        // forecast berechnen
+        if (null != totalDistanceInKm) {
+            Duration duration = firstAkt.toInterval().withEnd(new DateTime()).toDuration();
+            BigDecimal days = BigDecimal.valueOf(duration.getStandardDays());
+            BigDecimal forecastDays = days.divide(distanceInKm, 3, BigDecimal.ROUND_HALF_UP)
+                    .multiply(totalDistanceInKm).setScale(0, RoundingMode.HALF_UP);
+            res.put(firstAkt.plusDays(forecastDays.intValue()), totalDistanceInKm);
+        } else {
+            logger.warn("totalDistanceInKm is null! Can't calculate forecast!");
         }
 
         return res;

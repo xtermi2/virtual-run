@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="statTitel">Verlauf mit Prognose</entry>
+    <entry key="yAxisTitle">Distanz</entry>
+    <entry key="xAxisTitle">Zeit</entry>
+</properties>

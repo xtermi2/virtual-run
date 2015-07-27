@@ -44,4 +44,6 @@ public interface PersonService {
 
     Map<Interval,Map<AktivitaetsTyp,BigDecimal>> createStackedColumsChartData(Key userId,
                                                                               ChartIntervall chartIntervall);
+
+    Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm);
 }

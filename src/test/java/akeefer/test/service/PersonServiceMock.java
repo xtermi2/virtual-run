@@ -98,4 +98,9 @@ public class PersonServiceMock implements PersonService {
     public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
         return Collections.emptyMap();
     }
+
+    @Override
+    public Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm) {
+        return Collections.emptyMap();
+    }
 }

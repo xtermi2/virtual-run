@@ -6,10 +6,14 @@ import akeefer.web.WicketApplication;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class InitDatabasePage extends AbstractBasePage {
 
@@ -39,8 +43,8 @@ public class InitDatabasePage extends AbstractBasePage {
                 for (int i = 0; i < anzahlAktivitaeten; i++) {
                     Aktivitaet akt = new Aktivitaet();
                     akt.setDistanzInMeter(random.nextInt(10000));
-                    akt.setTyp(AktivitaetsTyp.laufen);
-                    akt.setAktivitaetsDatum(new Date());
+                    akt.setTyp(AktivitaetsTyp.values()[random.nextInt(AktivitaetsTyp.values().length)]);
+                    akt.setAktivitaetsDatum(new DateTime().minusDays(random.nextInt(50)).toDate());
                     akt.setBezeichnung(RandomStringUtils.randomAlphabetic(10));
                     akt.setOwner(user.getUsername());
                     akt.setAufzeichnungsart(AktivitaetsAufzeichnung.aufgezeichnet);

@@ -91,8 +91,9 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
 
         PackageScanner.scanPackage("akeefer.service.rest");
 
-        JavaScriptResourceRegistry.getInstance().setHighchartsReference("highcharts-3.0.2/highcharts.js");
-        JavaScriptResourceRegistry.getInstance().setHighchartsExportingReference("highcharts-3.0.2/exporting.js");
+        JavaScriptResourceRegistry.getInstance().setHighchartsReference("highcharts-4.1.7/highcharts.js");
+        JavaScriptResourceRegistry.getInstance().setHighchartsMoreReference("highcharts-4.1.7/highcharts-more.js");
+        JavaScriptResourceRegistry.getInstance().setHighchartsExportingReference("highcharts-4.1.7/exporting.js");
     }
 
     @Override
