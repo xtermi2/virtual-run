@@ -8,7 +8,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 public class StatisticPage extends AbstractAuthenticatedBasePage {
 
 
-    public StatisticPage(final PageParameters parameters) {
+    public StatisticPage(PageParameters parameters) {
         super(parameters, false, false, false, true);
 
         add(new ForecastPanel("forecast"));

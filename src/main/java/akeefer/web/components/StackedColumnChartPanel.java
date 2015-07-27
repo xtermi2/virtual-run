@@ -55,7 +55,7 @@ public class StackedColumnChartPanel extends Panel {
         };
         add(form);
 
-        final DropDownChoice<ChartIntervall> chartIntervall = new DropDownChoice<ChartIntervall>("chartIntervall",
+        DropDownChoice<ChartIntervall> chartIntervall = new DropDownChoice<ChartIntervall>("chartIntervall",
                 Arrays.asList(ChartIntervall.values())) {
             @Override
             protected CharSequence getDefaultChoice(String selectedValue) {
@@ -101,7 +101,7 @@ public class StackedColumnChartPanel extends Panel {
             i++;
         }
 
-        final Options options = new Options()
+        Options options = new Options()
                 .setChartOptions(new ChartOptions().setType(SeriesType.COLUMN))
                 .setTitle(new Title(new StringResourceModel("statTitel", this, null).getString()))
                 .setTooltip(new Tooltip()

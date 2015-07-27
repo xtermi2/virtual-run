@@ -24,10 +24,10 @@ public abstract class AbstractAuthenticatedBasePage extends AbstractBasePage {
     private final FeedbackPanel pageFeedbackPanel;
 
     protected AbstractAuthenticatedBasePage(PageParameters parameters,
-                                            final boolean mapView,
-                                            final boolean aktView,
-                                            final boolean userView,
-                                            final boolean statisticView) {
+                                            boolean mapView,
+                                            boolean aktView,
+                                            boolean userView,
+                                            boolean statisticView) {
         super(parameters);
 
         add(new MenuPanel("menuPanel", mapView, aktView, userView, statisticView));

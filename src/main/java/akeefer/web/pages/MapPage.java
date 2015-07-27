@@ -16,7 +16,7 @@ public class MapPage extends AbstractAuthenticatedBasePage {
     @SpringBean
     private PersonService personService;
 
-    public MapPage(final PageParameters parameters) {
+    public MapPage(PageParameters parameters) {
         super(parameters, true, false, false, false);
         add(new MapPageTotalDistanceAjaxBehavior());
     }

@@ -40,10 +40,14 @@ public interface PersonService {
 
     void sendStatisticMail(BenachrichtigunsIntervall interval);
 
-    Map<AktivitaetsTyp,BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis);
+    Map<AktivitaetsTyp, BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis);
 
-    Map<Interval,Map<AktivitaetsTyp,BigDecimal>> createStackedColumsChartData(Key userId,
-                                                                              ChartIntervall chartIntervall);
+    Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId,
+                                                                                ChartIntervall chartIntervall);
 
     Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm);
+
+    BigDecimal updateTotalDistance(BigDecimal totalDistanceInKm);
+
+    BigDecimal getTotalDistance();
 }

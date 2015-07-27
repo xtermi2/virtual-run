@@ -76,7 +76,7 @@ public class VonBisPieChartPanel extends Panel {
         form.add(bisDatum.add(datePickerBis).add(new LocalizedPropertyValidator<>()));
         form.add(new FormComponentLabel("bisDatumLabel", bisDatum));
 
-        final DropDownChoice<ChartIntervall> chartIntervallDropDown = new DropDownChoice<ChartIntervall>("chartIntervall",
+        DropDownChoice<ChartIntervall> chartIntervallDropDown = new DropDownChoice<ChartIntervall>("chartIntervall",
                 Arrays.asList(ChartIntervall.values())) {
             @Override
             protected CharSequence getDefaultChoice(String selectedValue) {
@@ -133,7 +133,7 @@ public class VonBisPieChartPanel extends Panel {
                                     .brighten(-0.3f))));
         }
 
-        final Options options = new Options()
+        Options options = new Options()
                 .setChartOptions(new ChartOptions().setType(SeriesType.PIE))
                 .setTitle(new Title(new StringResourceModel("statPieTitel", this, null).getString()))
                 .addSeries(pointSeries

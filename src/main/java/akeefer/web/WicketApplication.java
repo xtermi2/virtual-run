@@ -139,7 +139,7 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
 
     @Override
     public IDataStoreEvictionStrategy getEvictionStrategy() {
-        return new PageNumberEvictionStrategy(5);
+        return new PageNumberEvictionStrategy(3);
     }
 
     public static boolean isLocalMode() {

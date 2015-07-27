@@ -30,7 +30,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles        Model mit vorhandenen Rollen
      * @param all          Flag, ob alle oder nur eine der Rollen hinterlegt sein muss
      */
-    public RolesConditional(final IModel<Roles> roles, final IModel<Roles> rolesToCheck, boolean all) {
+    public RolesConditional(IModel<Roles> roles, IModel<Roles> rolesToCheck, boolean all) {
         super(roles);
         this.rolesToCheck = rolesToCheck;
         this.mode = all;
@@ -63,7 +63,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles Model der zu prüfenden Rollen
      * @return Conditional, das prüft, ob eine der angegebenen Rollen in der Session hinterlegt ist.
      */
-    public static IConditional<Roles> hasAnyRole(final IModel<Roles> roles) {
+    public static IConditional<Roles> hasAnyRole(IModel<Roles> roles) {
         return hasAnyRole(new SessionRolesModel(), roles);
     }
 
@@ -72,7 +72,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param rolesToCheck Model der zu prüfenden Rollen
      * @return Conditional, das prüft, ob eine der angegebenen Rollen in {@code rolesToCheck} in {@code roles} hinterlegt ist.
      */
-    public static IConditional<Roles> hasAnyRole(final IModel<Roles> roles, final IModel<Roles> rolesToCheck) {
+    public static IConditional<Roles> hasAnyRole(IModel<Roles> roles, IModel<Roles> rolesToCheck) {
         return new RolesConditional(roles, rolesToCheck, false);
     }
 
@@ -114,7 +114,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles Model der zu prüfenden Rollen
      * @return Conditional, das prüft, ob alle der angegebenen Rollen in der Session hinterlegt sind.
      */
-    public static IConditional<Roles> hasAllRoles(final IModel<Roles> roles) {
+    public static IConditional<Roles> hasAllRoles(IModel<Roles> roles) {
         return hasAllRoles(new SessionRolesModel(), roles);
     }
 
@@ -123,7 +123,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param rolesToCheck Model der zu prüfenden Rollen
      * @return Conditional, das prüft, ob alle der angegebenen Rollen in {@code rolesToCheck} in {@code roles} hinterlegt sind.
      */
-    public static IConditional<Roles> hasAllRoles(final IModel<Roles> roles, final IModel<Roles> rolesToCheck) {
+    public static IConditional<Roles> hasAllRoles(IModel<Roles> roles, IModel<Roles> rolesToCheck) {
         return new RolesConditional(roles, rolesToCheck, true);
     }
 
@@ -131,7 +131,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles Model der zu prüfenden Rollen
      * @return Conditional, das prüft, ob keine der angegebenen Rollen in der Session hinterlegt ist.
      */
-    public static IConditional<Roles> hasNoRoles(final IModel<Roles> roles) {
+    public static IConditional<Roles> hasNoRoles(IModel<Roles> roles) {
         return hasNoRoles(new SessionRolesModel(), roles);
     }
 
@@ -140,7 +140,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles        Model mit vorhandenen Rollen
      * @return Conditional, das prüft, ob keine der angegebenen Rollen in {@code rolesToCheck} in {@code roles} hinterlegt ist.
      */
-    public static IConditional<Roles> hasNoRoles(final IModel<Roles> roles, final IModel<Roles> rolesToCheck) {
+    public static IConditional<Roles> hasNoRoles(IModel<Roles> roles, IModel<Roles> rolesToCheck) {
         return not(new RolesConditional(roles, rolesToCheck, false));
     }
 
@@ -148,7 +148,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles Model der zu prüfenden Rollen
      * @return Conditional, das prüft, ob nicht alle der angegebenen Rollen in der Session hinterlegt sind.
      */
-    public static IConditional<Roles> hasNotAllRoles(final IModel<Roles> roles) {
+    public static IConditional<Roles> hasNotAllRoles(IModel<Roles> roles) {
         return hasNotAllRoles(new SessionRolesModel(), roles);
     }
 
@@ -157,7 +157,7 @@ public class RolesConditional extends AbstractConditional<Roles> {
      * @param roles        Model mit vorhandenen Rollen
      * @return Conditional, das prüft, ob nicht alle der angegebenen Rollen in {@code rolesToCheck} in {@code roles} hinterlegt sind.
      */
-    public static IConditional<Roles> hasNotAllRoles(final IModel<Roles> roles, final IModel<Roles> rolesToCheck) {
+    public static IConditional<Roles> hasNotAllRoles(IModel<Roles> roles, IModel<Roles> rolesToCheck) {
         return not(new RolesConditional(roles, rolesToCheck, true));
     }
 

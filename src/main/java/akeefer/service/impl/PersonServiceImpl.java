@@ -28,8 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.cache.annotation.CacheKey;
-import javax.cache.annotation.CacheRemove;
+import javax.cache.annotation.*;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -437,6 +436,22 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         }
 
         return res;
+    }
+
+    @Profiling
+    @Override
+    @CachePut(cacheName = "totalDistance")
+    public BigDecimal updateTotalDistance(@CacheValue BigDecimal totalDistanceInKm) {
+        return totalDistanceInKm;
+    }
+
+    @Profiling
+    @Override
+    @CacheResult(cacheName = "totalDistance")
+    public BigDecimal getTotalDistance() {
+        BigDecimal dummyTotalDistance = BigDecimal.valueOf(12867);
+        logger.info("returning dummy totalDistance: {}", dummyTotalDistance);
+        return dummyTotalDistance;
     }
 
     private static final Comparator<Interval> INTERVAL_COMPARATOR = new IntervalComparator();

@@ -66,14 +66,14 @@ public class UserSettingsPanel extends Panel<User> {
         form.add(benachrichtigunsIntervall.add(new LocalizedPropertyValidator<BenachrichtigunsIntervall>()));
         form.add(new FormComponentLabel("benachrichtigunsIntervallLabel", benachrichtigunsIntervall));
 
-        final CheckBox includeMeInStatisticMail = new CheckBox("includeMeInStatisticMail");
+        CheckBox includeMeInStatisticMail = new CheckBox("includeMeInStatisticMail");
         form.add(includeMeInStatisticMail);
         form.add(new FormComponentLabel("includeMeInStatisticMailLabel", includeMeInStatisticMail));
 
         final EmailTextField email = new EmailTextField("email");
         form.add(email.add(new LocalizedPropertyValidator<String>()).add(PlaceholderBehavior.ofResourceKey("emailPlaceholder")));
         form.add(new FormComponentLabel("emailLabel", email));
-        final IConditional<BenachrichtigunsIntervall> benachrichtigunsIntervallRequired = SimpleConditional.isOneOf(
+        IConditional<BenachrichtigunsIntervall> benachrichtigunsIntervallRequired = SimpleConditional.isOneOf(
                 new PropertyModel<BenachrichtigunsIntervall>(form.getModel(), "benachrichtigunsIntervall"), BenachrichtigunsIntervall.taeglich, BenachrichtigunsIntervall.woechnetlich);
         email.add(ConditionalModification.requiredIf(benachrichtigunsIntervallRequired));
         email.add(new RequiredBehavior());

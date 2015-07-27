@@ -299,7 +299,7 @@ public abstract class ConditionalModification extends Behavior implements ICompo
             applyStateOnCondition(getConditional().isFulfilled(), tag);
         }
 
-        protected void applyStateOnCondition(boolean condition, @Nonnull final ComponentTag tag) {
+        protected void applyStateOnCondition(boolean condition, @Nonnull ComponentTag tag) {
             modifyClass(tag, styleClass, condition);
         }
     }
@@ -311,7 +311,7 @@ public abstract class ConditionalModification extends Behavior implements ICompo
         }
 
         @Override
-        protected void applyStateOnCondition(boolean condition, @Nonnull final ComponentTag tag) {
+        protected void applyStateOnCondition(boolean condition, @Nonnull ComponentTag tag) {
             modifyClass(tag, styleClass, !condition);
         }
     }
@@ -378,7 +378,7 @@ public abstract class ConditionalModification extends Behavior implements ICompo
             applyStateOnCondition(getConditional().isFulfilled(), tag);
         }
 
-        protected void applyStateOnCondition(boolean condition, @Nonnull final ComponentTag tag) {
+        protected void applyStateOnCondition(boolean condition, @Nonnull ComponentTag tag) {
             if (condition) {
                 switchClass(tag, classUnless, classIf);
             } else {

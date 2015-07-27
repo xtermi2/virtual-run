@@ -23,7 +23,7 @@ public class InitDatabasePage extends AbstractBasePage {
     @SpringBean
     private PersonService personService;
 
-    public InitDatabasePage(final PageParameters parameters) {
+    public InitDatabasePage(PageParameters parameters) {
         super(parameters);
         List<User> users = new ArrayList<>();
         users.add(create("andi", SecurityRole.ADMIN, SecurityRole.USER));
@@ -37,8 +37,8 @@ public class InitDatabasePage extends AbstractBasePage {
             // Aktivitaeten anlegen
             Random random = new Random();
             for (int userIndex = 0; userIndex < users.size(); userIndex++) {
-                final User user = users.get(userIndex);
-                final int anzahlAktivitaeten = userIndex * 5;
+                User user = users.get(userIndex);
+                int anzahlAktivitaeten = userIndex * 5;
                 logger.info("creating " + anzahlAktivitaeten + " Aktivitaeten for user " + user.getUsername());
                 for (int i = 0; i < anzahlAktivitaeten; i++) {
                     Aktivitaet akt = new Aktivitaet();

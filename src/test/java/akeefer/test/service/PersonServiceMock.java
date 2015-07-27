@@ -103,4 +103,14 @@ public class PersonServiceMock implements PersonService {
     public Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm) {
         return Collections.emptyMap();
     }
+
+    @Override
+    public BigDecimal updateTotalDistance(BigDecimal totalDistanceInKm) {
+        return totalDistanceInKm;
+    }
+
+    @Override
+    public BigDecimal getTotalDistance() {
+        return BigDecimal.TEN;
+    }
 }

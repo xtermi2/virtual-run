@@ -19,7 +19,7 @@ public class AktEditPage extends AbstractAuthenticatedBasePage {
 
     private static final long serialVersionUID = 1L;
 
-    public AktEditPage(final PageParameters parameters) {
+    public AktEditPage(PageParameters parameters) {
         super(parameters, false, true, false, false);
 
         Aktivitaet akt = new Aktivitaet();
@@ -30,7 +30,7 @@ public class AktEditPage extends AbstractAuthenticatedBasePage {
         add(new AktEditPanel("editPanel", Model.of(akt)));
     }
 
-    public AktEditPage(final PageParameters parameters, final IModel<Aktivitaet> akt) {
+    public AktEditPage(PageParameters parameters, IModel<Aktivitaet> akt) {
         super(parameters, false, true, false, false);
         add(new AktEditPanel("editPanel", akt));
     }

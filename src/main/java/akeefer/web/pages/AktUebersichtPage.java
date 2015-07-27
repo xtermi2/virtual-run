@@ -41,7 +41,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
     public AktUebersichtPage(PageParameters parameters) {
         super(parameters, false, true, false, false);
         setDefaultModel(new Model<Aktivitaet>(null));
-        final IModel<List<Aktivitaet>> aktivitaetenModel = new AktLoadableDetachableModel(VRSession.get().getUser().getId());
+        IModel<List<Aktivitaet>> aktivitaetenModel = new AktLoadableDetachableModel(VRSession.get().getUser().getId());
         List<IColumn<Aktivitaet, String>> columns = new ArrayList<IColumn<Aktivitaet, String>>();
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Distanz (km)"), "distanzInKilometer", "distanzInKilometer"));
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Typ"), "typ", "typ") {
@@ -78,7 +78,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Bezeichnung"), "bezeichnung", "bezeichnung"));
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Datum"), "aktivitaetsDatum", "aktivitaetsDatum"));
         columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Aufzeichnungsart"), "aufzeichnungsart", "aufzeichnungsart"));
-        final GenericSortableDataProvider<Aktivitaet> dataProvider = new GenericSortableDataProvider<Aktivitaet>(aktivitaetenModel);
+        GenericSortableDataProvider<Aktivitaet> dataProvider = new GenericSortableDataProvider<Aktivitaet>(aktivitaetenModel);
         dataProvider.setSort("aktivitaetsDatum", SortOrder.DESCENDING);
         final AjaxFallbackDefaultDataTable<Aktivitaet, String> table = new AjaxFallbackDefaultDataTable<Aktivitaet, String>("table", columns, dataProvider, 10);
         table.setDefaultModel(aktivitaetenModel);
@@ -114,7 +114,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
                 }
             });
             add(new WebMarkupContainer("delete").add(dialog.getClickToOpenBehaviour()));
-            final AjaxLink<Aktivitaet> deleteButton = new AjaxLink<Aktivitaet>("yesButton", model) {
+            AjaxLink<Aktivitaet> deleteButton = new AjaxLink<Aktivitaet>("yesButton", model) {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     onDelete(target, getModel());

@@ -39,7 +39,7 @@ public class PlaceholderBehavior extends Behavior {
     }
 
     @Override
-    public void bind(final Component component) {
+    public void bind(Component component) {
         super.bind(component);
         if (placeholder instanceof IComponentAssignedModel) {
             // z.B. bei einem ResourceModel muss das model an eine Component gebunden werden um die Resource zu laden

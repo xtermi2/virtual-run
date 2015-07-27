@@ -60,8 +60,8 @@ public abstract class SimpleConditional {
     public static <T> IConditional<T> isSame(IModel<T> iModel, final IModel<T> otherModel) {
         return new AbstractConditional<T>(iModel) {
             @Override
-            public boolean isFulfilled(final T modelObject) {
-                final Object otherModelObject = otherModel != null ? otherModel.getObject() : null;
+            public boolean isFulfilled(T modelObject) {
+                Object otherModelObject = otherModel != null ? otherModel.getObject() : null;
                 return modelObject == otherModelObject || (null != modelObject && modelObject.equals(otherModelObject));
             }
         };
@@ -71,8 +71,8 @@ public abstract class SimpleConditional {
     public static IConditional<String> isSameIgnoreCase(IModel<String> iModel, final IModel<String> otherModel) {
         return new AbstractConditional<String>(iModel) {
             @Override
-            public boolean isFulfilled(final String modelObject) {
-                final String otherModelObject = otherModel != null ? otherModel.getObject() : null;
+            public boolean isFulfilled(String modelObject) {
+                String otherModelObject = otherModel != null ? otherModel.getObject() : null;
                 if (otherModelObject == null) {
                     return modelObject == null;
                 }
@@ -86,7 +86,7 @@ public abstract class SimpleConditional {
         return new AbstractConditional<T>(iModel) {
             @Override
             public boolean isFulfilled(T modelObject) {
-                final T otherModelObject = otherModel != null ? otherModel.getObject() : null;
+                T otherModelObject = otherModel != null ? otherModel.getObject() : null;
                 return modelObject == otherModelObject || modelObject != null && otherModelObject != null
                         && modelObject.compareTo(otherModelObject) == 0;
             }
@@ -98,7 +98,7 @@ public abstract class SimpleConditional {
         return new AbstractConditional<T>(iModel) {
             @Override
             public boolean isFulfilled(T modelObject) {
-                final T otherModelObject = otherModel != null ? otherModel.getObject() : null;
+                T otherModelObject = otherModel != null ? otherModel.getObject() : null;
                 return modelObject != null && otherModelObject != null && modelObject.compareTo(otherModelObject) < 0;
             }
         };
@@ -109,7 +109,7 @@ public abstract class SimpleConditional {
         return new AbstractConditional<T>(iModel) {
             @Override
             public boolean isFulfilled(T modelObject) {
-                final T otherModelObject = otherModel != null ? otherModel.getObject() : null;
+                T otherModelObject = otherModel != null ? otherModel.getObject() : null;
 
                 return modelObject != null && otherModelObject != null && modelObject.compareTo(otherModelObject) > 0;
             }
@@ -256,7 +256,7 @@ public abstract class SimpleConditional {
     }
 
     @Nonnull
-    public static <T> IConditional<T> isInstanceOf(final IModel<T> iModel, @Nonnull final Class<?> clazz) {
+    public static <T> IConditional<T> isInstanceOf(IModel<T> iModel, @Nonnull final Class<?> clazz) {
         return new AbstractConditional<T>(iModel) {
             @Override
             public boolean isFulfilled(T modelObject) {
@@ -266,12 +266,12 @@ public abstract class SimpleConditional {
     }
 
     @Nonnull
-    public static <T> IConditional<T> not(@Nonnull final IConditional<T> conditional) {
+    public static <T> IConditional<T> not(@Nonnull IConditional<T> conditional) {
         return new NotConditional<T>(conditional);
     }
 
     @Nonnull
-    public static IConditional<Void> and(final IConditional<?>... conditionals) {
+    public static IConditional<Void> and(IConditional<?>... conditionals) {
         return new AbstractChainingConditional(conditionals) {
             @Override
             protected boolean isFulfilled(List<? extends IConditional<?>> conditionals) {
@@ -286,7 +286,7 @@ public abstract class SimpleConditional {
     }
 
     @Nonnull
-    public static IConditional<Void> xor(final IConditional<?>... conditionals) {
+    public static IConditional<Void> xor(IConditional<?>... conditionals) {
         return new AbstractChainingConditional(conditionals) {
             @Override
             protected boolean isFulfilled(List<? extends IConditional<?>> conditionals) {
@@ -302,7 +302,7 @@ public abstract class SimpleConditional {
     }
 
     @Nonnull
-    public static IConditional<Void> or(final IConditional<?>... conditionals) {
+    public static IConditional<Void> or(IConditional<?>... conditionals) {
         return new AbstractChainingConditional(conditionals) {
             @Override
             protected boolean isFulfilled(List<? extends IConditional<?>> conditionals) {
@@ -447,7 +447,7 @@ public abstract class SimpleConditional {
         @Nonnull
         private IConditional<T> conditional;
 
-        public NotConditional(@Nonnull final IConditional<T> conditional) {
+        public NotConditional(@Nonnull IConditional<T> conditional) {
             this.conditional = conditional;
         }
 

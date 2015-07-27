@@ -58,7 +58,7 @@ public class ForecastPanel extends Panel {
         });
     }
 
-    private final static DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder()
+    private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder()
             .appendLiteral("Date.UTC(")
             .appendYear(4, 4)
             .appendLiteral(", ")
@@ -77,7 +77,7 @@ public class ForecastPanel extends Panel {
         super(id);
 
         // Create feedback panel and add to page
-        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel.setFilter(new ContainerFeedbackMessageFilter(this))
                 .setOutputMarkupId(true));
 
@@ -97,11 +97,14 @@ public class ForecastPanel extends Panel {
 
         List<Series<?>> series = new ArrayList<>(users.size());
         BigDecimal totalDistanceInKm = VRSession.get().getTotalDistanceInKm();
+        if (null == totalDistanceInKm) {
+            totalDistanceInKm = personService.getTotalDistance();
+        }
         for (User user : users) {
             final Map<LocalDate, BigDecimal> forecastData = personService.createForecastData(
                     user.getUsername(), totalDistanceInKm);
             if (MapUtils.isNotEmpty(forecastData)) {
-                final ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
+                ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
                 series.add(serie);
                 serie.setName(user.getAnzeigename());
                 serie.setZoneAxis("x");
@@ -116,7 +119,7 @@ public class ForecastPanel extends Panel {
         }
 
         // Build Options
-        final Options options = new Options()
+        Options options = new Options()
                 .setChartOptions(new ChartOptions()
                                 .setType(SeriesType.SPLINE)
                                 .setZoomType(ZoomType.X)

@@ -31,12 +31,12 @@ public abstract class PasswordEditPanel extends Panel {
         };
         add(form);
 
-        final PasswordTextField pw = new PasswordTextField("pw", pwModel);
+        PasswordTextField pw = new PasswordTextField("pw", pwModel);
         form.add(pw.add(new PatternValidator(PASSWORD_PATTERN))
                 .add(PlaceholderBehavior.ofResourceKey("pwPlaceholder")));
         form.add(new FormComponentLabel("pwLabel", pw));
 
-        final PasswordTextField pwRepeat = new PasswordTextField("pwRepeat", Model.of(""));
+        PasswordTextField pwRepeat = new PasswordTextField("pwRepeat", Model.of(""));
         form.add(pwRepeat.add(PlaceholderBehavior.ofResourceKey("pwRepeatPlaceholder")));
         form.add(new FormComponentLabel("pwRepeatLabel", pwRepeat));
 

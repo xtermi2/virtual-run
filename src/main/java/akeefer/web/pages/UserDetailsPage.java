@@ -14,7 +14,7 @@ public class UserDetailsPage extends AbstractAuthenticatedBasePage {
     @SpringBean
     private PersonService personService;
 
-    public UserDetailsPage(final PageParameters parameters) {
+    public UserDetailsPage(PageParameters parameters) {
         super(parameters, false, false, true, false);
 
         add(new UserSettingsPanel("userSettingsPanel", new UserLoadableDetacheableModel(VRSession.get().getUser().getId())));

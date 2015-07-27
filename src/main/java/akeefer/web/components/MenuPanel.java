@@ -8,14 +8,14 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 public class MenuPanel extends Panel {
 
-    public MenuPanel(final String id,
-                     final boolean mapView,
-                     final boolean aktView,
-                     final boolean userView,
-                     final boolean statisticView) {
+    public MenuPanel(String id,
+                     boolean mapView,
+                     boolean aktView,
+                     boolean userView,
+                     boolean statisticView) {
         super(id);
 
-        final Link mapButton = new Link("mapButton") {
+        Link mapButton = new Link("mapButton") {
             @Override
             public void onClick() {
                 setResponsePage(MapPage.class);
@@ -24,15 +24,15 @@ public class MenuPanel extends Panel {
         mapButton.setEnabled(!mapView);
         add(mapButton);
 
-        final Button personenPassendZoomen = new Button("personenPassendZoomen");
+        Button personenPassendZoomen = new Button("personenPassendZoomen");
         personenPassendZoomen.setVisible(mapView);
         add(personenPassendZoomen);
 
-        final Button gesamtansicht = new Button("gesamtansicht");
+        Button gesamtansicht = new Button("gesamtansicht");
         gesamtansicht.setVisible(mapView);
         add(gesamtansicht);
 
-        final Link aktUebersicht = new Link("aktUebersicht") {
+        Link aktUebersicht = new Link("aktUebersicht") {
             @Override
             public void onClick() {
                 setResponsePage(AktUebersichtPage.class);
@@ -41,7 +41,7 @@ public class MenuPanel extends Panel {
         aktUebersicht.setEnabled(!aktView);
         add(aktUebersicht);
 
-        final Link neueAktivitaet = new Link("neueAktivitaet") {
+        Link neueAktivitaet = new Link("neueAktivitaet") {
             @Override
             public void onClick() {
                 setResponsePage(AktEditPage.class);
@@ -50,7 +50,7 @@ public class MenuPanel extends Panel {
         neueAktivitaet.setVisible(aktView);
         add(neueAktivitaet);
 
-        final Link userSettings = new Link("userSettings") {
+        Link userSettings = new Link("userSettings") {
             @Override
             public void onClick() {
                 setResponsePage(UserDetailsPage.class);
@@ -59,7 +59,7 @@ public class MenuPanel extends Panel {
         userSettings.setEnabled(!userView);
         add(userSettings);
 
-        final Link statistics = new Link("statistics") {
+        Link statistics = new Link("statistics") {
             @Override
             public void onClick() {
                 setResponsePage(StatisticPage.class);

@@ -54,7 +54,7 @@ public final class LayoutUtils {
      * @param styleClass The style class. Not blank.
      * @param include    Should the class be included, i.e. added, or excluded, i.e. removed?
      */
-    public static void modifyClass(@Nonnull final ComponentTag tag, @Nonnull final String styleClass, final boolean include) {
+    public static void modifyClass(@Nonnull ComponentTag tag, @Nonnull String styleClass, boolean include) {
         modifyAttributeValue(tag, CLASS_ATTRIBUTE, styleClass, CLASS_SEPARATOR, include);
     }
 
@@ -65,7 +65,7 @@ public final class LayoutUtils {
      * @param oldClass The old style class. Not blank.
      * @param newClass The new style class. Not blank.
      */
-    public static void switchClass(@Nonnull final ComponentTag tag, @Nonnull final String oldClass, @Nonnull final String newClass) {
+    public static void switchClass(@Nonnull ComponentTag tag, @Nonnull String oldClass, @Nonnull String newClass) {
         switchAttributeValue(tag, CLASS_ATTRIBUTE, oldClass, newClass);
     }
 
@@ -76,7 +76,7 @@ public final class LayoutUtils {
      * @param oldStyle The old style class. Not blank.
      * @param newStyle The new style class. Not blank.
      */
-    public static void switchStyle(@Nonnull final ComponentTag tag, @Nonnull final String oldStyle, @Nonnull final String newStyle) {
+    public static void switchStyle(@Nonnull ComponentTag tag, @Nonnull String oldStyle, @Nonnull String newStyle) {
         switchAttributeValue(tag, STYLE_ATTRIBUTE, oldStyle, newStyle);
     }
 
@@ -87,7 +87,7 @@ public final class LayoutUtils {
      * @param styleValue The style value. Not blank.
      * @param include    Should the value be included, i.e. added, or excluded, i.e. removed?
      */
-    public static void modifyStyle(@Nonnull final ComponentTag tag, @Nonnull final String styleValue, final boolean include) {
+    public static void modifyStyle(@Nonnull ComponentTag tag, @Nonnull String styleValue, boolean include) {
         modifyAttributeValue(tag, STYLE_ATTRIBUTE, styleValue, CLASS_SEPARATOR, include);
     }
 
@@ -97,7 +97,7 @@ public final class LayoutUtils {
      * @param tag      The tag.
      * @param newTitle new title
      */
-    public static void switchTitle(@Nonnull final ComponentTag tag, final String newTitle) {
+    public static void switchTitle(@Nonnull ComponentTag tag, String newTitle) {
         tag.put(TITLE_ATTRIBUTE, (newTitle != null ? newTitle : ""));
     }
 
@@ -110,8 +110,8 @@ public final class LayoutUtils {
      * @param separator Separator for values. Not <code>null</code>.
      * @param include   Should the class be included, i.e. added, or excluded, i.e. removed?
      */
-    private static void modifyAttributeValue(@Nonnull final ComponentTag tag, @Nonnull final String attribute, @Nonnull final String value,
-                                             @Nonnull final String separator, final boolean include) {
+    private static void modifyAttributeValue(@Nonnull ComponentTag tag, @Nonnull String attribute, @Nonnull String value,
+                                             @Nonnull String separator, boolean include) {
         Validate.isTrue(!isEmpty(attribute));
         Validate.isTrue(!isEmpty(value));
         String classValue = tag.getAttribute(attribute);
@@ -140,8 +140,8 @@ public final class LayoutUtils {
      * @param oldValue  The value to remove.
      * @param newValue  The value to insert.
      */
-    private static void switchAttributeValue(@Nonnull final ComponentTag tag, @Nonnull final String attribute, @Nonnull final String oldValue,
-                                             @Nonnull final String newValue) {
+    private static void switchAttributeValue(@Nonnull ComponentTag tag, @Nonnull String attribute, @Nonnull  String oldValue,
+                                             @Nonnull String newValue) {
         Validate.isTrue(!isEmpty(attribute));
         Validate.isTrue(!isEmpty(oldValue));
         Validate.isTrue(!isEmpty(newValue));

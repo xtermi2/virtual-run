@@ -32,8 +32,6 @@ public class VRSession extends AuthenticatedWebSession {
 
     private BigDecimal totalDistanceInKm;
 
-    //private transient HttpSession httpSession;
-
     @SpringBean
     private PersonService personService;
 
@@ -71,21 +69,6 @@ public class VRSession extends AuthenticatedWebSession {
         }
 
         return authenticated;
-
-//        User userTmp = null;
-//        try {
-//            userTmp = personService.getUserByUsername(username);
-//        } catch (RuntimeException e) {
-//            return false;
-//        }
-//        if (null != userTmp) {
-//            if (passwordEncoder.matches(password, userTmp.getPassword())) {
-//                this.user.setObject(userTmp);
-//                return true;
-//            }
-//        }
-//
-//        return false;
     }
 
     @Override
@@ -99,23 +82,7 @@ public class VRSession extends AuthenticatedWebSession {
             }
         }
         return roles;
-//        Roles roles = new Roles();
-//        getRolesIfSignedIn(roles);
-//        return roles;
     }
-
-//    private void getRolesIfSignedIn(Roles roles) {
-//        if (isSignedIn()) {
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            addRolesFromAuthentication(roles, authentication);
-//        }
-//    }
-//
-//    private void addRolesFromAuthentication(Roles roles, Authentication authentication) {
-//        for (GrantedAuthority authority : authentication.getAuthorities()) {
-//            roles.add(authority.getAuthority());
-//        }
-//    }
 
     public IModel<User> getUserModel() {
         return user;
