@@ -3,7 +3,10 @@ package akeefer.web.components;
 import akeefer.model.User;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
+import akeefer.web.charts.ChartIntervall;
+import akeefer.web.charts.UserSelect;
 import akeefer.web.components.layout.Panel;
+import akeefer.web.components.validation.LocalizedPropertyValidator;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -16,8 +19,14 @@ import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
 import com.googlecode.wickedcharts.wicket6.highcharts.JsonRendererFactory;
 import org.apache.commons.collections.MapUtils;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
@@ -27,10 +36,7 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Andreas Keefer
@@ -73,13 +79,41 @@ public class ForecastPanel extends Panel {
 
     private final Chart chart;
 
+    private UserSelect forcastUser = UserSelect.Ich;
+
     public ForecastPanel(String id) {
         super(id);
 
         // Create feedback panel and add to page
-        FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel.setFilter(new ContainerFeedbackMessageFilter(this))
                 .setOutputMarkupId(true));
+
+        Form<ForecastPanel> form = new Form<ForecastPanel>("form", new CompoundPropertyModel<ForecastPanel>(this)) {
+            @Override
+            protected void onSubmit() {
+            }
+        };
+        add(form);
+
+        DropDownChoice<UserSelect> forcastUserChoice = new DropDownChoice<UserSelect>("forcastUser",
+                Arrays.asList(UserSelect.values())) {
+            @Override
+            protected CharSequence getDefaultChoice(String selectedValue) {
+                // Dadurch kommt die "Bitte Waehlen" auswahl nicht
+                return "";
+            }
+        };
+        forcastUserChoice.add(new OnChangeAjaxBehavior() {
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                chart.setOptions(createChartOptions());
+                target.add(chart);
+                target.add(feedbackPanel);
+            }
+        });
+        form.add(forcastUserChoice.add(new LocalizedPropertyValidator<ChartIntervall>()));
+        form.add(new FormComponentLabel("forcastUserLabel", forcastUserChoice));
 
         // charts
         chart = new Chart("chart", new Options());
@@ -93,7 +127,17 @@ public class ForecastPanel extends Panel {
     }
 
     private Options createChartOptions() {
-        Set<User> users = Sets.newHashSet(VRSession.get().getUser());
+        Set<User> users;
+        switch (forcastUser) {
+            case Ich:
+                users = Sets.newHashSet(VRSession.get().getUser());
+                break;
+            case Alle:
+                users = new HashSet<>(personService.getAllUser());
+                break;
+            default:
+                throw new IllegalStateException("forcastUser not supported: " + forcastUser);
+        }
 
         List<Series<?>> series = new ArrayList<>(users.size());
         BigDecimal totalDistanceInKm = VRSession.get().getTotalDistanceInKm();
