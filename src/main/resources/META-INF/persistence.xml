@@ -19,6 +19,7 @@
             <!--<property name="datanucleus.singletonEMFForName" value="true"/>-->
 
             <property name="datanucleus.appengine.ignorableMetaDataBehavior" value="NONE" />
+            <property name="datanucleus.appengine.datastoreEnableXGTransactions" value="true"/>
         </properties>
 
     </persistence-unit>

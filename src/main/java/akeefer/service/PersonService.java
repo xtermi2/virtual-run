@@ -4,6 +4,7 @@ import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.User;
+import akeefer.service.dto.DbBackup;
 import akeefer.service.dto.Statistic;
 import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.api.datastore.Key;
@@ -22,9 +23,9 @@ public interface PersonService {
 
     String createPersonScript(Key logedInUserId);
 
-    Aktivitaet createAktivitaet(Aktivitaet akt, User user);
+    Aktivitaet createAktivitaet(Aktivitaet akt, User user, boolean setDate);
 
-    User createUserIfAbsent(User user);
+    User createUserIfAbsent(User user, boolean skipPwEncoding);
 
     void deleteAktivitaet(User user, Aktivitaet aktivitaet);
 
@@ -50,4 +51,12 @@ public interface PersonService {
     BigDecimal updateTotalDistance(BigDecimal totalDistanceInKm);
 
     BigDecimal getTotalDistance();
+
+    DbBackup createBackup();
+
+    /**
+     * @param dbBackup backup data
+     * @return HTTP status code
+     */
+    int importBackup(DbBackup dbBackup);
 }

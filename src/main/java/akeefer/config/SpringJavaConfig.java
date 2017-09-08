@@ -39,7 +39,7 @@ public class SpringJavaConfig {
             @Override
             public ArgumentHash hash(Object keySource) {
                 Aktivitaet akt = (Aktivitaet) keySource;
-                Assert.notNull(akt.getOwner());
+                Assert.notNull(akt.getOwner(), "akt.owner must not be null");
                 return new ArgumentHash(akt.getOwner());
             }
         });

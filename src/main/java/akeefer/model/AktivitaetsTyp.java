@@ -7,6 +7,7 @@ public enum AktivitaetsTyp {
     spezierengehen("spazieren gegangen"),
     wandern("gewandert"),
     inlineskaten("inline geskatet"),
+    skateboarden("skateboard gefahren"),
     sonstiges("?");
 
     private String vergangenheitsform;

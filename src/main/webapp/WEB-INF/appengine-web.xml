@@ -3,7 +3,7 @@
     <!--<application>noble-helper-766</application>-->
     <application>afrika-run</application>
     <module>default</module>
-    <version>023</version>
+    <version>024</version>
     <!-- Performancetuning: Wir haben ja eine Servletbasierte App, daher muss sie auch threadSave sein -->
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>

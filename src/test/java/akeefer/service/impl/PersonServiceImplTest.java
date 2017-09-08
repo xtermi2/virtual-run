@@ -28,7 +28,6 @@ import java.util.*;
 
 import static akeefer.test.util.ProxyUtil.getTargetObject;
 import static com.google.appengine.api.datastore.KeyFactory.createKey;
-import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.anyString;
@@ -37,6 +36,8 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
 public class PersonServiceImplTest {
+
+    private static String LINE_SEPARATOR = System.lineSeparator();
 
     @Autowired
     @Qualifier("personServiceImpl")

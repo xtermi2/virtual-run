@@ -37,7 +37,7 @@ public class AktEditPanel extends Panel {
             @Override
             protected void onSubmit() {
                 Aktivitaet akt = getModel().getObject();
-                akt = personService.createAktivitaet(akt, VRSession.get().getUser());
+                akt = personService.createAktivitaet(akt, VRSession.get().getUser(), true);
                 setModelObject(akt);
                 // ueber Session, dass die Meldung auf der naechsten Seite (AktUebersichtPage) angezeigt wird
                 getSession().info(getString("aktSaveSuccess"));

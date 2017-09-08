@@ -1,5 +1,6 @@
 package akeefer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,6 +24,7 @@ public class User implements Serializable, Comparable<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Key id;
 
     @NotNull

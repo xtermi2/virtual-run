@@ -2,6 +2,7 @@ package akeefer.test.service;
 
 import akeefer.model.*;
 import akeefer.service.PersonService;
+import akeefer.service.dto.DbBackup;
 import akeefer.service.dto.Statistic;
 import akeefer.test.TestScopedComponent;
 import akeefer.web.charts.ChartIntervall;
@@ -11,6 +12,7 @@ import com.google.common.collect.Lists;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
@@ -46,12 +48,12 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public Aktivitaet createAktivitaet(Aktivitaet akt, User user) {
+    public Aktivitaet createAktivitaet(Aktivitaet akt, User user, boolean setDate) {
         return akt;
     }
 
     @Override
-    public User createUserIfAbsent(User user) {
+    public User createUserIfAbsent(User user, boolean skipPwEncoding) {
         user.setId(null);
         return user;
     }
@@ -112,5 +114,15 @@ public class PersonServiceMock implements PersonService {
     @Override
     public BigDecimal getTotalDistance() {
         return BigDecimal.TEN;
+    }
+
+    @Override
+    public DbBackup createBackup() {
+        return DbBackup.newBuilder().build();
+    }
+
+    @Override
+    public int importBackup(DbBackup dbBackup) {
+        return HttpStatus.CREATED.value();
     }
 }

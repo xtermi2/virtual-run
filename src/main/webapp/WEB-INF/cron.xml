@@ -12,4 +12,10 @@
         <schedule>every monday 02:10</schedule>
         <timezone>Europe/Berlin</timezone>
     </cron>
+    <cron>
+        <url>/rest/ping</url>
+        <description>ping</description>
+        <schedule>every 1 minutes from 05:00 to 23:59</schedule>
+        <timezone>Europe/Berlin</timezone>
+    </cron>
 </cronentries>

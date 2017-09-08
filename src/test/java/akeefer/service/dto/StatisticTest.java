@@ -43,6 +43,7 @@ public class StatisticTest {
                 .add(AktivitaetsTyp.spezierengehen, BigDecimal.ONE)
                 .add(AktivitaetsTyp.wandern, BigDecimal.ONE)
                 .add(AktivitaetsTyp.inlineskaten, BigDecimal.ONE)
+                .add(AktivitaetsTyp.skateboarden, BigDecimal.ONE)
                 .add(AktivitaetsTyp.sonstiges, BigDecimal.ONE);
 
         assertThat(statistic.toMailString(), startsWith("Hans ist ..." + SystemUtils.LINE_SEPARATOR));
@@ -53,5 +54,6 @@ public class StatisticTest {
         assertThat(statistic.toMailString(), containsString("... 1km gewandert" + SystemUtils.LINE_SEPARATOR));
         assertThat(statistic.toMailString(), containsString("... 1,235km gelaufen" + SystemUtils.LINE_SEPARATOR));
         assertThat(statistic.toMailString(), containsString("... 1km inline geskatet" + SystemUtils.LINE_SEPARATOR));
+        assertThat(statistic.toMailString(), containsString("... 1km skateboard gefahren" + SystemUtils.LINE_SEPARATOR));
     }
 }

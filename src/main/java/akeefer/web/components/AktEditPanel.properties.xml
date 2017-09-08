@@ -15,5 +15,6 @@
     <entry key="AktivitaetsTyp.spezierengehen">spazieren gehen</entry>
     <entry key="AktivitaetsTyp.wandern">wandern</entry>
     <entry key="AktivitaetsTyp.inlineskaten">inlineskaten</entry>
+    <entry key="AktivitaetsTyp.skateboarden">skateboarden</entry>
     <entry key="AktivitaetsTyp.sonstiges">sonstiges</entry>
 </properties>

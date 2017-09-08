@@ -1,0 +1,3721 @@
+{
+  "users": [
+    {
+      "id": {
+        "parentKey": {
+          "kind": "Parent",
+          "appId": "afrika-run",
+          "id": 5629499534213120
+        },
+        "kind": "User",
+        "appId": "afrika-run",
+        "id": 4785074604081152
+      },
+      "username": "sabine",
+      "password": "$2a$12$24zTsqUGVAlGVhpeLCD16ugkusdGNGyFm6MjhwWMUkMiKodzHrCg6",
+      "roles": [
+        "USER"
+      ],
+      "benachrichtigunsIntervall": "deaktiviert",
+      "includeMeInStatisticMail": false
+    },
+    {
+      "id": {
+        "parentKey": {
+          "kind": "Parent",
+          "appId": "afrika-run",
+          "id": 5629499534213120
+        },
+        "kind": "User",
+        "appId": "afrika-run",
+        "id": 5066549580791808
+      },
+      "username": "andi",
+      "password": "$2a$12$fWvjIzZP9ul6J21Yabxfi.FLBsvqJbQ1.hGsLMTtoOIyCuSJSyOYG",
+      "roles": [
+        "USER",
+        "ADMIN"
+      ],
+      "benachrichtigunsIntervall": "deaktiviert",
+      "includeMeInStatisticMail": false
+    },
+    {
+      "id": {
+        "parentKey": {
+          "kind": "Parent",
+          "appId": "afrika-run",
+          "id": 5629499534213120
+        },
+        "kind": "User",
+        "appId": "afrika-run",
+        "id": 5348024557502464
+      },
+      "username": "norbert",
+      "password": "$2a$12$aXB7kYdYZAvg2nBG5TKBPucXzqhk/r/njvnhShTvPXz3EefyeI6q2",
+      "roles": [
+        "USER"
+      ],
+      "benachrichtigunsIntervall": "deaktiviert",
+      "includeMeInStatisticMail": false
+    },
+    {
+      "id": {
+        "parentKey": {
+          "kind": "Parent",
+          "appId": "afrika-run",
+          "id": 5629499534213120
+        },
+        "kind": "User",
+        "appId": "afrika-run",
+        "id": 5910974510923776
+      },
+      "username": "roland",
+      "password": "$2a$12$tg4oddUHKN/piYjqqG3FFeC7lKbQxBzT6bWONyVe/B4URiGSGRIS.",
+      "roles": [
+        "USER"
+      ],
+      "benachrichtigunsIntervall": "deaktiviert",
+      "includeMeInStatisticMail": false
+    },
+    {
+      "id": {
+        "parentKey": {
+          "kind": "Parent",
+          "appId": "afrika-run",
+          "id": 5629499534213120
+        },
+        "kind": "User",
+        "appId": "afrika-run",
+        "id": 6192449487634432
+      },
+      "username": "frank",
+      "password": "$2a$12$Ex.eoNclz8rLg2qBTT4NOOAEnmNBkbp.qhDt6X4CwiI5eoJkMJcIK",
+      "roles": [
+        "USER"
+      ],
+      "benachrichtigunsIntervall": "deaktiviert",
+      "includeMeInStatisticMail": false
+    },
+    {
+      "id": {
+        "parentKey": {
+          "kind": "Parent",
+          "appId": "afrika-run",
+          "id": 5629499534213120
+        },
+        "kind": "User",
+        "appId": "afrika-run",
+        "id": 6473924464345088
+      },
+      "username": "uli-hans",
+      "password": "$2a$12$KNA8hOLG8K8tEQ7J7u0.zOx2vutCQzfdkg0abke/o5UaShDOcupnW",
+      "roles": [
+        "USER"
+      ],
+      "benachrichtigunsIntervall": "deaktiviert",
+      "includeMeInStatisticMail": false
+    }
+  ],
+  "aktivitaeten": [
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4556376185503744
+      },
+      "distanzInKilometer": 7.238,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 1, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "UkEyjFGgyN",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4573968371548160
+      },
+      "distanzInKilometer": 3.410,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 27, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "zcKTAObyvW",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4732298045947904
+      },
+      "distanzInKilometer": 8.173,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 26, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "bcmiKwvJMd",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4855443348258816
+      },
+      "distanzInKilometer": 0.717,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Sep 4, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "zjfCxJeNPk",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5013773022658560
+      },
+      "distanzInKilometer": 0.309,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 27, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "UgHENExcAK",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5136918324969472
+      },
+      "distanzInKilometer": 4.660,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 20, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "mfdeuBtSKa",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5295247999369216
+      },
+      "distanzInKilometer": 1.073,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "FgszsCmefH",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5418393301680128
+      },
+      "distanzInKilometer": 7.000,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Jul 27, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "PSESMgCHDL",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5488762045857792
+      },
+      "distanzInKilometer": 0.823,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 28, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "BhoIJEeEMX",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5576722976079872
+      },
+      "distanzInKilometer": 1.135,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Sep 5, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xHwXhesyWs",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5682276092346368
+      },
+      "distanzInKilometer": 8.873,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 2, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "TbjHSyuIdx",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5699868278390784
+      },
+      "distanzInKilometer": 2.399,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "nuJSBofgMj",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5858197952790528
+      },
+      "distanzInKilometer": 1.812,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Jul 30, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "AjgsEqhywu",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5981343255101440
+      },
+      "distanzInKilometer": 6.050,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Jul 24, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "bbOJNzKlzQ",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6051711999279104
+      },
+      "distanzInKilometer": 0.832,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 25, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ddaVyHlWpp",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6139672929501184
+      },
+      "distanzInKilometer": 4.503,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 22, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "wqsTNWkhwd",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6262818231812096
+      },
+      "distanzInKilometer": 3.028,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 8, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "JCHhmJWWQh",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6421147906211840
+      },
+      "distanzInKilometer": 5.429,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 2, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "SXXKjsvJPt",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6614661952700416
+      },
+      "distanzInKilometer": 0.117,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 28, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "RhKlumCBjt",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 4785074604081152
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6702622882922496
+      },
+      "distanzInKilometer": 5.918,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Jul 27, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "rdIRlpcKed",
+      "owner": "sabine"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4512395720392704
+      },
+      "distanzInKilometer": 8.518,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 30, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "hcYLlEDacB",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4609152743636992
+      },
+      "distanzInKilometer": 7.868,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Jul 23, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "agZvcJJXZi",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4679521487814656
+      },
+      "distanzInKilometer": 8.835,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 1, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "QPdGBNHXKN",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4749890231992320
+      },
+      "distanzInKilometer": 7.551,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Jul 26, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "JurZShQkRA",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4767482418036736
+      },
+      "distanzInKilometer": 5.836,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Sep 7, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "IDjEVkuPaf",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4793870697103360
+      },
+      "distanzInKilometer": 9.931,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 15, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ceFOFBCZse",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4890627720347648
+      },
+      "distanzInKilometer": 2.074,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Sep 6, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "yMapqPxZYy",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4908219906392064
+      },
+      "distanzInKilometer": 0.680,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Jul 22, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "QYDZQEQwJr",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4960996464525312
+      },
+      "distanzInKilometer": 4.175,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Jul 21, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "vDLomZrPma",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5048957394747392
+      },
+      "distanzInKilometer": 9.334,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 11, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "zQWonfQMmD",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5075345673814016
+      },
+      "distanzInKilometer": 2.628,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 25, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "OsTjktqOkR",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5172102697058304
+      },
+      "distanzInKilometer": 2.734,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Jul 29, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "HRZdyBibxi",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5189694883102720
+      },
+      "distanzInKilometer": 0.795,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 12, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "zLXjJHaEYv",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5242471441235968
+      },
+      "distanzInKilometer": 7.040,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 12, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "UevukxDDmT",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5330432371458048
+      },
+      "distanzInKilometer": 7.595,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 10, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "LVFGjFMWYx",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5383208929591296
+      },
+      "distanzInKilometer": 1.240,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 9, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "QFdyfgoYuA",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5453577673768960
+      },
+      "distanzInKilometer": 4.007,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 1, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "viJOCgeJnn",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5471169859813376
+      },
+      "distanzInKilometer": 3.977,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Sep 3, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "CiSvVDKtba",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5523946417946624
+      },
+      "distanzInKilometer": 0.182,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "jyFdwbLCBr",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5611907348168704
+      },
+      "distanzInKilometer": 3.782,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 16, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "uNRbIPlxOI",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5638295627235328
+      },
+      "distanzInKilometer": 4.279,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 16, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "QiepjECqHg",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5735052650479616
+      },
+      "distanzInKilometer": 8.760,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 19, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "yGuyHLuiHr",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5752644836524032
+      },
+      "distanzInKilometer": 1.677,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 20, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "LxKTaRAeSM",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5805421394657280
+      },
+      "distanzInKilometer": 7.859,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 21, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "IzRuOXXvpV",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5875790138834944
+      },
+      "distanzInKilometer": 3.353,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 30, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "QoALIrLDkR",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5893382324879360
+      },
+      "distanzInKilometer": 9.954,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 5, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "pjTSSieiiD",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6016527627190272
+      },
+      "distanzInKilometer": 4.580,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 8, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "rPcSFDxgBB",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6034119813234688
+      },
+      "distanzInKilometer": 0.536,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Jul 27, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "PElSabLrlP",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6086896371367936
+      },
+      "distanzInKilometer": 9.101,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 7, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "yviqoLwzfN",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6174857301590016
+      },
+      "distanzInKilometer": 8.748,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Sep 1, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "eZZSrbeppp",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6201245580656640
+      },
+      "distanzInKilometer": 1.268,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Sep 6, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xHLnTudNdR",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6298002603900928
+      },
+      "distanzInKilometer": 2.228,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 20, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "jtWlDSdRUF",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6315594789945344
+      },
+      "distanzInKilometer": 4.275,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 21, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "saflsLIXTu",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6368371348078592
+      },
+      "distanzInKilometer": 5.949,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 31, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "jtdjeRuTgn",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6456332278300672
+      },
+      "distanzInKilometer": 1.543,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Jul 28, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "eDBVyGFMOl",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6509108836433920
+      },
+      "distanzInKilometer": 6.026,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 15, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "WBBPWnhIaS",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6579477580611584
+      },
+      "distanzInKilometer": 4.676,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 12, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "scLdLsqhZg",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6597069766656000
+      },
+      "distanzInKilometer": 6.397,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Jul 22, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ObefhCZDAK",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6649846324789248
+      },
+      "distanzInKilometer": 4.405,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 26, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "BPUkhuVoNh",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5348024557502464
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6737807255011328
+      },
+      "distanzInKilometer": 2.432,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Sep 3, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "tLRyXEmhMH",
+      "owner": "norbert"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4538783999459328
+      },
+      "distanzInKilometer": 2.896,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 15, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "BhZEsfBrKg",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4626744929681408
+      },
+      "distanzInKilometer": 9.857,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 1, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ZOnBqBcIIk",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4697113673859072
+      },
+      "distanzInKilometer": 9.162,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 2, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "snHYagUPpj",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4714705859903488
+      },
+      "distanzInKilometer": 1.818,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Jul 27, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "grGKPclyuq",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4820258976169984
+      },
+      "distanzInKilometer": 8.598,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "hvtuUTIBUl",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4837851162214400
+      },
+      "distanzInKilometer": 5.817,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Jul 26, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "yPJPyhfNAy",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4978588650569728
+      },
+      "distanzInKilometer": 4.865,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 15, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "NHcKfUHPUK",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4996180836614144
+      },
+      "distanzInKilometer": 4.505,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Jul 30, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "oqALvdhJLi",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5101733952880640
+      },
+      "distanzInKilometer": 7.868,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xjUqojBCOA",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5119326138925056
+      },
+      "distanzInKilometer": 7.791,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Sep 1, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "nefbBqKNXj",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5260063627280384
+      },
+      "distanzInKilometer": 5.203,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 12, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "LawkpsVSgL",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5277655813324800
+      },
+      "distanzInKilometer": 2.816,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 22, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "NezRSclshk",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5400801115635712
+      },
+      "distanzInKilometer": 0.436,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Sep 6, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "LLXhcCNbsg",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5541538603991040
+      },
+      "distanzInKilometer": 9.988,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "aNSVERAzRB",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5559130790035456
+      },
+      "distanzInKilometer": 1.592,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 17, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "mwXLMnNXMA",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5664683906301952
+      },
+      "distanzInKilometer": 7.366,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Sep 7, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "IsBqyvHBIH",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5823013580701696
+      },
+      "distanzInKilometer": 3.584,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 26, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "aNZKOcNINM",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5840605766746112
+      },
+      "distanzInKilometer": 2.559,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "yzCwrzjHdQ",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5946158883012608
+      },
+      "distanzInKilometer": 0.112,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 22, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "jtDHzyVYfD",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5963751069057024
+      },
+      "distanzInKilometer": 3.673,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Jul 29, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "AyVchrzujB",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6104488557412352
+      },
+      "distanzInKilometer": 0.187,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 15, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "CEfHfTYWxb",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6122080743456768
+      },
+      "distanzInKilometer": 7.245,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 29, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "SUjUEFxneN",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6227633859723264
+      },
+      "distanzInKilometer": 9.378,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Jul 22, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "qLDIIOGXSp",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6245226045767680
+      },
+      "distanzInKilometer": 7.491,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 14, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "tuegdAWnDA",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6385963534123008
+      },
+      "distanzInKilometer": 9.794,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 23, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "gUeRccWpuh",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6403555720167424
+      },
+      "distanzInKilometer": 8.672,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 30, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "kygJxjfIMM",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6526701022478336
+      },
+      "distanzInKilometer": 5.254,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Sep 3, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "OMrAYaQVRo",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6544293208522752
+      },
+      "distanzInKilometer": 8.972,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Jul 23, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "lNmgCmaWmu",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6667438510833664
+      },
+      "distanzInKilometer": 4.901,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:50 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:50 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "fmpcmzBceg",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 5910974510923776
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6685030696878080
+      },
+      "distanzInKilometer": 4.726,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Sep 6, 2017 4:05:43 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:43 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "LiPwgDJvFU",
+      "owner": "roland"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4644337115725824
+      },
+      "distanzInKilometer": 3.956,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 8, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "RjQcifeMcP",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4873035534303232
+      },
+      "distanzInKilometer": 6.082,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 6, 2017 4:05:48 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:48 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "TbyqOdElGU",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4925812092436480
+      },
+      "distanzInKilometer": 9.391,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 4, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "iULPaESKyP",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5207287069147136
+      },
+      "distanzInKilometer": 1.259,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Jul 21, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xTcqVtqsYJ",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5435985487724544
+      },
+      "distanzInKilometer": 1.415,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 19, 2017 4:05:48 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "nFqvZGpzpL",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5770237022568448
+      },
+      "distanzInKilometer": 5.224,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 17, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "AiQbctKYAe",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5998935441145856
+      },
+      "distanzInKilometer": 2.395,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Sep 1, 2017 4:05:48 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:48 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "iniPCfRwsL",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6280410417856512
+      },
+      "distanzInKilometer": 5.656,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Sep 7, 2017 4:05:48 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:48 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "UqXYNByFSC",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6333186975989760
+      },
+      "distanzInKilometer": 9.294,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Sep 4, 2017 4:05:42 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:42 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "zdvrgRPvqq",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6192449487634432
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6561885394567168
+      },
+      "distanzInKilometer": 4.940,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 1, 2017 4:05:49 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:49 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ypBjSgTQvC",
+      "owner": "frank"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4521191813414912
+      },
+      "distanzInKilometer": 3.479,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 2, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "zZnlKmJDlV",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4582764464570368
+      },
+      "distanzInKilometer": 0.408,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 9, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "znDGzKiUeG",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4591560557592576
+      },
+      "distanzInKilometer": 2.447,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 4, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xuTwIVKACd",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4653133208748032
+      },
+      "distanzInKilometer": 2.117,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Jul 21, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "dvPdKFOQBc",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4661929301770240
+      },
+      "distanzInKilometer": 8.188,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 30, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "HPZmSKZQfr",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4723501952925696
+      },
+      "distanzInKilometer": 9.784,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "NzKDaQxSCE",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4802666790125568
+      },
+      "distanzInKilometer": 6.113,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Sep 2, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "OGDDUBlxBh",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4864239441281024
+      },
+      "distanzInKilometer": 1.500,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 20, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "jobnpJbqeC",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4934608185458688
+      },
+      "distanzInKilometer": 6.705,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 23, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "FarScebuGn",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 4943404278480896
+      },
+      "distanzInKilometer": 1.291,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Jul 26, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "XAqIabEJPw",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5004976929636352
+      },
+      "distanzInKilometer": 4.620,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 4, 2017 4:05:53 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:53 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "lCxWFVjqHy",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5031365208702976
+      },
+      "distanzInKilometer": 9.031,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 27, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "tuxvDeGKqO",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5084141766836224
+      },
+      "distanzInKilometer": 0.670,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "XHvLmxAMFJ",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5145714417991680
+      },
+      "distanzInKilometer": 4.931,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Sep 7, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "pskaQKOqlS",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5154510511013888
+      },
+      "distanzInKilometer": 0.190,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 31, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "GvtTKMzzGV",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5216083162169344
+      },
+      "distanzInKilometer": 5.632,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 1, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "tpshUqCqiU",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5224879255191552
+      },
+      "distanzInKilometer": 3.444,
+      "typ": "inlineskaten",
+      "aktivitaetsDatum": "Sep 5, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ahlMpgAwhD",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5286451906347008
+      },
+      "distanzInKilometer": 2.314,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Aug 9, 2017 4:05:53 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:53 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "sqkqGBCoKu",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5312840185413632
+      },
+      "distanzInKilometer": 1.393,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 18, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "hwlYgDgpxf",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5356820650524672
+      },
+      "distanzInKilometer": 4.983,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 4, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "QMYIhueiED",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5365616743546880
+      },
+      "distanzInKilometer": 3.154,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 21, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "LYrxZAfimL",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5427189394702336
+      },
+      "distanzInKilometer": 4.732,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Jul 23, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "jpxSrzDunL",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5497558138880000
+      },
+      "distanzInKilometer": 3.476,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 3, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "EAvCKaXUXi",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5506354231902208
+      },
+      "distanzInKilometer": 3.625,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Sep 8, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "GQBcYRQSsC",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5594315162124288
+      },
+      "distanzInKilometer": 1.693,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 20, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "idiyiXFynp",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5647091720257536
+      },
+      "distanzInKilometer": 3.434,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Sep 6, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "DyUFhzQCXp",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5708664371412992
+      },
+      "distanzInKilometer": 1.841,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 30, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "rhSswjkCNg",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5717460464435200
+      },
+      "distanzInKilometer": 1.491,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 10, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "MHEAWsSPSw",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5779033115590656
+      },
+      "distanzInKilometer": 9.955,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "pTvugIEpyX",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5787829208612864
+      },
+      "distanzInKilometer": 7.029,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Jul 29, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "PndWYdRnlP",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5849401859768320
+      },
+      "distanzInKilometer": 3.053,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 25, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "lPJenvpDxy",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5919770603945984
+      },
+      "distanzInKilometer": 4.488,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Jul 26, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "vzreguZhiB",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5928566696968192
+      },
+      "distanzInKilometer": 3.451,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "TpSzEZrgeu",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 5990139348123648
+      },
+      "distanzInKilometer": 0.349,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Aug 21, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "UUZdEFVnnv",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6060508092301312
+      },
+      "distanzInKilometer": 7.709,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 16, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "wQMcuQlXBf",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6069304185323520
+      },
+      "distanzInKilometer": 6.041,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Sep 2, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "cVQVSnKeEt",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6130876836478976
+      },
+      "distanzInKilometer": 2.749,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Jul 31, 2017 4:05:53 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:53 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "nKMIqUzkVB",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6157265115545600
+      },
+      "distanzInKilometer": 2.748,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 19, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "fWumxrKLsp",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6210041673678848
+      },
+      "distanzInKilometer": 3.667,
+      "typ": "wandern",
+      "aktivitaetsDatum": "Jul 24, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "WrYQqoVqeG",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6271614324834304
+      },
+      "distanzInKilometer": 7.269,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Aug 9, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xquDLKRncd",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6341983069011968
+      },
+      "distanzInKilometer": 1.281,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 23, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xfzDEXphAv",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6350779162034176
+      },
+      "distanzInKilometer": 4.142,
+      "typ": "laufen",
+      "aktivitaetsDatum": "Aug 7, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "FQtRigNNhZ",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6412351813189632
+      },
+      "distanzInKilometer": 9.693,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Jul 30, 2017 4:05:53 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:53 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "fFYhDKkorU",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6438740092256256
+      },
+      "distanzInKilometer": 1.422,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "Jul 22, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "oopdsSZiUo",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6482720557367296
+      },
+      "distanzInKilometer": 8.149,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Jul 28, 2017 4:05:51 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:51 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "ZzRbWXoQly",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6491516650389504
+      },
+      "distanzInKilometer": 1.562,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "Jul 25, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "rxCljsCUEP",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6553089301544960
+      },
+      "distanzInKilometer": 1.254,
+      "typ": "skateboarden",
+      "aktivitaetsDatum": "Aug 21, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "YKMrvzKZZj",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6623458045722624
+      },
+      "distanzInKilometer": 2.660,
+      "typ": "sonstiges",
+      "aktivitaetsDatum": "Aug 24, 2017 4:05:52 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:52 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "xAWGpQryrn",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6632254138744832
+      },
+      "distanzInKilometer": 4.981,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 17, 2017 4:05:45 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:45 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "fjAsoVKqlN",
+      "owner": "uli-hans"
+    },
+    {
+      "id": {
+        "parentKey": {
+          "parentKey": {
+            "kind": "Parent",
+            "appId": "afrika-run",
+            "id": 5629499534213120
+          },
+          "kind": "User",
+          "appId": "afrika-run",
+          "id": 6473924464345088
+        },
+        "kind": "Aktivitaet",
+        "appId": "afrika-run",
+        "id": 6720215068966912
+      },
+      "distanzInKilometer": 2.277,
+      "typ": "schwimmen",
+      "aktivitaetsDatum": "Aug 8, 2017 4:05:44 PM",
+      "eingabeDatum": "Sep 8, 2017 4:05:44 PM",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "APDXqzsSaG",
+      "owner": "uli-hans"
+    }
+  ]
+}

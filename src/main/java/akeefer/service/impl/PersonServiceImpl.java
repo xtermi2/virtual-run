@@ -5,10 +5,12 @@ import akeefer.repository.AktivitaetRepository;
 import akeefer.repository.ParentRepository;
 import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
+import akeefer.service.dto.DbBackup;
 import akeefer.service.dto.Statistic;
 import akeefer.util.Profiling;
 import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.api.datastore.Key;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -19,6 +21,7 @@ import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +30,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.cache.annotation.*;
 import javax.mail.Message;
@@ -40,13 +44,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-import static org.apache.commons.lang3.SystemUtils.LINE_SEPARATOR;
-
 @Service("personServiceImpl")
 @Transactional
 public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
+    private static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Autowired
     private UserRepository userRepository;
@@ -157,17 +160,19 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     @CacheRemove(cacheName = "aktivitaeten")
-    public Aktivitaet createAktivitaet(@CacheKey Aktivitaet akt, final User user) {
+    public Aktivitaet createAktivitaet(@CacheKey Aktivitaet akt, final User user, boolean setDate) {
         User userTmp = userRepository.findOne(user.getId());
         if (null == akt.getId()) {
             // neue Aktivitaet
-            akt.setEingabeDatum(new Date());
+            if(setDate){
+              akt.setEingabeDatum(new Date());
+            }
             // Relationen herstellen bei neuer Akt
             if (null == userTmp.getAktivitaeten()) {
                 userTmp.setAktivitaeten(new ArrayList<Aktivitaet>());
             }
             userTmp.getAktivitaeten().add(akt);
-        } else {
+        } else if(setDate) {
             akt.setUpdatedDatum(new Date());
         }
         akt.setUser(userTmp);
@@ -182,7 +187,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public User createUserIfAbsent(User user) {
+    public User createUserIfAbsent(User user, boolean skipPwEncoding) {
         logger.info("createUserIfAbsent: " + user);
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
@@ -198,9 +203,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
             return userInDb;
         }
-        logger.info("PW von user '" + user.getUsername() + "' wird encoded");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        if(!skipPwEncoding) {
+            logger.info("PW von user '" + user.getUsername() + "' wird encoded");
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         Parent parent = getParent();
         user.setParent(parent);
 
@@ -452,6 +458,78 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         BigDecimal dummyTotalDistance = BigDecimal.valueOf(12867);
         logger.info("returning dummy totalDistance: {}", dummyTotalDistance);
         return dummyTotalDistance;
+    }
+
+    @Override
+    @Profiling
+    @Transactional(readOnly = true)
+    public DbBackup createBackup() {
+        // copy users
+        List<User> users = new LinkedList<>();
+        for (User user : getAllUser()) {
+            users.add(User.newBuilder(user)//
+                    .withParent(null)//
+                    .withAktivitaeten(null)//
+                    .build());
+        }
+
+        // copy aktivitaeten
+        List<Aktivitaet> aktivitaeten = new LinkedList<>();
+        for (Aktivitaet akt : aktivitaetRepository.findAll()) {
+            aktivitaeten.add(Aktivitaet.newBuilder(akt)//
+                    .withUser(null)
+                    .build());
+        }
+        return DbBackup.newBuilder()//
+                .withUsers(users)//
+                .withAktivitaeten(aktivitaeten)//
+                .build();
+    }
+
+    @Override
+    @Profiling
+    public int importBackup(DbBackup dbBackup) {
+        int res = HttpStatus.OK.value();
+        if (dbBackup != null) {
+          Collection<String> existingUsernames = Collections2.transform(getAllUser(), new Function<User, String>() {
+            @Override
+            public String apply(User input) {
+              return input.getUsername();
+            }
+          });
+          final Map<String, User> usersInDbMap = new HashMap<>();
+            if (CollectionUtils.isNotEmpty(dbBackup.getUsers())) {
+                logger.info("importing users...");
+                for (User user : dbBackup.getUsers()) {
+                    if(!existingUsernames.contains(user.getUsername())){
+                      user.setId(null);
+                      User userInDb = createUserIfAbsent(user, true);
+                      usersInDbMap.put(userInDb.getUsername(), userInDb);
+                      res = HttpStatus.CREATED.value();
+                    }
+                }
+                logger.info("{} users imported", usersInDbMap.size());
+            }
+            if (CollectionUtils.isNotEmpty(dbBackup.getAktivitaeten())) {
+                int importCounter = 0;
+                logger.info("importing activities...");
+                for (Aktivitaet akt : dbBackup.getAktivitaeten()){
+                  if(!existingUsernames.contains(akt.getOwner())){
+                    User userInDb = usersInDbMap.containsKey(akt.getOwner()) //
+                            ? usersInDbMap.get(akt.getOwner())//
+                            : getUserByUsername(akt.getOwner());
+                    Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' ["+akt+"]");
+                    akt.setId(null);
+                    createAktivitaet(akt, userInDb, false);
+                    res = HttpStatus.CREATED.value();
+                    importCounter++;
+                  }
+                }
+                logger.info("{} activities imported", importCounter);
+            }
+        }
+
+        return res;
     }
 
     private static final Comparator<Interval> INTERVAL_COMPARATOR = new IntervalComparator();

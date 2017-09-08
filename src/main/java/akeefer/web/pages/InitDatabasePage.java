@@ -48,7 +48,7 @@ public class InitDatabasePage extends AbstractBasePage {
                     akt.setBezeichnung(RandomStringUtils.randomAlphabetic(10));
                     akt.setOwner(user.getUsername());
                     akt.setAufzeichnungsart(AktivitaetsAufzeichnung.aufgezeichnet);
-                    personService.createAktivitaet(akt, user);
+                    personService.createAktivitaet(akt, user, true);
                 }
             }
         }
@@ -62,6 +62,6 @@ public class InitDatabasePage extends AbstractBasePage {
         user.setUsername(username);
         user.setPassword(username);
         user.getRoles().addAll(Arrays.asList(roles));
-        return personService.createUserIfAbsent(user);
+        return personService.createUserIfAbsent(user, false);
     }
 }
