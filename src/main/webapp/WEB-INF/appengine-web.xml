@@ -11,7 +11,10 @@
     datastore before writing the data to memcache
     -> "true" scheint nicht zu funktionieren :( -->
     <async-session-persistence enabled="false"/>
-    <system-properties></system-properties>
+    <system-properties>
+        <property name="appengine.datastore.disableChunkSizeWarning"
+                  value="true" />
+    </system-properties>
 
     <!-- Admin console fuer Appstats
      https://cloud.google.com/appengine/docs/java/tools/appstats
