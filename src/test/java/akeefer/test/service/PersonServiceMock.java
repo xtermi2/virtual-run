@@ -117,7 +117,7 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public DbBackup createBackup() {
+    public DbBackup createBackup(String... username) {
         return DbBackup.newBuilder().build();
     }
 

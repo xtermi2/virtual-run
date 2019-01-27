@@ -52,7 +52,7 @@ public interface PersonService {
 
     BigDecimal getTotalDistance();
 
-    DbBackup createBackup();
+    DbBackup createBackup(String... username);
 
     /**
      * @param dbBackup backup data

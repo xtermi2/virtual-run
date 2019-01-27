@@ -2,8 +2,9 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <!--<application>noble-helper-766</application>-->
     <application>afrika-run</application>
+    <runtime>java8</runtime>
     <module>default</module>
-    <version>024</version>
+    <version>025</version>
     <!-- Performancetuning: Wir haben ja eine Servletbasierte App, daher muss sie auch threadSave sein -->
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>

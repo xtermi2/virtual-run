@@ -15,6 +15,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.joda.time.*;
@@ -463,22 +464,27 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     @Transactional(readOnly = true)
-    public DbBackup createBackup() {
+    public DbBackup createBackup(String... username) {
+        List<String> usernameFilter = Arrays.asList(username);
         // copy users
         List<User> users = new LinkedList<>();
         for (User user : getAllUser()) {
-            users.add(User.newBuilder(user)//
-                    .withParent(null)//
-                    .withAktivitaeten(null)//
-                    .build());
+            if(usernameFilter.isEmpty() || usernameFilter.contains(user.getUsername())) {
+                users.add(User.newBuilder(user)//
+                        .withParent(null)//
+                        .withAktivitaeten(null)//
+                        .build());
+            }
         }
 
         // copy aktivitaeten
         List<Aktivitaet> aktivitaeten = new LinkedList<>();
         for (Aktivitaet akt : aktivitaetRepository.findAll()) {
-            aktivitaeten.add(Aktivitaet.newBuilder(akt)//
-                    .withUser(null)
-                    .build());
+            if(usernameFilter.isEmpty() || usernameFilter.contains(akt.getOwner())) {
+                aktivitaeten.add(Aktivitaet.newBuilder(akt)//
+                        .withUser(null)//
+                        .build());
+            }
         }
         return DbBackup.newBuilder()//
                 .withUsers(users)//

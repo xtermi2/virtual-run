@@ -81,7 +81,7 @@ public class StatisticRestService extends GsonRestResource {
     }
 
     @MethodMapping(value = "/backup/export", httpMethod = HttpMethod.GET)
-    public String backupExport() {
+    public DbBackup backupExport() {
         try {
             User currentUser = VRSession.get().getUser();
             if(null == currentUser){
@@ -95,7 +95,30 @@ public class StatisticRestService extends GsonRestResource {
                 return null;
             }
             logger.info("create backup [currentUser={}]", currentUser.getUsername());
-            return OBJECT_MAPPER.writeValueAsString(personService.createBackup());
+            return personService.createBackup();
+        } catch (Exception e) {
+            setResponseStatusCode(500);
+            logger.warn("error while creating backup", e);
+            return null;
+        }
+    }
+
+    @MethodMapping(value = "/backup/export/{username}", httpMethod = HttpMethod.GET)
+    public DbBackup backupExport(String username) {
+        try {
+            User currentUser = VRSession.get().getUser();
+            if(null == currentUser){
+                setResponseStatusCode(401);
+                logger.warn("unauthorized users are not allowed to create a backup");
+                return null;
+            }
+            if (!currentUser.getRoles().contains(SecurityRole.ADMIN)) {
+                setResponseStatusCode(403);
+                logger.warn("currentUser({}) not in required role", currentUser.getUsername());
+                return null;
+            }
+            logger.info("create backup [currentUser={}]", currentUser.getUsername());
+            return personService.createBackup();
         } catch (Exception e) {
             setResponseStatusCode(500);
             logger.warn("error while creating backup", e);
