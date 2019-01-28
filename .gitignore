@@ -4,3 +4,4 @@ datanucleus.log
 .classpath
 .project
 /target*
+/hs_err*
