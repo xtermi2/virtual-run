@@ -140,7 +140,7 @@ public final class LayoutUtils {
      * @param oldValue  The value to remove.
      * @param newValue  The value to insert.
      */
-    private static void switchAttributeValue(@Nonnull ComponentTag tag, @Nonnull String attribute, @Nonnull  String oldValue,
+    private static void switchAttributeValue(@Nonnull ComponentTag tag, @Nonnull String attribute, @Nonnull String oldValue,
                                              @Nonnull String newValue) {
         Validate.isTrue(!isEmpty(attribute));
         Validate.isTrue(!isEmpty(oldValue));

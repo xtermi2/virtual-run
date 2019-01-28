@@ -3,12 +3,10 @@ package akeefer.web.pages;
 import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
-import akeefer.service.PersonService;
 import akeefer.web.components.AktEditPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.util.Date;
 

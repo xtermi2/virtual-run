@@ -5,8 +5,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 
 /**
-* Created by akeefer on 06.04.15.
-*/
+ * Created by akeefer on 06.04.15.
+ */
 public enum ChartIntervall {
     Woche(Weeks.ONE, Days.ONE, new DateTimeFormatterBuilder().
             appendDayOfWeekShortText()

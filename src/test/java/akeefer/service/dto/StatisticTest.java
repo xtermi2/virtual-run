@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.core.StringStartsWith.startsWith;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class StatisticTest {

@@ -1,7 +1,6 @@
 package akeefer.web.components;
 
 import akeefer.model.User;
-import akeefer.repository.UserRepository;
 import akeefer.service.PersonService;
 import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.Validate;

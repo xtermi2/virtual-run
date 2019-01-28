@@ -183,9 +183,9 @@ public class PersonServiceImplTest {
 
         String mailBody = impl.buildMailBody(Sets.newHashSet(new Statistic(user1).add(AktivitaetsTyp.wandern, BigDecimal.TEN)), user1, BenachrichtigunsIntervall.taeglich);
         assertEquals("Hallo user1," + LINE_SEPARATOR +
-                LINE_SEPARATOR +
-                "gestern ist nichts passiert. " + LINE_SEPARATOR + LINE_SEPARATOR +
-                "http://localhost:8080"
+                        LINE_SEPARATOR +
+                        "gestern ist nichts passiert. " + LINE_SEPARATOR + LINE_SEPARATOR +
+                        "http://localhost:8080"
                 , mailBody);
     }
 

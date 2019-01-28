@@ -1,10 +1,8 @@
 package akeefer.service.impl;
 
-import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Interval;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;

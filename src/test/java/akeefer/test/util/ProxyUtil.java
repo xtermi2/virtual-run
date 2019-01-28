@@ -5,7 +5,8 @@ import org.springframework.aop.support.AopUtils;
 
 public class ProxyUtil {
 
-    private ProxyUtil(){}
+    private ProxyUtil() {
+    }
 
     public static <T> T getTargetObject(Object proxy, Class<T> targetClass) throws Exception {
         while (AopUtils.isJdkDynamicProxy(proxy)) {

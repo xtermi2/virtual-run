@@ -21,7 +21,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.*;
+import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,13 +105,13 @@ public class StackedColumnChartPanel extends Panel {
                 .setChartOptions(new ChartOptions().setType(SeriesType.COLUMN))
                 .setTitle(new Title(new StringResourceModel("statTitel", this, null).getString()))
                 .setTooltip(new Tooltip()
-                                .setFormatter(new StackTotalKmFormatter())
+                        .setFormatter(new StackTotalKmFormatter())
                 )
                 .setPlotOptions(new PlotOptionsChoice()
                         .setColumn(new PlotOptions()
                                 .setStacking(Stacking.NORMAL)
                                 .setDataLabels(new DataLabels()
-                                                .setEnabled(true)
+                                        .setEnabled(true)
                                 )))
                 .setxAxis(new Axis()
                         .setCategories(xCategories))
@@ -119,7 +119,7 @@ public class StackedColumnChartPanel extends Panel {
                         .setMin(new BigDecimal("0.001"))
                         .setTitle(new Title(new StringResourceModel("statGesamtKm", this, null).getString()))
                         .setStackLabels(new StackLabels()
-                                        .setEnabled(true)
+                                .setEnabled(true)
                         ))
                 .setSeries(new ArrayList<Series<?>>(seriesMap.values()));
         return options;

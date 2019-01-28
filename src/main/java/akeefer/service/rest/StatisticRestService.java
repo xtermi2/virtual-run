@@ -49,6 +49,7 @@ public class StatisticRestService extends GsonRestResource {
     }
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     static {
         DateFormat df = new SimpleDateFormat("MMM d, yyyy h:mm:ss a");
         OBJECT_MAPPER.setDateFormat(df);
@@ -84,7 +85,7 @@ public class StatisticRestService extends GsonRestResource {
     public DbBackup backupExport() {
         try {
             User currentUser = VRSession.get().getUser();
-            if(null == currentUser){
+            if (null == currentUser) {
                 setResponseStatusCode(401);
                 logger.warn("unauthorized users are not allowed to create a backup");
                 return null;
@@ -107,7 +108,7 @@ public class StatisticRestService extends GsonRestResource {
     public DbBackup backupExport(String username) {
         try {
             User currentUser = VRSession.get().getUser();
-            if(null == currentUser){
+            if (null == currentUser) {
                 setResponseStatusCode(401);
                 logger.warn("unauthorized users are not allowed to create a backup");
                 return null;
@@ -156,7 +157,7 @@ public class StatisticRestService extends GsonRestResource {
             if (CollectionUtils.isNotEmpty(dbBackup.getUsers())) {
                 logger.info("importing users...");
                 for (User user : dbBackup.getUsers()) {
-                    if(!existingUsernames.contains(user.getUsername())){
+                    if (!existingUsernames.contains(user.getUsername())) {
                         user.setId(null);
                         User userInDb = personService.createUserIfAbsent(user, true);
                         usersInDbMap.put(userInDb.getUsername(), userInDb);
@@ -168,12 +169,12 @@ public class StatisticRestService extends GsonRestResource {
             if (CollectionUtils.isNotEmpty(dbBackup.getAktivitaeten())) {
                 int importCounter = 0;
                 logger.info("importing activities...");
-                for (Aktivitaet akt : dbBackup.getAktivitaeten()){
-                    if(!existingUsernames.contains(akt.getOwner())){
+                for (Aktivitaet akt : dbBackup.getAktivitaeten()) {
+                    if (!existingUsernames.contains(akt.getOwner())) {
                         User userInDb = usersInDbMap.containsKey(akt.getOwner()) //
                                 ? usersInDbMap.get(akt.getOwner())//
                                 : personService.getUserByUsername(akt.getOwner());
-                        Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' ["+akt+"]");
+                        Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' [" + akt + "]");
                         akt.setId(null);
                         personService.createAktivitaet(akt, userInDb, false);
                         res = HttpStatus.CREATED.value();

@@ -15,7 +15,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.joda.time.*;
@@ -165,15 +164,15 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         User userTmp = userRepository.findOne(user.getId());
         if (null == akt.getId()) {
             // neue Aktivitaet
-            if(setDate){
-              akt.setEingabeDatum(new Date());
+            if (setDate) {
+                akt.setEingabeDatum(new Date());
             }
             // Relationen herstellen bei neuer Akt
             if (null == userTmp.getAktivitaeten()) {
                 userTmp.setAktivitaeten(new ArrayList<Aktivitaet>());
             }
             userTmp.getAktivitaeten().add(akt);
-        } else if(setDate) {
+        } else if (setDate) {
             akt.setUpdatedDatum(new Date());
         }
         akt.setUser(userTmp);
@@ -204,7 +203,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
             return userInDb;
         }
-        if(!skipPwEncoding) {
+        if (!skipPwEncoding) {
             logger.info("PW von user '" + user.getUsername() + "' wird encoded");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
@@ -469,7 +468,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         // copy users
         List<User> users = new LinkedList<>();
         for (User user : getAllUser()) {
-            if(usernameFilter.isEmpty() || usernameFilter.contains(user.getUsername())) {
+            if (usernameFilter.isEmpty() || usernameFilter.contains(user.getUsername())) {
                 users.add(User.newBuilder(user)//
                         .withParent(null)//
                         .withAktivitaeten(null)//
@@ -480,7 +479,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         // copy aktivitaeten
         List<Aktivitaet> aktivitaeten = new LinkedList<>();
         for (Aktivitaet akt : aktivitaetRepository.findAll()) {
-            if(usernameFilter.isEmpty() || usernameFilter.contains(akt.getOwner())) {
+            if (usernameFilter.isEmpty() || usernameFilter.contains(akt.getOwner())) {
                 aktivitaeten.add(Aktivitaet.newBuilder(akt)//
                         .withUser(null)//
                         .build());
@@ -497,21 +496,21 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     public int importBackup(DbBackup dbBackup) {
         int res = HttpStatus.OK.value();
         if (dbBackup != null) {
-          Collection<String> existingUsernames = Collections2.transform(getAllUser(), new Function<User, String>() {
-            @Override
-            public String apply(User input) {
-              return input.getUsername();
-            }
-          });
-          final Map<String, User> usersInDbMap = new HashMap<>();
+            Collection<String> existingUsernames = Collections2.transform(getAllUser(), new Function<User, String>() {
+                @Override
+                public String apply(User input) {
+                    return input.getUsername();
+                }
+            });
+            final Map<String, User> usersInDbMap = new HashMap<>();
             if (CollectionUtils.isNotEmpty(dbBackup.getUsers())) {
                 logger.info("importing users...");
                 for (User user : dbBackup.getUsers()) {
-                    if(!existingUsernames.contains(user.getUsername())){
-                      user.setId(null);
-                      User userInDb = createUserIfAbsent(user, true);
-                      usersInDbMap.put(userInDb.getUsername(), userInDb);
-                      res = HttpStatus.CREATED.value();
+                    if (!existingUsernames.contains(user.getUsername())) {
+                        user.setId(null);
+                        User userInDb = createUserIfAbsent(user, true);
+                        usersInDbMap.put(userInDb.getUsername(), userInDb);
+                        res = HttpStatus.CREATED.value();
                     }
                 }
                 logger.info("{} users imported", usersInDbMap.size());
@@ -519,17 +518,17 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             if (CollectionUtils.isNotEmpty(dbBackup.getAktivitaeten())) {
                 int importCounter = 0;
                 logger.info("importing activities...");
-                for (Aktivitaet akt : dbBackup.getAktivitaeten()){
-                  if(!existingUsernames.contains(akt.getOwner())){
-                    User userInDb = usersInDbMap.containsKey(akt.getOwner()) //
-                            ? usersInDbMap.get(akt.getOwner())//
-                            : getUserByUsername(akt.getOwner());
-                    Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' ["+akt+"]");
-                    akt.setId(null);
-                    createAktivitaet(akt, userInDb, false);
-                    res = HttpStatus.CREATED.value();
-                    importCounter++;
-                  }
+                for (Aktivitaet akt : dbBackup.getAktivitaeten()) {
+                    if (!existingUsernames.contains(akt.getOwner())) {
+                        User userInDb = usersInDbMap.containsKey(akt.getOwner()) //
+                                ? usersInDbMap.get(akt.getOwner())//
+                                : getUserByUsername(akt.getOwner());
+                        Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' [" + akt + "]");
+                        akt.setId(null);
+                        createAktivitaet(akt, userInDb, false);
+                        res = HttpStatus.CREATED.value();
+                        importCounter++;
+                    }
                 }
                 logger.info("{} activities imported", importCounter);
             }

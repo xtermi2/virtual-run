@@ -2,10 +2,9 @@ package akeefer.service.impl;
 
 import akeefer.model.Aktivitaet;
 import org.joda.time.LocalDate;
-import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AktivitaetsDatumVonBisFilterTest {
 

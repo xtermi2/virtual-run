@@ -37,9 +37,9 @@ public class StackedColumnChartPanelTest {
 
     @Test
     public void testGetBeschreibung() throws Exception {
-        assertEquals("Do 1.", ChartIntervall.Woche.getBeschreibung(new Interval(new DateTime(2015, 1,1,0,0,0,0), new DateTime())));
-        assertEquals("1. Jan", ChartIntervall.Monat.getBeschreibung(new Interval(new DateTime(2015, 1,1,0,0,0,0), new DateTime())));
-        assertEquals("Jan 2015", ChartIntervall.Jahr.getBeschreibung(new Interval(new DateTime(2015, 1,1,0,0,0,0), new DateTime())));
-        assertEquals("2015", ChartIntervall.Gesamt.getBeschreibung(new Interval(new DateTime(2015, 1,1,0,0,0,0), new DateTime())));
+        assertEquals("Do 1.", ChartIntervall.Woche.getBeschreibung(new Interval(new DateTime(2015, 1, 1, 0, 0, 0, 0), new DateTime())));
+        assertEquals("1. Jan", ChartIntervall.Monat.getBeschreibung(new Interval(new DateTime(2015, 1, 1, 0, 0, 0, 0), new DateTime())));
+        assertEquals("Jan 2015", ChartIntervall.Jahr.getBeschreibung(new Interval(new DateTime(2015, 1, 1, 0, 0, 0, 0), new DateTime())));
+        assertEquals("2015", ChartIntervall.Gesamt.getBeschreibung(new Interval(new DateTime(2015, 1, 1, 0, 0, 0, 0), new DateTime())));
     }
 }

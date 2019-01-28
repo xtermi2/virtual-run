@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.Interval;
@@ -137,8 +136,8 @@ public class VonBisPieChartPanel extends Panel {
                 .setChartOptions(new ChartOptions().setType(SeriesType.PIE))
                 .setTitle(new Title(new StringResourceModel("statPieTitel", this, null).getString()))
                 .addSeries(pointSeries
-                                .setType(SeriesType.PIE)
-                                .setName(new StringResourceModel("statPieSeriesTitle", this, null).getString())
+                        .setType(SeriesType.PIE)
+                        .setName(new StringResourceModel("statPieSeriesTitle", this, null).getString())
                 )
                 .setChartOptions(new ChartOptions()
                         .setPlotBackgroundColor(new NullColor())
