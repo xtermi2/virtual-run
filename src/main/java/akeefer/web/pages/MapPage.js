@@ -35,17 +35,21 @@ function initialize() {
         unitSystem: google.maps.UnitSystem.METRIC,
         optimizeWaypoints: true,
         waypoints: [
-            // removed because of "MAX_ROUTE_LENGTH_EXCEEDED" error
+            // removed number of waypoints because of "MAX_ROUTE_LENGTH_EXCEEDED" error
             // {
             //     location: "41.910071, 12.491023",//"Rom, Italien",
             //     stopover: true
             // },
+            // {
+            //     location: "38.840377, 16.226374", //Italien
+            //     stopover: true
+            // },
+            // {
+            //     location: "Trapani, Italien",
+            //     stopover: true
+            // }
             {
-                location: "38.840377, 16.226374", //Italien
-                stopover: true
-            },
-            {
-                location: "Trapani, Italien",
+                location: "38.878172, 16.249174", //Italien
                 stopover: true
             }
         ]

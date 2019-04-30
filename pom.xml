@@ -34,9 +34,9 @@
 
         <mockito.version>1.10.19</mockito.version>
 
-        <spring.version>4.3.22.RELEASE</spring.version>
+        <spring.version>4.3.23.RELEASE</spring.version>
         <spring.data.jpa.version>1.3.5.RELEASE</spring.data.jpa.version>
-        <spring.security.version>4.2.11.RELEASE</spring.security.version>
+        <spring.security.version>4.2.12.RELEASE</spring.security.version>
 
         <wicket.version>6.28.0</wicket.version>
         <wicked-charts.version>2.0.1</wicked-charts.version>
