@@ -3,6 +3,7 @@ package akeefer.repository;
 import akeefer.model.Aktivitaet;
 import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,11 +30,6 @@ public class AktivitaetRepositoryMock implements AktivitaetRepository {
 
     @Override
     public List<Aktivitaet> findAll() {
-        return null;
-    }
-
-    @Override
-    public Iterable<Aktivitaet> findAll(Iterable<Key> keys) {
         return null;
     }
 
@@ -68,6 +64,11 @@ public class AktivitaetRepositoryMock implements AktivitaetRepository {
     }
 
     @Override
+    public List<Aktivitaet> findAll(Iterable<Key> keys) {
+        return null;
+    }
+
+    @Override
     public Page<Aktivitaet> findAll(Pageable pageable) {
         return null;
     }
@@ -90,6 +91,41 @@ public class AktivitaetRepositoryMock implements AktivitaetRepository {
     @Override
     public void deleteAllInBatch() {
 
+    }
+
+    @Override
+    public Aktivitaet getOne(Key key) {
+        return null;
+    }
+
+    @Override
+    public <S extends Aktivitaet> S findOne(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends Aktivitaet> List<S> findAll(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends Aktivitaet> List<S> findAll(Example<S> example, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public <S extends Aktivitaet> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends Aktivitaet> long count(Example<S> example) {
+        return 0;
+    }
+
+    @Override
+    public <S extends Aktivitaet> boolean exists(Example<S> example) {
+        return false;
     }
 
     @Override

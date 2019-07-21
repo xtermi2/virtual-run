@@ -3,6 +3,7 @@ package akeefer.repository;
 import akeefer.model.Parent;
 import akeefer.test.TestScopedComponent;
 import com.google.appengine.api.datastore.Key;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -49,12 +50,12 @@ public class ParentRepositoryMock implements ParentRepository {
     }
 
     @Override
-    public Iterable<Parent> findAll(Iterable<Key> keys) {
+    public List<Parent> findAll(Sort sort) {
         return null;
     }
 
     @Override
-    public List<Parent> findAll(Sort sort) {
+    public List<Parent> findAll(Iterable<Key> keys) {
         return null;
     }
 
@@ -81,6 +82,41 @@ public class ParentRepositoryMock implements ParentRepository {
     @Override
     public void deleteAllInBatch() {
 
+    }
+
+    @Override
+    public Parent getOne(Key key) {
+        return null;
+    }
+
+    @Override
+    public <S extends Parent> S findOne(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends Parent> List<S> findAll(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends Parent> List<S> findAll(Example<S> example, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public <S extends Parent> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends Parent> long count(Example<S> example) {
+        return 0;
+    }
+
+    @Override
+    public <S extends Parent> boolean exists(Example<S> example) {
+        return false;
     }
 
     @Override
