@@ -3,7 +3,7 @@
 ### GAE Tutorials
 - http://www.vogella.com/tutorials/GoogleAppEngineJava/article.html
 
-### GAE + SpringData:
+### GAE + SpringData
 - http://tommysiu.blogspot.de/2014/01/spring-data-on-gae-part-1.html
 - http://tommysiu.blogspot.de/2014/02/spring-data-on-gae-part-2-datastore-key.html
 - http://tommysiu.blogspot.de/2014/02/spring-data-on-gae-part-3-custom.html
@@ -30,5 +30,5 @@
 
 ## CSS / Design)
 
-### Button Designer:
+### Button Designer
 - http://www.bestcssbuttongenerator.com/
