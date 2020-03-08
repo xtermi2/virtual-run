@@ -1,9 +1,9 @@
-##GAE Spezifika
+## GAE Spezifika
 
-###GAE Tutorials
+### GAE Tutorials
 - http://www.vogella.com/tutorials/GoogleAppEngineJava/article.html
 
-###GAE + SpringData:
+### GAE + SpringData:
 - http://tommysiu.blogspot.de/2014/01/spring-data-on-gae-part-1.html
 - http://tommysiu.blogspot.de/2014/02/spring-data-on-gae-part-2-datastore-key.html
 - http://tommysiu.blogspot.de/2014/02/spring-data-on-gae-part-3-custom.html
@@ -13,7 +13,7 @@
 
 
 
-##Wicket
+## Wicket
  
 ### Wicket + BeanValidation
 - http://www.effectivetrainings.de/blog/2012/12/15/wicket-6-und-jsr-303-beanvalidation/ 
@@ -28,7 +28,7 @@
 - http://apache-wicket.1842946.n4.nabble.com/Spring-Security-SecurityContext-changes-td3217947.html
 
 
-##CSS / Design)
+## CSS / Design)
 
-###Button Designer:
+### Button Designer:
 - http://www.bestcssbuttongenerator.com/
