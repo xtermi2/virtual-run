@@ -1,12 +1,12 @@
 package akeefer.web.components;
 
 import akeefer.web.charts.ChartIntervall;
+import org.assertj.core.api.SoftAssertions;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 public class StackedColumnChartPanelTest {
 
@@ -49,19 +49,19 @@ public class StackedColumnChartPanelTest {
     public void testGetBeschreibung() throws Exception {
         Interval interval = new Interval(new DateTime(2015, 1, 1, 0, 0, 0, 0), new DateTime());
 
-        assertSoftly(softly -> {
-            softly.assertThat(ChartIntervall.Woche.getBeschreibung(interval))
-                    .as("week")
-                    .isIn("Do 1.", "Thu 1.");
-            softly.assertThat(ChartIntervall.Monat.getBeschreibung(interval))
-                    .as("month")
-                    .isEqualTo("1. Jan");
-            softly.assertThat(ChartIntervall.Jahr.getBeschreibung(interval))
-                    .as("year")
-                    .isEqualTo("Jan 2015");
-            softly.assertThat(ChartIntervall.Gesamt.getBeschreibung(interval))
-                    .as("total")
-                    .isEqualTo("2015");
-        });
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(ChartIntervall.Woche.getBeschreibung(interval))
+                .as("week")
+                .isIn("Do 1.", "Thu 1.");
+        softly.assertThat(ChartIntervall.Monat.getBeschreibung(interval))
+                .as("month")
+                .isEqualTo("1. Jan");
+        softly.assertThat(ChartIntervall.Jahr.getBeschreibung(interval))
+                .as("year")
+                .isEqualTo("Jan 2015");
+        softly.assertThat(ChartIntervall.Gesamt.getBeschreibung(interval))
+                .as("total")
+                .isEqualTo("2015");
+        softly.assertAll();
     }
 }
