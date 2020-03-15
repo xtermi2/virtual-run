@@ -40,8 +40,9 @@
 ## Run GAE dev server
 
 ```bash
-./mvnw appengine:
+./mvnw appengine:devserver
 ```
+* open http://localhost:8080/init to create initial users
 
 ## Deployment on GAE
 
