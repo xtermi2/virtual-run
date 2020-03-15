@@ -59,5 +59,5 @@
 NOTE: This will use the version from `appengine-web.xml`, so check the current version before you deploy to prevent overwriting the current deployment.
 
 ```bash
-./mvnw appengine:update
+./mvnw clean appengine:update
 ```
