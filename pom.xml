@@ -42,6 +42,7 @@
         <wicked-charts.version>2.0.1</wicked-charts.version>
         <!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
         <wtp.version>none</wtp.version>
+        <junit.version>4.12</junit.version>
     </properties>
     <dependencies>
         <!-- Spring libraries for setup and dependency injection -->
@@ -272,7 +273,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -483,6 +484,13 @@
                         <param>akeefer.service.dto</param>
                     </packages>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                        <version>${junit.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
