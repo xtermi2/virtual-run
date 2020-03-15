@@ -42,7 +42,13 @@
 ```bash
 ./mvnw appengine:devserver
 ```
-* open http://localhost:8080/init to create initial users
+- open [http://localhost:8080/init](http://localhost:8080/init) to create initial users:
+  - andi:andi
+  - frank:frank
+  - sabine:sabine
+  - roland:roland
+  - norbert:norbert
+  - uli-hans:uli-hans
 
 ## Deployment on GAE
 
