@@ -290,7 +290,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.11.1</version>
+            <version>3.15.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -393,8 +393,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
