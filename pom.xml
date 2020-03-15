@@ -20,7 +20,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <appengine.app.version>1</appengine.app.version>
-        <appengine.target.version>1.9.77</appengine.target.version>
+        <!-- with 1.9.77 the local devserver is not starting:
+        java.lang.ClassNotFoundException: com.google.appengine.tools.appstats.AppstatsServlet-->
+        <appengine.target.version>1.9.76</appengine.target.version>
         <appengine.target.plugin.version>${appengine.target.version}</appengine.target.plugin.version>
 
         <aspectj.version>1.9.5</aspectj.version>
@@ -30,7 +32,6 @@
         <hamcrest.version>2.2</hamcrest.version>
 
         <jetty.version>8.1.16.v20140903</jetty.version>
-        <!--        <jetty.version>9.4.27.v20200227</jetty.version>-->
         <joda-time.version>2.10.5</joda-time.version>
         <junit.version>4.13</junit.version>
 
@@ -300,7 +301,6 @@
         <dependency>
             <groupId>org.eclipse.jetty.aggregate</groupId>
             <artifactId>jetty-all-server</artifactId>
-<!--            <artifactId>jetty-all</artifactId>-->
             <version>${jetty.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -403,26 +403,6 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.mortbay.jetty</groupId>-->
-<!--                <artifactId>jetty-maven-plugin</artifactId>-->
-<!--                <version>${jetty.version}</version>-->
-<!--                <configuration>-->
-<!--                    <connectors>-->
-<!--                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">-->
-<!--                            <port>8080</port>-->
-<!--                            <maxIdleTime>3600000</maxIdleTime>-->
-<!--                        </connector>-->
-<!--                        <connector implementation="org.eclipse.jetty.server.ssl.SslSocketConnector">-->
-<!--                            <port>8443</port>-->
-<!--                            <maxIdleTime>3600000</maxIdleTime>-->
-<!--                            <keystore>${project.build.directory}/test-classes/keystore</keystore>-->
-<!--                            <password>wicket</password>-->
-<!--                            <keyPassword>wicket</keyPassword>-->
-<!--                        </connector>-->
-<!--                    </connectors>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
