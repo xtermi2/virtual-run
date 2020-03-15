@@ -72,14 +72,14 @@ public class Statistic {
         StringBuilder mail = new StringBuilder();
         if (!aggregated.isEmpty()) {
             mail.append(user.getAnzeigename())
-                    .append(" ist ...").append(SystemUtils.LINE_SEPARATOR);
+                    .append(" ist ...").append(System.lineSeparator());
             DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
             otherSymbols.setDecimalSeparator(',');
             otherSymbols.setGroupingSeparator('.');
             DecimalFormat df = new DecimalFormat("#0.###", otherSymbols);
             for (Map.Entry<AktivitaetsTyp, BigDecimal> entry : aggregated.entrySet()) {
                 BigDecimal distance = entry.getValue().setScale(3, RoundingMode.HALF_UP);
-                mail.append("... ").append(df.format(distance)).append("km ").append(entry.getKey().toVergangenheit()).append(SystemUtils.LINE_SEPARATOR);
+                mail.append("... ").append(df.format(distance)).append("km ").append(entry.getKey().toVergangenheit()).append(System.lineSeparator());
             }
         }
         mailString = mail.toString();
