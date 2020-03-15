@@ -1,6 +1,6 @@
 package akeefer.web.components;
 
-import org.apache.commons.collections.comparators.NullComparator;
+import org.apache.commons.collections4.comparators.NullComparator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;

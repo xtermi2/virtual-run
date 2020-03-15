@@ -18,7 +18,7 @@ import com.googlecode.wickedcharts.highcharts.options.series.CustomCoordinatesSe
 import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
 import com.googlecode.wickedcharts.wicket6.highcharts.JsonRendererFactory;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;

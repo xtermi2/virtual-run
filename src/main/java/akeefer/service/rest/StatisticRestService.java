@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
