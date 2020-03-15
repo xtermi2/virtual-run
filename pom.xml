@@ -23,7 +23,7 @@
         <appengine.target.version>1.9.71</appengine.target.version>
         <appengine.target.plugin.version>${appengine.target.version}</appengine.target.plugin.version>
 
-        <aspectj.version>1.9.2</aspectj.version>
+        <aspectj.version>1.9.5</aspectj.version>
 
         <datanucleus-core.version>3.1.5</datanucleus-core.version>
 
