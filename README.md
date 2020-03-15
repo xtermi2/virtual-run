@@ -1,3 +1,5 @@
+![Java CI](https://github.com/xtermi2/virtual-run/workflows/Java%20CI/badge.svg)
+
 ## GAE Spezifika
 
 ### GAE Tutorials
