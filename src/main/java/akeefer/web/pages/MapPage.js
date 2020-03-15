@@ -31,25 +31,24 @@ function initialize() {
     var request = {
         origin: start.getPosition(),
         destination: ziel.getPosition(),
-        travelMode: google.maps.TravelMode.WALKING,
+        // switched from WALKING to DRIVING because of "MAX_ROUTE_LENGTH_EXCEEDED" error
+        travelMode: google.maps.TravelMode.DRIVING,
         unitSystem: google.maps.UnitSystem.METRIC,
         optimizeWaypoints: true,
+        provideRouteAlternatives: false,
+        avoidHighways: true,
+        avoidTolls: true,
         waypoints: [
-            // removed number of waypoints because of "MAX_ROUTE_LENGTH_EXCEEDED" error
-            // {
-            //     location: "41.910071, 12.491023",//"Rom, Italien",
-            //     stopover: true
-            // },
-            // {
-            //     location: "38.840377, 16.226374", //Italien
-            //     stopover: true
-            // },
-            // {
-            //     location: "Trapani, Italien",
-            //     stopover: true
-            // }
             {
-                location: "38.878172, 16.249174", //Italien
+                location: "41.910071, 12.491023",//"Rom, Italien",
+                stopover: true
+            },
+            {
+                location: "38.840377, 16.226374", //Italien
+                stopover: true
+            },
+            {
+                location: "Trapani, Italien",
                 stopover: true
             }
         ]
