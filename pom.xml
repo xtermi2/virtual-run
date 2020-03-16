@@ -31,7 +31,7 @@
 
         <hamcrest.version>2.2</hamcrest.version>
 
-        <jetty.version>8.1.16.v20140903</jetty.version>
+        <jetty.version>8.2.0.v20160908</jetty.version>
         <joda-time.version>2.10.5</joda-time.version>
         <junit.version>4.13</junit.version>
 
