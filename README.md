@@ -44,7 +44,7 @@
 ## Run GAE dev server
 
 ```bash
-./mvnw appengine:devserver
+./mvnw clean appengine:devserver
 ```
 -   open [http://localhost:8080/init](http://localhost:8080/init) to create initial users:
     -   andi:andi
