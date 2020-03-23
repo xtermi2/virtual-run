@@ -23,7 +23,7 @@
         <!-- with 1.9.77 the local devserver is not starting:
         java.lang.ClassNotFoundException: com.google.appengine.tools.appstats.AppstatsServlet-->
         <appengine.target.version>1.9.76</appengine.target.version>
-        <appengine.target.plugin.version>${appengine.target.version}</appengine.target.plugin.version>
+        <appengine.target.plugin.version>1.9.79</appengine.target.plugin.version>
 
         <aspectj.version>1.9.5</aspectj.version>
 
