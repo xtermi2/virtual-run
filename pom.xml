@@ -20,9 +20,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <appengine.app.version>1</appengine.app.version>
-        <!-- with 1.9.77 the local devserver is not starting:
+        <!-- with 1.9.77 - 79 the local devserver is not starting:
         java.lang.ClassNotFoundException: com.google.appengine.tools.appstats.AppstatsServlet-->
-        <appengine.target.version>1.9.79</appengine.target.version>
+        <appengine.target.version>1.9.76</appengine.target.version>
         <appengine.target.plugin.version>${appengine.target.version}</appengine.target.plugin.version>
 
         <aspectj.version>1.9.5</aspectj.version>
