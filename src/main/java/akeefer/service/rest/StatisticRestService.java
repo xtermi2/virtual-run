@@ -119,7 +119,7 @@ public class StatisticRestService extends GsonRestResource {
                 return null;
             }
             logger.info("create backup [currentUser={}]", currentUser.getUsername());
-            return personService.createBackup();
+            return personService.createBackup(currentUser.getUsername());
         } catch (Exception e) {
             setResponseStatusCode(500);
             logger.warn("error while creating backup", e);
