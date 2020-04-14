@@ -4,7 +4,6 @@ import akeefer.service.dto.DbBackup;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
 
-import static akeefer.model.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -33,8 +32,9 @@ public class StatisticRestServiceTest {
                 .hasSize(1)  //
                 .extracting("owner")//
                 .containsExactly("sabine");
-        assertThat(parsed.getAktivitaeten().get(0))//
-                .hasAktivitaetsDatum(new LocalDateTime(2017, 8, 1, 16, 5, 49).toDate());
+        assertThat(parsed.getAktivitaeten().get(0).getAktivitaetsDatum())//
+                .isCloseTo(new LocalDateTime(2017, 8, 1, 16, 5, 49).toDate(),
+                        1000 * 60 * 60 * 2);
     }
 
 }
