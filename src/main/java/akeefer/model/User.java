@@ -24,7 +24,6 @@ public class User implements Serializable, Comparable<User> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Key id;
 
     @NotNull
@@ -176,6 +175,7 @@ public class User implements Serializable, Comparable<User> {
     }
 
     @Transient
+    @JsonIgnore
     public String getAnzeigename() {
         return null == nickname ? username : nickname;
     }

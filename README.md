@@ -41,6 +41,29 @@
 
 # Developement
 
+## Mongodb credentials
+
+Create a default maven profile which provides the properties like this `~/.m2/settings.xml`:
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                  https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>mongodb-credentials</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <mongodb.user>USERNAME</mongodb.user>
+                <mongodb.password>SECRET</mongodb.password>
+            </properties>
+        </profile>
+    </profiles>
+</settings>
+```
+
 ## Run GAE dev server
 
 ```bash

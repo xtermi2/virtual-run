@@ -1,14 +1,13 @@
 package akeefer.service.impl;
 
-import akeefer.model.Aktivitaet;
-import akeefer.model.AktivitaetsTyp;
-import akeefer.model.BenachrichtigunsIntervall;
-import akeefer.model.User;
+import akeefer.model.*;
+import akeefer.repository.mongo.MongoUserRepository;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.Sets;
+import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -42,6 +41,9 @@ public class PersonServiceImplTest {
     @Autowired
     @Qualifier("personServiceImpl")
     private PersonService personService;
+
+    @Autowired
+    private MongoUserRepository userRepository;
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -263,6 +265,37 @@ public class PersonServiceImplTest {
                         "... 10km gewandert" + LINE_SEPARATOR + LINE_SEPARATOR + LINE_SEPARATOR +
                         "http://localhost:8080",
                 mailBody);
+    }
+
+    @Test
+    public void testMongo() {
+        userRepository.deleteAll();
+        List<akeefer.model.mongo.User> res = userRepository.findAll();
+        Assertions.assertThat(res)
+                .as("all Users")
+                .isEmpty();
+
+        String id = String.valueOf(5099850341285888L);
+        akeefer.model.mongo.User andi = userRepository.save(akeefer.model.mongo.User.builder()
+                .id(id)
+                .username("andi")
+                .password("andi")
+                .role(SecurityRole.ADMIN)
+                .role(SecurityRole.USER)
+                .build());
+        Assertions.assertThat(andi.getId())
+                .as("id")
+                .isNotNull();
+
+        akeefer.model.mongo.User one = userRepository.findOne(id);
+        Assertions.assertThat(one.getId())
+                .as("id")
+                .isEqualTo(id);
+
+        akeefer.model.mongo.User findByUsername = userRepository.findByUsername("andi");
+        Assertions.assertThat(findByUsername.getId())
+                .as("id")
+                .isEqualTo(id);
     }
 
     private void printHash(PasswordEncoder encoder, String user) {

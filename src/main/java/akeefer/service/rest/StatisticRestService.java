@@ -8,7 +8,19 @@ import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackup;
 import akeefer.web.VRSession;
 import akeefer.web.WicketApplication;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import org.apache.commons.codec.binary.StringUtils;
@@ -25,10 +37,13 @@ import org.wicketstuff.rest.annotations.MethodMapping;
 import org.wicketstuff.rest.annotations.ResourcePath;
 import org.wicketstuff.rest.annotations.parameters.RequestBody;
 import org.wicketstuff.rest.contenthandling.RestMimeTypes;
-import org.wicketstuff.rest.resource.gson.GsonRestResource;
+import org.wicketstuff.rest.contenthandling.json.objserialdeserial.JacksonObjectSerialDeserial;
+import org.wicketstuff.rest.contenthandling.json.webserialdeserial.JsonWebSerialDeserial;
+import org.wicketstuff.rest.resource.AbstractRestResource;
 import org.wicketstuff.rest.utils.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,7 +52,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ResourcePath("/rest")
-public class StatisticRestService extends GsonRestResource {
+public class StatisticRestService extends AbstractRestResource<JsonWebSerialDeserial> {
 
     private static final Logger logger = LoggerFactory.getLogger(StatisticRestService.class);
 
@@ -45,14 +60,21 @@ public class StatisticRestService extends GsonRestResource {
     private PersonService personService;
 
     public StatisticRestService() {
+        super(new JsonWebSerialDeserial(new JacksonObjectSerialDeserial(OBJECT_MAPPER)));
         Injector.get().inject(this);
     }
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
-        DateFormat df = new SimpleDateFormat("MMM d, yyyy h:mm:ss a");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         OBJECT_MAPPER.setDateFormat(df);
+
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(Key.class, new KeySerializer());
+        module.addDeserializer(Key.class, new KeyDeserializer());
+        OBJECT_MAPPER.registerModule(module);
+        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
 
 
@@ -188,7 +210,34 @@ public class StatisticRestService extends GsonRestResource {
         return res;
     }
 
-    static DbBackup parse(String json) throws IOException {
+    public static DbBackup parse(String json) throws IOException {
         return OBJECT_MAPPER.readValue(json, DbBackup.class);
+    }
+
+    public static DbBackup parse(File json) throws IOException {
+        return OBJECT_MAPPER.readValue(json, DbBackup.class);
+    }
+
+    public static class KeySerializer extends StdSerializer<Key> {
+        public KeySerializer() {
+            super(Key.class);
+        }
+
+        @Override
+        public void serialize(Key value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonGenerationException {
+            jgen.writeString(KeyFactory.keyToString(value));
+        }
+    }
+
+    public static class KeyDeserializer extends StdDeserializer<Key> {
+        public KeyDeserializer() {
+            super(Key.class);
+        }
+
+        @Override
+        public Key deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            String valueAsString = p.getValueAsString();
+            return KeyFactory.stringToKey(valueAsString);
+        }
     }
 }

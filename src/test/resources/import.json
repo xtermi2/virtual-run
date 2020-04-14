@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "agxzfmFmcmlrYS1ydW5yJAsSBlBhcmVudBiAgICAgPKICgwLEgRVc2VyGICAgICXyYcJDA",
+      "username": "frank",
+      "password": "secret",
+      "roles": [
+        "USER"
+      ],
+      "nickname": "Frank",
+      "email": "frank@foo.bar",
+      "benachrichtigunsIntervall": "woechnetlich",
+      "includeMeInStatisticMail": true
+    }
+  ],
+  "aktivitaeten": [
+  ]
+}

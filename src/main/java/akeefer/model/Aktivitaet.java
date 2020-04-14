@@ -25,7 +25,6 @@ public class Aktivitaet implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     // hier muss man einen Key verwenden, da ein Eingebetteter Typ (User#aktivitaeten) nicht mit einem Long als PK funktioniert
     private Key id;
 
@@ -100,6 +99,7 @@ public class Aktivitaet implements Serializable {
     }
 
     @Transient
+    @JsonIgnore
     public Integer getDistanzInMeter() {
         if (null != distanzInKilometer) {
             return distanzInKilometer.multiply(TAUSEND).intValue();
@@ -149,6 +149,7 @@ public class Aktivitaet implements Serializable {
     }
 
     @Transient
+    @JsonIgnore
     public DateTime getEingabeDatumAsDateTime() {
         return null == eingabeDatum ? null : new DateTime(eingabeDatum);
     }
