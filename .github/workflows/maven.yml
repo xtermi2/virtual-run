@@ -14,4 +14,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: ./mvnw -B clean package
+      env:
+        MONGODB_USER: ${{ secrets.MONGODB_USER }}
+        MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      run: ./mvnw -B clean package -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
