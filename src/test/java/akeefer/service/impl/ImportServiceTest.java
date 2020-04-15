@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -77,9 +78,16 @@ public class ImportServiceTest {
                 .as("id after json parsing")
                 .isEqualTo("agxzfmFmcmlrYS1ydW5yJAsSBlBhcmVudBiAgICAgPKICgwLEgRVc2VyGICAgICXyYcJDA");
 
-        importService.importData(dbBackup);
-        List<User> all = userRepository.findAll();
+        int httpStatus = importService.importData(dbBackup);
 
+        assertThat(httpStatus)
+                .as("httpStatus")
+                .isEqualTo(HttpStatus.CREATED.value());
+        assertThat(importService.importData(dbBackup))
+                .as("httpStatus")
+                .isEqualTo(HttpStatus.OK.value());
+
+        List<User> all = userRepository.findAll();
         assertThat(all)
                 .hasSize(1);
         assertThat(all.get(0))

@@ -6,6 +6,8 @@ import akeefer.model.SecurityRole;
 import akeefer.model.User;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackup;
+import akeefer.service.dto.DbBackupMongo;
+import akeefer.service.impl.ImportService;
 import akeefer.web.VRSession;
 import akeefer.web.WicketApplication;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,12 +25,10 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.crypt.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,14 +36,12 @@ import org.springframework.util.Assert;
 import org.wicketstuff.rest.annotations.MethodMapping;
 import org.wicketstuff.rest.annotations.ResourcePath;
 import org.wicketstuff.rest.annotations.parameters.RequestBody;
-import org.wicketstuff.rest.contenthandling.RestMimeTypes;
 import org.wicketstuff.rest.contenthandling.json.objserialdeserial.JacksonObjectSerialDeserial;
 import org.wicketstuff.rest.contenthandling.json.webserialdeserial.JsonWebSerialDeserial;
 import org.wicketstuff.rest.resource.AbstractRestResource;
 import org.wicketstuff.rest.utils.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,6 +56,8 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
 
     @SpringBean
     private PersonService personService;
+    @SpringBean
+    private ImportService importService;
 
     public StatisticRestService() {
         super(new JsonWebSerialDeserial(new JacksonObjectSerialDeserial(OBJECT_MAPPER)));
@@ -149,23 +149,18 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
         }
     }
 
-    @MethodMapping(value = "/backup/import", httpMethod = HttpMethod.POST, consumes = RestMimeTypes.TEXT_PLAIN)
-    public void backupImport(@RequestBody String text) {
+    @MethodMapping(value = "/backup/import", httpMethod = HttpMethod.POST)
+    public void backupImport(@RequestBody DbBackupMongo data) {
         try {
-            logger.info("import backup...");
-            logger.info(text);
-
-            byte[] decodedBytes = Base64.decodeBase64(text + "=");
-            String decoded = StringUtils.newStringUtf8(decodedBytes);
-            logger.info("decoded=" + decoded);
-
-            setResponseStatusCode(importBackup(parse(decoded)));
+            logger.info("import backup: {}", data);
+            setResponseStatusCode(importService.importData(data));
         } catch (Exception e) {
             setResponseStatusCode(500);
             logger.warn("error while importing backup", e);
         }
     }
 
+    @Deprecated
     private int importBackup(DbBackup dbBackup) {
         int res = HttpStatus.OK.value();
         if (dbBackup != null) {
@@ -208,14 +203,6 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
         }
 
         return res;
-    }
-
-    public static DbBackup parse(String json) throws IOException {
-        return OBJECT_MAPPER.readValue(json, DbBackup.class);
-    }
-
-    public static DbBackup parse(File json) throws IOException {
-        return OBJECT_MAPPER.readValue(json, DbBackup.class);
     }
 
     public static class KeySerializer extends StdSerializer<Key> {
