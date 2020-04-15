@@ -1,6 +1,5 @@
 package akeefer.service.rest;
 
-import akeefer.model.Aktivitaet;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.SecurityRole;
 import akeefer.model.User;
@@ -23,16 +22,11 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.util.Assert;
 import org.wicketstuff.rest.annotations.MethodMapping;
 import org.wicketstuff.rest.annotations.ResourcePath;
 import org.wicketstuff.rest.annotations.parameters.RequestBody;
@@ -45,9 +39,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @ResourcePath("/rest")
 public class StatisticRestService extends AbstractRestResource<JsonWebSerialDeserial> {
@@ -161,50 +152,6 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     }
 
     @Deprecated
-    private int importBackup(DbBackup dbBackup) {
-        int res = HttpStatus.OK.value();
-        if (dbBackup != null) {
-            Collection<String> existingUsernames = Collections2.transform(personService.getAllUser(), new Function<User, String>() {
-                @Override
-                public String apply(User input) {
-                    return input.getUsername();
-                }
-            });
-            final Map<String, User> usersInDbMap = new HashMap<>();
-            if (CollectionUtils.isNotEmpty(dbBackup.getUsers())) {
-                logger.info("importing users...");
-                for (User user : dbBackup.getUsers()) {
-                    if (!existingUsernames.contains(user.getUsername())) {
-                        user.setId(null);
-                        User userInDb = personService.createUserIfAbsent(user, true);
-                        usersInDbMap.put(userInDb.getUsername(), userInDb);
-                        res = HttpStatus.CREATED.value();
-                    }
-                }
-                logger.info("{} users imported", usersInDbMap.size());
-            }
-            if (CollectionUtils.isNotEmpty(dbBackup.getAktivitaeten())) {
-                int importCounter = 0;
-                logger.info("importing activities...");
-                for (Aktivitaet akt : dbBackup.getAktivitaeten()) {
-                    if (!existingUsernames.contains(akt.getOwner())) {
-                        User userInDb = usersInDbMap.containsKey(akt.getOwner()) //
-                                ? usersInDbMap.get(akt.getOwner())//
-                                : personService.getUserByUsername(akt.getOwner());
-                        Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' [" + akt + "]");
-                        akt.setId(null);
-                        personService.createAktivitaet(akt, userInDb, false);
-                        res = HttpStatus.CREATED.value();
-                        importCounter++;
-                    }
-                }
-                logger.info("{} activities imported", importCounter);
-            }
-        }
-
-        return res;
-    }
-
     public static class KeySerializer extends StdSerializer<Key> {
         public KeySerializer() {
             super(Key.class);
@@ -216,6 +163,7 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
         }
     }
 
+    @Deprecated
     public static class KeyDeserializer extends StdDeserializer<Key> {
         public KeyDeserializer() {
             super(Key.class);

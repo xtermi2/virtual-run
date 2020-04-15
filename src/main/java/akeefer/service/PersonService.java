@@ -53,10 +53,4 @@ public interface PersonService {
     BigDecimal getTotalDistance();
 
     DbBackup createBackup(String... username);
-
-    /**
-     * @param dbBackup backup data
-     * @return HTTP status code
-     */
-    int importBackup(DbBackup dbBackup);
 }

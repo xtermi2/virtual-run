@@ -12,7 +12,6 @@ import com.google.common.collect.Lists;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
@@ -119,10 +118,5 @@ public class PersonServiceMock implements PersonService {
     @Override
     public DbBackup createBackup(String... username) {
         return DbBackup.newBuilder().build();
-    }
-
-    @Override
-    public int importBackup(DbBackup dbBackup) {
-        return HttpStatus.CREATED.value();
     }
 }

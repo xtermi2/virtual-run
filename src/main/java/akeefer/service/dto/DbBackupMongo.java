@@ -1,7 +1,7 @@
 package akeefer.service.dto;
 
+import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.util.List;
@@ -13,8 +13,9 @@ import java.util.List;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties("aktivitaeten")
 public class DbBackupMongo {
     @Singular
     List<User> users;
+    @Singular("aktivitaet")
+    List<Aktivitaet> aktivitaeten;
 }

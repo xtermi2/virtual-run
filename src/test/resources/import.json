@@ -14,5 +14,35 @@
     }
   ],
   "aktivitaeten": [
+    {
+      "id": "agxzfmFmcmlrYS1ydW5yOwsSBlBhcmVudBiAgICAgPKICgwLEgRVc2VyGICAgICAgIAKDAsSCkFrdGl2aXRhZXQYgICAgIC5xAgM",
+      "distanzInKilometer": 18.123,
+      "typ": "radfahren",
+      "aktivitaetsDatum": "2014-11-25T00:00:00.000+0000",
+      "eingabeDatum": "2014-11-25T09:53:41.243+0000",
+      "updatedDatum": "2014-11-25T09:55:41.243+0000",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "arbeit und zurück",
+      "owner": "frank"
+    },
+    {
+      "id": "agxzfmFmcmlrYS1ydW5yOwsSBlBhcmVudBiAgICAgPKICgwLEgRVc2VyGICAgICXyYcJDAsSCkFrdGl2aXRhZXQYgICAkL7qxQsM",
+      "distanzInKilometer": 10.07,
+      "typ": "laufen",
+      "aktivitaetsDatum": "2018-07-22T00:00:00.000+0000",
+      "eingabeDatum": "2018-09-07T03:32:38.009+0000",
+      "aufzeichnungsart": "aufgezeichnet",
+      "owner": "unknown"
+    },
+    {
+      "id": "agxzfmFmcmlrYS1ydW5yOwsSBlBhcmVudBiAgICAgPKICgwLEgRVc2VyGICAgICA5JEKDAsSCkFrdGl2aXRhZXQYgICAoJ3vnwsM",
+      "distanzInKilometer": 5,
+      "typ": "spezierengehen",
+      "aktivitaetsDatum": "2017-01-10T00:00:00.000+0000",
+      "eingabeDatum": "2017-01-15T10:22:07.293+0000",
+      "aufzeichnungsart": "aufgezeichnet",
+      "bezeichnung": "Wald",
+      "owner": "frank"
+    }
   ]
 }

@@ -10,7 +10,6 @@ import akeefer.service.dto.Statistic;
 import akeefer.util.Profiling;
 import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.api.datastore.Key;
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -21,7 +20,6 @@ import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +28,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.cache.annotation.*;
 import javax.mail.Message;
@@ -489,52 +486,6 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 .withUsers(users)//
                 .withAktivitaeten(aktivitaeten)//
                 .build();
-    }
-
-    @Override
-    @Profiling
-    public int importBackup(DbBackup dbBackup) {
-        int res = HttpStatus.OK.value();
-        if (dbBackup != null) {
-            Collection<String> existingUsernames = Collections2.transform(getAllUser(), new Function<User, String>() {
-                @Override
-                public String apply(User input) {
-                    return input.getUsername();
-                }
-            });
-            final Map<String, User> usersInDbMap = new HashMap<>();
-            if (CollectionUtils.isNotEmpty(dbBackup.getUsers())) {
-                logger.info("importing users...");
-                for (User user : dbBackup.getUsers()) {
-                    if (!existingUsernames.contains(user.getUsername())) {
-                        user.setId(null);
-                        User userInDb = createUserIfAbsent(user, true);
-                        usersInDbMap.put(userInDb.getUsername(), userInDb);
-                        res = HttpStatus.CREATED.value();
-                    }
-                }
-                logger.info("{} users imported", usersInDbMap.size());
-            }
-            if (CollectionUtils.isNotEmpty(dbBackup.getAktivitaeten())) {
-                int importCounter = 0;
-                logger.info("importing activities...");
-                for (Aktivitaet akt : dbBackup.getAktivitaeten()) {
-                    if (!existingUsernames.contains(akt.getOwner())) {
-                        User userInDb = usersInDbMap.containsKey(akt.getOwner()) //
-                                ? usersInDbMap.get(akt.getOwner())//
-                                : getUserByUsername(akt.getOwner());
-                        Assert.notNull(userInDb, "no user found in DB with username '" + akt.getOwner() + "' [" + akt + "]");
-                        akt.setId(null);
-                        createAktivitaet(akt, userInDb, false);
-                        res = HttpStatus.CREATED.value();
-                        importCounter++;
-                    }
-                }
-                logger.info("{} activities imported", importCounter);
-            }
-        }
-
-        return res;
     }
 
     private static final Comparator<Interval> INTERVAL_COMPARATOR = new IntervalComparator();

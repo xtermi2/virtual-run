@@ -66,4 +66,10 @@ public class MongodbConfig extends AbstractMongoConfiguration {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.EXCEPTION);
         return mongoTemplate;
     }
+
+    // TODO enable when updated to latest spring-data version
+//    @Bean
+//    MongoTransactionManager transactionManager(MongoDbFactory dbFactory) {
+//        return new MongoTransactionManager(dbFactory);
+//    }
 }
