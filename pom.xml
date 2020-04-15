@@ -360,7 +360,7 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <!--since 22.0 guava is on java 8-->
-            <version>28.2-android</version>
+            <version>29.0-android</version>
         </dependency>
 
         <dependency>
