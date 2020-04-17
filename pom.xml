@@ -35,7 +35,7 @@
         <mockito.version>1.10.19</mockito.version>
 
         <spring.version>4.3.26.RELEASE</spring.version>
-        <spring-data-releasetrain.version>Ingalls-SR23</spring-data-releasetrain.version>
+        <spring-data-releasetrain.version>Moore-SR5</spring-data-releasetrain.version>
         <spring.security.version>4.2.15.RELEASE</spring.security.version>
 
         <wicket.version>6.30.0</wicket.version>
