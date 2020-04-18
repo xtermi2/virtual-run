@@ -15,6 +15,7 @@
     <system-properties>
         <property name="appengine.datastore.disableChunkSizeWarning"
                   value="true" />
+        <property name="javax.el.ExpressionFactory" value="com.sun.el.ExpressionFactoryImpl" />
     </system-properties>
 
     <!-- Admin console fuer Appstats

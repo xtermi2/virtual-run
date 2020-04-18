@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
@@ -17,7 +19,8 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
     @Override
     @Profiling
     public List<String> findAllUsernames() {
-        return mongoTemplate.getCollection(mongoTemplate.getCollectionName(User.class))
-                .distinct("username");
+        return StreamSupport.stream(mongoTemplate.getCollection(mongoTemplate.getCollectionName(User.class))
+                .distinct("username", String.class).spliterator(), false)
+                .collect(Collectors.toList());
     }
 }

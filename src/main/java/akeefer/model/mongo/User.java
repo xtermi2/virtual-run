@@ -3,12 +3,13 @@ package akeefer.model.mongo;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.SecurityRole;
 import lombok.*;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -31,6 +32,7 @@ public class User implements Serializable, Comparable<User> {
     @NotNull
     @NonNull
     @NotEmpty
+    @Indexed(unique = true)
     private String username;
 
     @NotNull

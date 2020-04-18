@@ -7,6 +7,7 @@ import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
+import akeefer.repository.mongo.dto.TotalUserDistance;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
@@ -22,6 +23,7 @@ import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +32,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.cache.annotation.CacheKey;
 import javax.cache.annotation.CachePut;
@@ -45,6 +48,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("personServiceImpl")
 @Transactional
@@ -53,14 +57,20 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
     private static final String LINE_SEPARATOR = System.lineSeparator();
 
-    @Autowired
-    private MongoUserRepository userRepository;
+    private final MongoUserRepository userRepository;
+
+    private final MongoAktivitaetRepository aktivitaetRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private MongoAktivitaetRepository aktivitaetRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public PersonServiceImpl(MongoUserRepository userRepository,
+                             MongoAktivitaetRepository aktivitaetRepository,
+                             PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.aktivitaetRepository = aktivitaetRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     @Profiling
@@ -86,12 +96,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         Set<User> users = new TreeSet<User>(new UserHintenComparator(logedInUserId));
         List<User> allUser = getAllUser();
         users.addAll(allUser);
+        Map<String, Integer> username2DistanzInMeter = aktivitaetRepository.calculateTotalDistanceForAllUsers().stream()
+                .collect(Collectors.toMap(TotalUserDistance::getOwner, TotalUserDistance::getDistanzInMeter));
         for (User user : users) {
             personScript.append("        {id: '").append(user.getUsername())
                     .append("', nickname: '").append(StringUtils.isBlank(user.getNickname()) ? user.getUsername() : user.getNickname())
-                    .append("', distance: ").append(berechneDistanzInMeter(user)).append("},\n");
+                    .append("', distance: ").append(username2DistanzInMeter.get(user.getUsername())).append("},\n");
         }
-        //das letzte ',' enfernen
+        //das letzte ',' entfernen
         personScript.deleteCharAt(personScript.length() - 2);
         personScript.append("    ];");
         return personScript.toString();
@@ -141,21 +153,12 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         }
     }
 
-    private int berechneDistanzInMeter(User user) {
-        BigDecimal distanzInKm = BigDecimal.ZERO.setScale(3, RoundingMode.HALF_UP);
-        for (Aktivitaet akt : loadAktivitaetenByOwner(user.getUsername())) {
-            if (null != akt.getDistanzInMeter()) {
-                distanzInKm = distanzInKm.add(akt.getDistanzInKilometer());
-            }
-        }
-        return distanzInKm.multiply(BigDecimal.valueOf(1000L)).intValue();
-    }
-
     @Override
     @Profiling
 //    @CacheRemove(cacheName = "aktivitaeten")
     public Aktivitaet createAktivitaet(@CacheKey Aktivitaet akt, final User user, boolean setDate) {
-        User userTmp = userRepository.findOne(user.getId());
+        User userTmp = userRepository.findById(user.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user with id '" + user.getId() + "' not found"));
         if (null == akt.getId()) {
             // neue Aktivitaet
             if (setDate) {
@@ -199,7 +202,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
         if (null != aktivitaet) {
-            Aktivitaet toDelete = aktivitaetRepository.findOne(aktivitaet.getId());
+            Aktivitaet toDelete = aktivitaetRepository.findById(aktivitaet.getId())
+                    .orElse(null);
             if (null != toDelete) {
                 logger.info("loesche aktivitaet " + toDelete.getId());
                 aktivitaetRepository.deleteAktivitaet(toDelete);
@@ -215,7 +219,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     @Transactional(readOnly = true)
     public List<Aktivitaet> loadAktivitaeten(String userId) {
-        User user = userRepository.findOne(userId);
+        User user = userRepository.findById(userId)
+                .orElse(null);
         if (null == user) {
             return Collections.emptyList();
         }
@@ -231,7 +236,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     public void changePassword(String userId, String cleartextPassword) {
-        User user = userRepository.findOne(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user with id '" + userId + "' not found"));
         logger.info("change password of user " + user);
         user.setPassword(passwordEncoder.encode(cleartextPassword));
         userRepository.save(user);
@@ -251,7 +257,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             logger.info("findUserById(null) returns null");
             return null;
         }
-        return userRepository.findOne(userId);
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user with id '" + userId + "' not found"));
     }
 
     @Override

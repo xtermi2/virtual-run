@@ -48,7 +48,7 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
             @Override
             public IModel<Object> getDataModel(IModel<Aktivitaet> rowModel) {
                 logger.info("getPropertyExpression: " + getPropertyExpression());
-                final IModel<Object> propertyModel = super.getDataModel(rowModel);
+                final IModel<Object> propertyModel = (IModel<Object>) super.getDataModel(rowModel);
 
                 IModel<Object> model = new IModel<Object>() {
                     @Override

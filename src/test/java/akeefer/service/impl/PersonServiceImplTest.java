@@ -3,16 +3,16 @@ package akeefer.service.impl;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
-import akeefer.model.SecurityRole;
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
+import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
+import akeefer.repository.mongo.dto.TotalUserDistance;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.Sets;
-import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +22,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,14 +39,17 @@ import static org.mockito.Mockito.*;
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
 public class PersonServiceImplTest {
 
-    private static String LINE_SEPARATOR = System.lineSeparator();
+    private static final String LINE_SEPARATOR = System.lineSeparator();
+
+    @Autowired
+    private MongoUserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     @Qualifier("personServiceImpl")
     private PersonService personService;
-
-    @Autowired
-    private MongoUserRepository userRepository;
 
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
@@ -63,43 +65,30 @@ public class PersonServiceImplTest {
     }
 
     @Test
-    public void testCreatePersonScript() throws Exception {
-        PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
-        PersonServiceImpl spy = spy(impl);
+    public void testCreatePersonScript() {
+        MongoAktivitaetRepository aktivitaetRepositoryMock = mock(MongoAktivitaetRepository.class);
+        PersonServiceImpl spy = spy(new PersonServiceImpl(userRepository, aktivitaetRepositoryMock, passwordEncoder));
         // Mocks
         User user1 = new User("1");
         user1.setUsername("foo");
         user1.setNickname("Foo User");
-        Aktivitaet aktUser1 = new Aktivitaet();
-        aktUser1.setOwner(user1.getUsername());
-        aktUser1.setDistanzInMeter(4711);
         User user2 = new User("2");
         user2.setUsername("user2");
         User user3 = new User("3");
         user3.setUsername("user3");
         assertFalse("user1 is equals user2", user1.equals(user2));
         final List<User> users = Arrays.asList(user3, user1, user2);
-        final List<Aktivitaet> aktivitaetList = Arrays.asList(aktUser1);
         doReturn(users).when(spy).getAllUser();
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                List<Aktivitaet> res = new ArrayList<>();
-                for (Aktivitaet akt : aktivitaetList) {
-                    if (invocation.getArguments()[0].equals(akt.getOwner())) {
-                        res.add(akt);
-                    }
-                }
-                return res;
-            }
-        }).when(spy).loadAktivitaetenByOwner(anyString());
-
         User logedIn = new User(user1.getId());
         logedIn.setUsername("hallo");
-        Aktivitaet aktivitaet = new Aktivitaet();
-        aktivitaet.setDistanzInMeter(1234);
-        aktivitaet.setOwner(logedIn.getUsername());
+        doReturn(Arrays.asList(
+                new TotalUserDistance(user1.getUsername(), new BigDecimal("4.711")),
+                new TotalUserDistance(user2.getUsername(), BigDecimal.ZERO),
+                new TotalUserDistance(user3.getUsername(), BigDecimal.ZERO))
+        ).when(aktivitaetRepositoryMock).calculateTotalDistanceForAllUsers();
+
         String personScript = spy.createPersonScript(logedIn.getId());
+
         System.out.println(personScript);
         assertEquals("var personen = [\n" +
                 "        {id: 'user2', nickname: 'user2', distance: 0},\n" +
@@ -109,14 +98,13 @@ public class PersonServiceImplTest {
     }
 
     @Test
-    public void testPasswordEncoding() throws Exception {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        printHash(encoder, "andi");
-        printHash(encoder, "sabine");
-        printHash(encoder, "norbert");
-        printHash(encoder, "roland");
-        printHash(encoder, "uli-hans");
-        printHash(encoder, "frank");
+    public void testPasswordEncoding() {
+        printHash(passwordEncoder, "andi");
+        printHash(passwordEncoder, "sabine");
+        printHash(passwordEncoder, "norbert");
+        printHash(passwordEncoder, "roland");
+        printHash(passwordEncoder, "uli-hans");
+        printHash(passwordEncoder, "frank");
     }
 
     @Test
@@ -285,37 +273,6 @@ public class PersonServiceImplTest {
                         "... 10km gewandert" + LINE_SEPARATOR + LINE_SEPARATOR + LINE_SEPARATOR +
                         "http://localhost:8080",
                 mailBody);
-    }
-
-    @Test
-    public void testMongo() {
-        userRepository.deleteAll();
-        List<akeefer.model.mongo.User> res = userRepository.findAll();
-        Assertions.assertThat(res)
-                .as("all Users")
-                .isEmpty();
-
-        String id = String.valueOf(5099850341285888L);
-        akeefer.model.mongo.User andi = userRepository.save(akeefer.model.mongo.User.builder()
-                .id(id)
-                .username("andi")
-                .password("andi")
-                .role(SecurityRole.ADMIN)
-                .role(SecurityRole.USER)
-                .build());
-        Assertions.assertThat(andi.getId())
-                .as("id")
-                .isNotNull();
-
-        akeefer.model.mongo.User one = userRepository.findOne(id);
-        Assertions.assertThat(one.getId())
-                .as("id")
-                .isEqualTo(id);
-
-        akeefer.model.mongo.User findByUsername = userRepository.findByUsername("andi");
-        Assertions.assertThat(findByUsername.getId())
-                .as("id")
-                .isEqualTo(id);
     }
 
     private void printHash(PasswordEncoder encoder, String user) {

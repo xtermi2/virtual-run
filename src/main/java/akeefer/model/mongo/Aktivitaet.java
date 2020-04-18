@@ -7,6 +7,9 @@ import lombok.*;
 import org.joda.time.DateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.DecimalMin;
@@ -25,6 +28,9 @@ import java.util.UUID;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@CompoundIndexes({
+        @CompoundIndex(name = "owner_distanzInKilometer", def = "{'owner' : 1, 'distanzInKilometer': 1}")
+})
 public class Aktivitaet implements Serializable {
 
     public static final BigDecimal TAUSEND = BigDecimal.valueOf(1000L);
@@ -58,6 +64,7 @@ public class Aktivitaet implements Serializable {
 
     private String bezeichnung;
 
+    @Indexed
     private String owner;
 
     @Transient

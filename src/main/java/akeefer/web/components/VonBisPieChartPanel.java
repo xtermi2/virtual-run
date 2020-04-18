@@ -18,7 +18,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxFallbackButton;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -29,12 +28,14 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
+import org.wicketstuff.datetime.extensions.yui.calendar.DatePicker;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 public class VonBisPieChartPanel extends Panel {
 
@@ -107,11 +108,11 @@ public class VonBisPieChartPanel extends Panel {
 
         form.add(new AjaxFallbackButton("submit", form) {
             @Override
-            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-                if (null != target) {
+            protected void onSubmit(Optional<AjaxRequestTarget> target) {
+                if (target.isPresent()) {
                     chart.setOptions(createChartOptions());
-                    target.add(chart);
-                    target.add(feedbackPanel);
+                    target.get().add(chart);
+                    target.get().add(feedbackPanel);
                 }
             }
         });

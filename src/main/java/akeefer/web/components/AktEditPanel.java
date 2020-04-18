@@ -8,7 +8,6 @@ import akeefer.web.VRSession;
 import akeefer.web.components.validation.LocalizedPropertyValidator;
 import akeefer.web.pages.AktUebersichtPage;
 import org.apache.wicket.extensions.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -16,6 +15,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.datetime.extensions.yui.calendar.DatePicker;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

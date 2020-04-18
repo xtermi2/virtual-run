@@ -33,7 +33,7 @@ import org.wicketstuff.rest.annotations.parameters.RequestBody;
 import org.wicketstuff.rest.contenthandling.json.objserialdeserial.JacksonObjectSerialDeserial;
 import org.wicketstuff.rest.contenthandling.json.webserialdeserial.JsonWebSerialDeserial;
 import org.wicketstuff.rest.resource.AbstractRestResource;
-import org.wicketstuff.rest.utils.http.HttpMethod;
+import org.wicketstuff.restutils.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
