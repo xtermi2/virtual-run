@@ -1,6 +1,11 @@
 package akeefer.service.impl;
 
-import akeefer.model.*;
+import akeefer.model.AktivitaetsAufzeichnung;
+import akeefer.model.AktivitaetsTyp;
+import akeefer.model.BenachrichtigunsIntervall;
+import akeefer.model.SecurityRole;
+import akeefer.model.mongo.Aktivitaet;
+import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoUserRepository;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
@@ -26,7 +31,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static akeefer.test.util.ProxyUtil.getTargetObject;
-import static com.google.appengine.api.datastore.KeyFactory.createKey;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.anyString;
@@ -63,36 +67,38 @@ public class PersonServiceImplTest {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         PersonServiceImpl spy = spy(impl);
         // Mocks
-        User user1 = new User(createKey("User", "user1"));
+        User user1 = new User("1");
         user1.setUsername("foo");
         user1.setNickname("Foo User");
         Aktivitaet aktUser1 = new Aktivitaet();
+        aktUser1.setOwner(user1.getUsername());
         aktUser1.setDistanzInMeter(4711);
-        user1.setAktivitaeten(Arrays.asList(aktUser1));
-        User user2 = new User(createKey("User", "user2"));
+        User user2 = new User("2");
         user2.setUsername("user2");
-        User user3 = new User(createKey("User", "user3"));
+        User user3 = new User("3");
         user3.setUsername("user3");
         assertFalse("user1 is equals user2", user1.equals(user2));
         final List<User> users = Arrays.asList(user3, user1, user2);
+        final List<Aktivitaet> aktivitaetList = Arrays.asList(aktUser1);
         doReturn(users).when(spy).getAllUser();
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                for (User user : users) {
-                    if (invocation.getArguments()[0].equals(user.getUsername())) {
-                        return user.getAktivitaeten();
+                List<Aktivitaet> res = new ArrayList<>();
+                for (Aktivitaet akt : aktivitaetList) {
+                    if (invocation.getArguments()[0].equals(akt.getOwner())) {
+                        res.add(akt);
                     }
                 }
-                return Collections.emptyList();
+                return res;
             }
-        }).when(spy).loadAktivitaeten(anyString());
+        }).when(spy).loadAktivitaetenByOwner(anyString());
 
         User logedIn = new User(user1.getId());
         logedIn.setUsername("hallo");
         Aktivitaet aktivitaet = new Aktivitaet();
         aktivitaet.setDistanzInMeter(1234);
-        logedIn.getAktivitaeten().add(aktivitaet);
+        aktivitaet.setOwner(logedIn.getUsername());
         String personScript = spy.createPersonScript(logedIn.getId());
         System.out.println(personScript);
         assertEquals("var personen = [\n" +
@@ -118,40 +124,49 @@ public class PersonServiceImplTest {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         PersonServiceImpl spy = spy(impl);
         // Mocks
-        User user1 = new User(createKey("User", "user1"));
+        User user1 = new User(UUID.randomUUID());
         user1.setUsername("user1");
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
-        user1.setAktivitaeten(Arrays.asList(
-                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.ONE).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().toDate()).build(),
-                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(2)).withTyp(AktivitaetsTyp.radfahren).withEingabeDatum(new DateTime().minusDays(1).toDate()).build(),
-                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(3)).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().minusDays(2).toDate()).build(),
-                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(4)).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().minusDays(7).toDate()).build(),
-                Aktivitaet.newBuilder().withDistanzInKilometer(BigDecimal.valueOf(5)).withTyp(AktivitaetsTyp.laufen).withEingabeDatum(new DateTime().minusDays(8).toDate()).build()
-        ));
+        final List<Aktivitaet> aktivitaetList = new ArrayList<>();
+        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build());
 
-        User user2 = new User(createKey("User", "user2"));
-        user2.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.woechnetlich);
-        user2.setAktivitaeten(user1.getAktivitaeten());
+        User user2 = new User(UUID.randomUUID());
         user2.setUsername("user2");
+        user2.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.woechnetlich);
+        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build());
 
-        User user3 = new User(createKey("User", "user3"));
+        User user3 = new User(UUID.randomUUID());
         user3.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.deaktiviert);
-        user3.setAktivitaeten(user1.getAktivitaeten());
         user3.setUsername("user3");
+        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build());
+
 
         final List<User> users = Arrays.asList(user3, user1, user2);
         doReturn(users).when(spy).getAllUser();
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
-                for (User user : users) {
-                    if (invocation.getArguments()[0].equals(user.getUsername())) {
-                        return user.getAktivitaeten();
+                List<Aktivitaet> res = new ArrayList<>();
+                for (Aktivitaet akt : aktivitaetList) {
+                    if (invocation.getArguments()[0].equals(akt.getOwner())) {
+                        res.add(akt);
                     }
                 }
-                return Collections.emptyList();
+                return res;
             }
-        }).when(spy).loadAktivitaeten(anyString());
+        }).when(spy).loadAktivitaetenByOwner(anyString());
 
         Set<Statistic> statistics = spy.createStatistic(BenachrichtigunsIntervall.deaktiviert);
         assertEquals(3, statistics.size());
@@ -175,11 +190,16 @@ public class PersonServiceImplTest {
         assertEquals(new BigDecimal("7"), statistic.getAggregated().get(AktivitaetsTyp.laufen));
     }
 
+    private Aktivitaet.AktivitaetBuilder createDefaultAkt() {
+        return Aktivitaet.builder()
+                .aufzeichnungsart(AktivitaetsAufzeichnung.aufgezeichnet);
+    }
+
     @Test
     public void testBuildMailBodyNurEigeneAktivitaeten() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         // Mocks
-        User user1 = new User(createKey("User", "user1"));
+        User user1 = new User(UUID.randomUUID());
         user1.setUsername("user1");
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
 
@@ -195,11 +215,11 @@ public class PersonServiceImplTest {
     public void testBuildMailBodyTaeglich() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         // Mocks
-        User user1 = new User(createKey("User", "user1"));
+        User user1 = new User(UUID.randomUUID());
         user1.setUsername("user1");
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
 
-        User user2 = new User(createKey("User", "user2"));
+        User user2 = new User(UUID.randomUUID());
         user2.setUsername("user2");
         user2.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
 
@@ -218,7 +238,7 @@ public class PersonServiceImplTest {
     public void testBuildMailBodyIncludeMe() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         // Mocks
-        User user1 = new User(createKey("User", "user1"));
+        User user1 = new User(UUID.randomUUID());
         user1.setUsername("user1");
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
 
@@ -248,11 +268,11 @@ public class PersonServiceImplTest {
     public void testBuildMailBodyWoechentlich() throws Exception {
         PersonServiceImpl impl = getTargetObject(personService, PersonServiceImpl.class);
         // Mocks
-        User user1 = new User(createKey("User", "user1"));
+        User user1 = new User(UUID.randomUUID());
         user1.setUsername("user1");
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.woechnetlich);
 
-        User user2 = new User(createKey("User", "user2"));
+        User user2 = new User(UUID.randomUUID());
         user2.setUsername("user2");
         user2.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
 

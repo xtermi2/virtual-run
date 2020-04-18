@@ -1,7 +1,7 @@
 package akeefer.web;
 
 import akeefer.model.SecurityRole;
-import akeefer.model.User;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;

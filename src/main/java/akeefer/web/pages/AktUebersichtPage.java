@@ -1,7 +1,7 @@
 package akeefer.web.pages;
 
-import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsTyp;
+import akeefer.model.mongo.Aktivitaet;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
 import akeefer.web.components.AktLoadableDetachableModel;

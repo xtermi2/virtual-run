@@ -13,9 +13,11 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.UUID;
 
 @Document(collection = "activities")
 @Data
@@ -23,7 +25,7 @@ import java.util.Date;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Aktivitaet {
+public class Aktivitaet implements Serializable {
 
     public static final BigDecimal TAUSEND = BigDecimal.valueOf(1000L);
 
@@ -87,7 +89,7 @@ public class Aktivitaet {
         return this;
     }
 
-    public void setUser(akeefer.model.mongo.User user) {
+    public void setUser(User user) {
         if (null == user) {
             this.owner = null;
         } else {
@@ -95,8 +97,11 @@ public class Aktivitaet {
         }
     }
 
-    public Aktivitaet cloneWithoutUser() {
-        return this.toBuilder()
-                .build();
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIdFromUUID(UUID id) {
+        this.id = id.toString();
     }
 }

@@ -12,6 +12,9 @@
     <description>virtual run</description>
 
     <properties>
+        <!-- default if no profile (int, prod) is selected to overwrite -->
+        <mongodb.databasename>test</mongodb.databasename>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <appengine.app.version>1</appengine.app.version>
@@ -323,12 +326,18 @@
             <version>3.15.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.json-unit</groupId>
+            <artifactId>json-unit-assertj</artifactId>
+            <version>2.17.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--  JETTY DEPENDENCIES FOR TESTING  -->
         <dependency>
             <groupId>org.eclipse.jetty.aggregate</groupId>
             <artifactId>jetty-all-server</artifactId>
-<!--            <artifactId>jetty-all</artifactId>-->
+            <!--            <artifactId>jetty-all</artifactId>-->
             <version>${jetty.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -551,4 +560,18 @@
             <url>https://oss.sonatype.org/content/repositories/comgoogleappengine-1004/</url>
         </pluginRepository>
     </pluginRepositories>
+    <profiles>
+        <profile>
+            <id>int</id>
+            <properties>
+                <mongodb.databasename>int</mongodb.databasename>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <mongodb.databasename>prod</mongodb.databasename>
+            </properties>
+        </profile>
+    </profiles>
 </project>

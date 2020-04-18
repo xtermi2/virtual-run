@@ -1,6 +1,7 @@
 package akeefer.repository.mongo;
 
 import akeefer.model.mongo.User;
+import akeefer.util.Profiling;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,6 +15,7 @@ public class MongoUserRepositoryImpl implements MongoUserRepositoryCustom {
     private MongoTemplate mongoTemplate;
 
     @Override
+    @Profiling
     public List<String> findAllUsernames() {
         return mongoTemplate.getCollection(mongoTemplate.getCollectionName(User.class))
                 .distinct("username");

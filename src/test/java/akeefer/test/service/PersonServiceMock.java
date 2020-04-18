@@ -1,13 +1,15 @@
 package akeefer.test.service;
 
-import akeefer.model.*;
+import akeefer.model.AktivitaetsTyp;
+import akeefer.model.BenachrichtigunsIntervall;
+import akeefer.model.SecurityRole;
+import akeefer.model.mongo.Aktivitaet;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
-import akeefer.service.dto.DbBackup;
+import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
 import akeefer.test.TestScopedComponent;
 import akeefer.web.charts.ChartIntervall;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -15,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @TestScopedComponent
 public class PersonServiceMock implements PersonService {
@@ -33,16 +32,16 @@ public class PersonServiceMock implements PersonService {
 
     @Override
     public User getUserByUsername(String username) {
-        User user = new User();
-        user.setId(KeyFactory.createKey("User", "username"));
-        user.setUsername(username);
-        user.setPassword(encoder.encode("bar"));
-        user.addRole(SecurityRole.USER);
-        return user;
+        return User.builder()
+                .id(UUID.randomUUID().toString())
+                .username(username)
+                .password(encoder.encode("bar"))
+                .role(SecurityRole.USER)
+                .build();
     }
 
     @Override
-    public String createPersonScript(Key logedInUserId) {
+    public String createPersonScript(String logedInUserId) {
         return "";
     }
 
@@ -59,16 +58,16 @@ public class PersonServiceMock implements PersonService {
 
     @Override
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
-        user.getAktivitaeten().remove(aktivitaet);
+
     }
 
     @Override
-    public List<Aktivitaet> loadAktivitaeten(Key userId) {
+    public List<Aktivitaet> loadAktivitaeten(String userId) {
         return null;
     }
 
     @Override
-    public void changePassword(Key userId, String cleartextPassword) {
+    public void changePassword(String userId, String cleartextPassword) {
     }
 
     @Override
@@ -77,7 +76,7 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public User findUserById(Key userId) {
+    public User findUserById(String userId) {
         return getUserByUsername("foo");
     }
 
@@ -91,12 +90,12 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public Map<AktivitaetsTyp, BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis) {
+    public Map<AktivitaetsTyp, BigDecimal> createPieChartData(String userId, LocalDate von, LocalDate bis) {
         return Collections.emptyMap();
     }
 
     @Override
-    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(String userId, ChartIntervall chartIntervall) {
         return Collections.emptyMap();
     }
 
@@ -116,7 +115,7 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public DbBackup createBackup(String... username) {
-        return DbBackup.newBuilder().build();
+    public DbBackupMongo createBackup(String... username) {
+        return DbBackupMongo.builder().build();
     }
 }

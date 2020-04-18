@@ -1,15 +1,17 @@
 package akeefer.service.impl;
 
-import akeefer.model.*;
-import akeefer.repository.AktivitaetRepository;
-import akeefer.repository.ParentRepository;
-import akeefer.repository.UserRepository;
+import akeefer.model.AktivitaetsTyp;
+import akeefer.model.BenachrichtigunsIntervall;
+import akeefer.model.SecurityRole;
+import akeefer.model.mongo.Aktivitaet;
+import akeefer.model.mongo.User;
+import akeefer.repository.mongo.MongoAktivitaetRepository;
+import akeefer.repository.mongo.MongoUserRepository;
 import akeefer.service.PersonService;
-import akeefer.service.dto.DbBackup;
+import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
 import akeefer.util.Profiling;
 import akeefer.web.charts.ChartIntervall;
-import com.google.appengine.api.datastore.Key;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
@@ -29,7 +31,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.cache.annotation.*;
+import javax.cache.annotation.CacheKey;
+import javax.cache.annotation.CachePut;
+import javax.cache.annotation.CacheResult;
+import javax.cache.annotation.CacheValue;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -49,13 +54,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     private static final String LINE_SEPARATOR = System.lineSeparator();
 
     @Autowired
-    private UserRepository userRepository;
+    private MongoUserRepository userRepository;
 
     @Autowired
-    private AktivitaetRepository aktivitaetRepository;
-
-    @Autowired
-    private ParentRepository parentRepository;
+    private MongoAktivitaetRepository aktivitaetRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -71,18 +73,13 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-//        if (null != user) {
-//            logger.info(String.format("user (username='%s') has %s Aktivitaeten", username,
-//                    null == user.getAktivitaeten() ? "null" : user.getAktivitaeten().size()));
-//        }
-        return user;
+        return userRepository.findByUsername(username);
     }
 
     @Override
     @Profiling
     @Transactional(readOnly = true)
-    public String createPersonScript(Key logedInUserId) {
+    public String createPersonScript(String logedInUserId) {
         Validate.notNull(logedInUserId);
 
         StringBuilder personScript = new StringBuilder("var personen = [\n");
@@ -124,20 +121,20 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     // Sortiert den user mit dem Key nach unten
     static class UserHintenComparator implements Comparator<User> {
 
-        private Key userKey;
+        private String userId;
 
-        UserHintenComparator(Key userKey) {
+        UserHintenComparator(String userId) {
 
-            this.userKey = userKey;
+            this.userId = userId;
         }
 
         @Override
         public int compare(User o1, User o2) {
-            if (null == userKey) {
+            if (null == userId) {
                 return o1.compareTo(o2);
-            } else if (userKey.equals(o1.getId())) {
+            } else if (userId.equals(o1.getId())) {
                 return 1;
-            } else if (userKey.equals(o2.getId())) {
+            } else if (userId.equals(o2.getId())) {
                 return -1;
             }
             return o1.compareTo(o2);
@@ -146,7 +143,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     private int berechneDistanzInMeter(User user) {
         BigDecimal distanzInKm = BigDecimal.ZERO.setScale(3, RoundingMode.HALF_UP);
-        for (Aktivitaet akt : loadAktivitaeten(user.getUsername())) {
+        for (Aktivitaet akt : loadAktivitaetenByOwner(user.getUsername())) {
             if (null != akt.getDistanzInMeter()) {
                 distanzInKm = distanzInKm.add(akt.getDistanzInKilometer());
             }
@@ -156,7 +153,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    @CacheRemove(cacheName = "aktivitaeten")
+//    @CacheRemove(cacheName = "aktivitaeten")
     public Aktivitaet createAktivitaet(@CacheKey Aktivitaet akt, final User user, boolean setDate) {
         User userTmp = userRepository.findOne(user.getId());
         if (null == akt.getId()) {
@@ -164,22 +161,12 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             if (setDate) {
                 akt.setEingabeDatum(new Date());
             }
-            // Relationen herstellen bei neuer Akt
-            if (null == userTmp.getAktivitaeten()) {
-                userTmp.setAktivitaeten(new ArrayList<Aktivitaet>());
-            }
-            userTmp.getAktivitaeten().add(akt);
         } else if (setDate) {
             akt.setUpdatedDatum(new Date());
         }
         akt.setUser(userTmp);
 
-        akt = aktivitaetRepository.save(akt);
-
-        // muss immer pasieren, sonst wird in PROD die Liste in der Uebersicht nicht aktualisiert
-        //user.setAktivitaeten(userTmp.getAktivitaeten());
-
-        return akt;
+        return aktivitaetRepository.save(akt);
     }
 
     @Override
@@ -204,8 +191,6 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             logger.info("PW von user '" + user.getUsername() + "' wird encoded");
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        Parent parent = getParent();
-        user.setParent(parent);
 
         return userRepository.save(user);
     }
@@ -214,11 +199,9 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     public void deleteAktivitaet(User user, Aktivitaet aktivitaet) {
         if (null != aktivitaet) {
-            //user.getAktivitaeten().remove(aktivitaet);
             Aktivitaet toDelete = aktivitaetRepository.findOne(aktivitaet.getId());
             if (null != toDelete) {
                 logger.info("loesche aktivitaet " + toDelete.getId());
-                toDelete.getUser().getAktivitaeten().remove(toDelete);
                 aktivitaetRepository.deleteAktivitaet(toDelete);
             } else {
                 logger.warn("akt nicht gefunden: " + aktivitaet.getId());
@@ -231,15 +214,15 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     @Transactional(readOnly = true)
-    public List<Aktivitaet> loadAktivitaeten(Key userId) {
+    public List<Aktivitaet> loadAktivitaeten(String userId) {
         User user = userRepository.findOne(userId);
         if (null == user) {
             return Collections.emptyList();
         }
-        return loadAktivitaeten(user.getUsername());
+        return loadAktivitaetenByOwner(user.getUsername());
     }
 
-    List<Aktivitaet> loadAktivitaeten(String owner) {
+    List<Aktivitaet> loadAktivitaetenByOwner(String owner) {
         final List<Aktivitaet> aktivitaeten = aktivitaetRepository.findAllByOwner(owner);
         logger.info("Anzahl gefundene Aktivitaeten(" + owner + "): " + aktivitaeten.size());
         return aktivitaeten;
@@ -247,7 +230,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public void changePassword(Key userId, String cleartextPassword) {
+    public void changePassword(String userId, String cleartextPassword) {
         User user = userRepository.findOne(userId);
         logger.info("change password of user " + user);
         user.setPassword(passwordEncoder.encode(cleartextPassword));
@@ -263,7 +246,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public User findUserById(Key userId) {
+    public User findUserById(String userId) {
         if (null == userId) {
             logger.info("findUserById(null) returns null");
             return null;
@@ -284,7 +267,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             for (User user : users) {
                 Statistic statistic = new Statistic(user);
                 statistics.add(statistic);
-                List<Aktivitaet> aktivitaeten = loadAktivitaeten(user.getUsername());
+                List<Aktivitaet> aktivitaeten = loadAktivitaetenByOwner(user.getUsername());
                 for (Aktivitaet akt : Iterables.filter(aktivitaeten, aktErstellungsdatumPredicate)) {
                     statistic.add(akt.getTyp(), akt.getDistanzInKilometer());
                 }
@@ -336,7 +319,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public Map<AktivitaetsTyp, BigDecimal> createPieChartData(final Key userId,
+    public Map<AktivitaetsTyp, BigDecimal> createPieChartData(final String userId,
                                                               final LocalDate von,
                                                               final LocalDate bis) {
         final List<Aktivitaet> aktivitaeten = loadAktivitaeten(userId);
@@ -360,7 +343,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId, ChartIntervall chartIntervall) {
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(String userId, ChartIntervall chartIntervall) {
         final List<Aktivitaet> aktivitaeten = loadAktivitaeten(userId);
         if (CollectionUtils.isEmpty(aktivitaeten)) {
             return Collections.emptyMap();
@@ -398,7 +381,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     public Map<LocalDate, BigDecimal> createForecastData(String username,
                                                          BigDecimal totalDistanceInKm) {
-        final List<Aktivitaet> aktivitaeten = loadAktivitaeten(username);
+        final List<Aktivitaet> aktivitaeten = loadAktivitaetenByOwner(username);
         if (CollectionUtils.isEmpty(aktivitaeten)) {
             return Collections.emptyMap();
         }
@@ -452,7 +435,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @CacheResult(cacheName = "totalDistance")
     public BigDecimal getTotalDistance() {
-        BigDecimal dummyTotalDistance = BigDecimal.valueOf(12867);
+        BigDecimal dummyTotalDistance = BigDecimal.valueOf(13372);
         logger.info("returning dummy totalDistance: {}", dummyTotalDistance);
         return dummyTotalDistance;
     }
@@ -460,31 +443,20 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     @Transactional(readOnly = true)
-    public DbBackup createBackup(String... username) {
-        List<String> usernameFilter = Arrays.asList(username);
-        // copy users
-        List<User> users = new LinkedList<>();
-        for (User user : getAllUser()) {
-            if (usernameFilter.isEmpty() || usernameFilter.contains(user.getUsername())) {
-                users.add(User.newBuilder(user)//
-                        .withParent(null)//
-                        .withAktivitaeten(null)//
-                        .build());
-            }
-        }
+    public DbBackupMongo createBackup(String... username) {
+        Set<String> usernameFilter = new HashSet<>(Arrays.asList(username));
+        List<User> users = usernameFilter.isEmpty()
+                ? userRepository.findAll()
+                : userRepository.findByUsernameIn(usernameFilter);
 
         // copy aktivitaeten
-        List<Aktivitaet> aktivitaeten = new LinkedList<>();
-        for (Aktivitaet akt : aktivitaetRepository.findAll()) {
-            if (usernameFilter.isEmpty() || usernameFilter.contains(akt.getOwner())) {
-                aktivitaeten.add(Aktivitaet.newBuilder(akt)//
-                        .withUser(null)//
-                        .build());
-            }
-        }
-        return DbBackup.newBuilder()//
-                .withUsers(users)//
-                .withAktivitaeten(aktivitaeten)//
+        List<Aktivitaet> aktivitaeten = usernameFilter.isEmpty()
+                ? aktivitaetRepository.findAll()
+                : aktivitaetRepository.findByOwnerIn(usernameFilter);
+
+        return DbBackupMongo.builder()
+                .users(users)
+                .aktivitaeten(aktivitaeten)
                 .build();
     }
 
@@ -571,20 +543,6 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             return System.getProperty("com.google.appengine.application.id");
         }
         return null;
-    }
-
-    private Parent getParent() {
-        List<Parent> parents = parentRepository.findAll();
-        final Parent parent;
-        if (CollectionUtils.isEmpty(parents)) {
-            logger.info("Parent will be created...");
-            parent = parentRepository.save(new Parent());
-        } else {
-            logger.info("using existing Parent from Database");
-            parent = parents.get(0);
-        }
-
-        return parent;
     }
 
     private User findUserByUsername(Iterable<User> users, String username) {

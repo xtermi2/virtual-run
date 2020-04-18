@@ -1,6 +1,10 @@
 package akeefer.web.pages;
 
-import akeefer.model.*;
+import akeefer.model.AktivitaetsAufzeichnung;
+import akeefer.model.AktivitaetsTyp;
+import akeefer.model.SecurityRole;
+import akeefer.model.mongo.Aktivitaet;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
 import akeefer.web.WicketApplication;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -58,10 +62,11 @@ public class InitDatabasePage extends AbstractBasePage {
     }
 
     private User create(String username, SecurityRole... roles) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(username);
-        user.getRoles().addAll(Arrays.asList(roles));
+        User user = User.builder()
+                .username(username)
+                .password(username)
+                .roles(Arrays.asList(roles))
+                .build();
         return personService.createUserIfAbsent(user, false);
     }
 }

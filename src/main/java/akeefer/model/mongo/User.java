@@ -11,7 +11,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Document(collection = "users")
 @Data
@@ -20,7 +23,7 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Serializable, Comparable<User> {
     @Id
     @EqualsAndHashCode.Include
     private String id;
@@ -39,7 +42,7 @@ public class User {
     @NonNull
     @NotEmpty
     @Singular
-    private Set<SecurityRole> roles;
+    private Set<SecurityRole> roles = new HashSet<>(1);
 
     @Size(min = 1)
     private String nickname;
@@ -54,8 +57,22 @@ public class User {
 
     private boolean includeMeInStatisticMail;
 
+    public User(String id) {
+        this.id = id;
+    }
+
+    public User(UUID id) {
+        this.id = id.toString();
+    }
+
     @Transient
     public String getAnzeigename() {
         return null == nickname ? username : nickname;
     }
+
+    @Override
+    public int compareTo(User o) {
+        return id.compareTo(o.getId());
+    }
+
 }

@@ -1,6 +1,6 @@
 package akeefer.web.components;
 
-import akeefer.model.User;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
 import akeefer.web.charts.ChartIntervall;

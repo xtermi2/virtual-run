@@ -67,7 +67,11 @@ Create a default maven profile which provides the properties like this `~/.m2/se
 ## Run GAE dev server
 
 ```bash
+# TEST env
 ./mvnw clean appengine:devserver
+
+# INTEGRATION env
+./mvnw clean appengine:devserver -P int
 ```
 -   open [http://localhost:8080/init](http://localhost:8080/init) to create initial users:
     -   andi:andi
@@ -82,5 +86,5 @@ Create a default maven profile which provides the properties like this `~/.m2/se
 NOTE: This will use the version from `appengine-web.xml`, so check the current version before you deploy to prevent overwriting the current deployment.
 
 ```bash
-./mvnw clean appengine:update
+./mvnw clean appengine:update -P prod
 ```

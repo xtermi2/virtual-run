@@ -1,13 +1,12 @@
 package akeefer.service;
 
-import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
-import akeefer.model.User;
-import akeefer.service.dto.DbBackup;
+import akeefer.model.mongo.Aktivitaet;
+import akeefer.model.mongo.User;
+import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
 import akeefer.web.charts.ChartIntervall;
-import com.google.appengine.api.datastore.Key;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 
@@ -21,7 +20,7 @@ public interface PersonService {
 
     User getUserByUsername(String username);
 
-    String createPersonScript(Key logedInUserId);
+    String createPersonScript(String logedInUserId);
 
     Aktivitaet createAktivitaet(Aktivitaet akt, User user, boolean setDate);
 
@@ -29,21 +28,21 @@ public interface PersonService {
 
     void deleteAktivitaet(User user, Aktivitaet aktivitaet);
 
-    List<Aktivitaet> loadAktivitaeten(Key userId);
+    List<Aktivitaet> loadAktivitaeten(String userId);
 
-    void changePassword(Key userId, String cleartextPassword);
+    void changePassword(String userId, String cleartextPassword);
 
     User updateUser(User user);
 
-    User findUserById(Key userId);
+    User findUserById(String userId);
 
     Set<Statistic> createStatistic(BenachrichtigunsIntervall interval);
 
     void sendStatisticMail(BenachrichtigunsIntervall interval);
 
-    Map<AktivitaetsTyp, BigDecimal> createPieChartData(Key userId, LocalDate von, LocalDate bis);
+    Map<AktivitaetsTyp, BigDecimal> createPieChartData(String userId, LocalDate von, LocalDate bis);
 
-    Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(Key userId,
+    Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(String userId,
                                                                                 ChartIntervall chartIntervall);
 
     Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm);
@@ -52,5 +51,5 @@ public interface PersonService {
 
     BigDecimal getTotalDistance();
 
-    DbBackup createBackup(String... username);
+    DbBackupMongo createBackup(String... username);
 }

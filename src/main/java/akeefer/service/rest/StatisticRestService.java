@@ -2,9 +2,8 @@ package akeefer.service.rest;
 
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.SecurityRole;
-import akeefer.model.User;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
-import akeefer.service.dto.DbBackup;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.impl.ImportService;
 import akeefer.web.VRSession;
@@ -95,7 +94,7 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     }
 
     @MethodMapping(value = "/backup/export", httpMethod = HttpMethod.GET)
-    public DbBackup backupExport() {
+    public DbBackupMongo backupExport() {
         try {
             User currentUser = VRSession.get().getUser();
             if (null == currentUser) {
@@ -118,7 +117,7 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     }
 
     @MethodMapping(value = "/backup/export/{username}", httpMethod = HttpMethod.GET)
-    public DbBackup backupExport(String username) {
+    public DbBackupMongo backupExport(String username) {
         try {
             User currentUser = VRSession.get().getUser();
             if (null == currentUser) {
@@ -143,7 +142,7 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     @MethodMapping(value = "/backup/import", httpMethod = HttpMethod.POST)
     public void backupImport(@RequestBody DbBackupMongo data) {
         try {
-            logger.info("import backup: {}", data);
+            logger.debug("import backup: {}", data);
             setResponseStatusCode(importService.importData(data));
         } catch (Exception e) {
             setResponseStatusCode(500);
