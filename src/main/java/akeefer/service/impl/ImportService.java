@@ -5,6 +5,7 @@ import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
 import akeefer.service.dto.DbBackupMongo;
+import akeefer.util.Profiling;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -33,6 +34,7 @@ public class ImportService {
     /**
      * @return HTTP status code
      */
+    @Profiling
     public int importData(DbBackupMongo dbBackup) {
         int res = HttpStatus.OK.value();
         if (dbBackup != null) {

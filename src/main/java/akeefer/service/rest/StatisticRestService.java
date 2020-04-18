@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.rest.annotations.MethodMapping;
 import org.wicketstuff.rest.annotations.ResourcePath;
+import org.wicketstuff.rest.annotations.parameters.HeaderParam;
 import org.wicketstuff.rest.annotations.parameters.RequestBody;
 import org.wicketstuff.rest.contenthandling.json.objserialdeserial.JacksonObjectSerialDeserial;
 import org.wicketstuff.rest.contenthandling.json.webserialdeserial.JsonWebSerialDeserial;
@@ -36,8 +37,10 @@ import org.wicketstuff.rest.utils.http.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 
 @ResourcePath("/rest")
 public class StatisticRestService extends AbstractRestResource<JsonWebSerialDeserial> {
@@ -94,9 +97,12 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     }
 
     @MethodMapping(value = "/backup/export", httpMethod = HttpMethod.GET)
-    public DbBackupMongo backupExport() {
+    public DbBackupMongo backupExport(@HeaderParam(value = "Authorization", required = false) String authorizationHeader) {
         try {
             User currentUser = VRSession.get().getUser();
+            if (null == currentUser) {
+                currentUser = getUserFromHeader(authorizationHeader);
+            }
             if (null == currentUser) {
                 setResponseStatusCode(401);
                 logger.warn("unauthorized users are not allowed to create a backup");
@@ -117,9 +123,13 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     }
 
     @MethodMapping(value = "/backup/export/{username}", httpMethod = HttpMethod.GET)
-    public DbBackupMongo backupExport(String username) {
+    public DbBackupMongo backupExport(String username,
+                                      @HeaderParam(value = "Authorization", required = false) String authorizationHeader) {
         try {
             User currentUser = VRSession.get().getUser();
+            if (null == currentUser) {
+                currentUser = getUserFromHeader(authorizationHeader);
+            }
             if (null == currentUser) {
                 setResponseStatusCode(401);
                 logger.warn("unauthorized users are not allowed to create a backup");
@@ -140,14 +150,46 @@ public class StatisticRestService extends AbstractRestResource<JsonWebSerialDese
     }
 
     @MethodMapping(value = "/backup/import", httpMethod = HttpMethod.POST)
-    public void backupImport(@RequestBody DbBackupMongo data) {
+    public void backupImport(@RequestBody DbBackupMongo data,
+                             @HeaderParam(value = "Authorization", required = false) String authorizationHeader) {
         try {
+            User currentUser = VRSession.get().getUser();
+            if (null == currentUser) {
+                currentUser = getUserFromHeader(authorizationHeader);
+            }
+            if (null == currentUser) {
+                setResponseStatusCode(401);
+                logger.warn("unauthorized users are not allowed to create a backup");
+                return;
+            }
+            if (!currentUser.getRoles().contains(SecurityRole.ADMIN)) {
+                setResponseStatusCode(403);
+                logger.warn("currentUser({}) not in required role", currentUser.getUsername());
+                return;
+            }
             logger.debug("import backup: {}", data);
             setResponseStatusCode(importService.importData(data));
         } catch (Exception e) {
             setResponseStatusCode(500);
             logger.warn("error while importing backup", e);
         }
+    }
+
+    private User getUserFromHeader(String authorizationHeader) {
+        if (null != authorizationHeader && authorizationHeader.toLowerCase().startsWith("basic")) {
+            // Authorization: Basic base64credentials
+            String base64Credentials = authorizationHeader.substring("Basic".length()).trim();
+            byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+            String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+            // credentials = username:password
+            final String[] values = credentials.split(":", 2);
+            String username = values[0];
+            String password = values[1];
+            if (VRSession.get().authenticate(username, password)) {
+                return VRSession.get().getUser();
+            }
+        }
+        return null;
     }
 
     @Deprecated

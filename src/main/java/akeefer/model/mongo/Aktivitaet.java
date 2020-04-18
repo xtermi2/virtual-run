@@ -5,10 +5,10 @@ import akeefer.model.AktivitaetsTyp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
