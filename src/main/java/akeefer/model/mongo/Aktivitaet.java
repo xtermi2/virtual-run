@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -33,7 +34,12 @@ import java.util.UUID;
 })
 public class Aktivitaet implements Serializable {
 
-    public static final BigDecimal TAUSEND = BigDecimal.valueOf(1000L);
+    public static final BigDecimal TAUSEND = BigDecimal.valueOf(1_000L);
+    public static final String FIELD_DISTANZ_IN_KILOMETER = "distanzInKilometer";
+    public static final String FIELD_TYP = "typ";
+    public static final String FIELD_AKTIVITAETS_DATUM = "aktivitaetsDatum";
+    public static final String FIELD_AUFZEICHNUNGSART = "aufzeichnungsart";
+    public static final String FIELD_BEZEICHNUNG = "bezeichnung";
 
     @Id
     @EqualsAndHashCode.Include
@@ -43,13 +49,16 @@ public class Aktivitaet implements Serializable {
     @NonNull
     @DecimalMin(value = "0.001")
     @Max(value = 1000)
+    @Field(FIELD_DISTANZ_IN_KILOMETER)
     private BigDecimal distanzInKilometer;
 
     @NotNull
     @NonNull
+    @Field(FIELD_TYP)
     private AktivitaetsTyp typ;
 
     @Past
+    @Field(FIELD_AKTIVITAETS_DATUM)
     private Date aktivitaetsDatum;
 
     // wird nur ein mal initial gesetzt
@@ -60,8 +69,10 @@ public class Aktivitaet implements Serializable {
 
     @NotNull
     @NonNull
+    @Field(FIELD_AUFZEICHNUNGSART)
     private AktivitaetsAufzeichnung aufzeichnungsart;
 
+    @Field(FIELD_BEZEICHNUNG)
     private String bezeichnung;
 
     @Indexed

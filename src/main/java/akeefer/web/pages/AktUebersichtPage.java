@@ -2,10 +2,10 @@ package akeefer.web.pages;
 
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.mongo.Aktivitaet;
+import akeefer.repository.mongo.dto.AktivitaetSortProperties;
 import akeefer.service.PersonService;
 import akeefer.web.VRSession;
-import akeefer.web.components.AktLoadableDetachableModel;
-import akeefer.web.components.GenericSortableDataProvider;
+import akeefer.web.components.AktivitaetSortableDataProvider;
 import akeefer.web.models.EnumPropertyModel;
 import com.visural.wicket.component.dialog.Dialog;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -16,13 +16,13 @@ import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -30,6 +30,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static akeefer.repository.mongo.dto.AktivitaetSortProperties.*;
 
 public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
 
@@ -41,48 +43,26 @@ public class AktUebersichtPage extends AbstractAuthenticatedBasePage {
     public AktUebersichtPage(PageParameters parameters) {
         super(parameters, false, true, false, false);
         setDefaultModel(new Model<Aktivitaet>(null));
-        IModel<List<Aktivitaet>> aktivitaetenModel = new AktLoadableDetachableModel(VRSession.get().getUser().getId());
-        List<IColumn<Aktivitaet, String>> columns = new ArrayList<IColumn<Aktivitaet, String>>();
-        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Distanz (km)"), "distanzInKilometer", "distanzInKilometer"));
-        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Typ"), "typ", "typ") {
+        //IModel<List<Aktivitaet>> aktivitaetenModel = new AktLoadableDetachableModel(VRSession.get().getUser().getId());
+        List<IColumn<Aktivitaet, AktivitaetSortProperties>> columns = new ArrayList<>();
+        columns.add(new PropertyColumn<>(new Model<>("Distanz (km)"), DISTANZ_IN_KILOMETER, "distanzInKilometer"));
+        columns.add(new PropertyColumn<Aktivitaet, AktivitaetSortProperties>(new Model<>("Typ"), TYP, "typ") {
             @Override
-            public IModel<Object> getDataModel(IModel<Aktivitaet> rowModel) {
+            public IModel<AktivitaetsTyp> getDataModel(IModel<Aktivitaet> rowModel) {
                 logger.info("getPropertyExpression: " + getPropertyExpression());
-                final IModel<Object> propertyModel = (IModel<Object>) super.getDataModel(rowModel);
 
-                IModel<Object> model = new IModel<Object>() {
-                    @Override
-                    public Object getObject() {
-                        Object object = propertyModel.getObject();
-                        logger.info("getObject(): ", object);
-                        return object;
-                    }
-
-                    @Override
-                    public void setObject(Object object) {
-                        logger.info("setObject(): ", object);
-                        propertyModel.setObject(object);
-                    }
-
-                    @Override
-                    public void detach() {
-                        logger.info("detach()");
-                        propertyModel.detach();
-                    }
-                };
-
-                PropertyModel<Object> enumProperty = new EnumPropertyModel<AktivitaetsTyp>(rowModel, getPropertyExpression(), AktUebersichtPage.this);
-                return enumProperty;
+                IModel<AktivitaetsTyp> aktivitaetsTypEnumPropertyModel = new EnumPropertyModel<>(rowModel, getPropertyExpression(), AktUebersichtPage.this);
+                return aktivitaetsTypEnumPropertyModel;
             }
         });
-        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Bezeichnung"), "bezeichnung", "bezeichnung"));
-        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Datum"), "aktivitaetsDatum", "aktivitaetsDatum"));
-        columns.add(new PropertyColumn<Aktivitaet, String>(new Model<String>("Aufzeichnungsart"), "aufzeichnungsart", "aufzeichnungsart"));
-        GenericSortableDataProvider<Aktivitaet> dataProvider = new GenericSortableDataProvider<Aktivitaet>(aktivitaetenModel);
-        dataProvider.setSort("aktivitaetsDatum", SortOrder.DESCENDING);
-        final AjaxFallbackDefaultDataTable<Aktivitaet, String> table = new AjaxFallbackDefaultDataTable<Aktivitaet, String>("table", columns, dataProvider, 10);
-        table.setDefaultModel(aktivitaetenModel);
-        columns.add(new AbstractColumn<Aktivitaet, String>(new Model<String>("Aktionen")) {
+        columns.add(new PropertyColumn<>(new Model<>("Bezeichnung"), BEZEICHNUNG, "bezeichnung"));
+        columns.add(new PropertyColumn<>(new Model<>("Datum"), AKTIVITAETS_DATUM, "aktivitaetsDatum"));
+        columns.add(new PropertyColumn<>(new Model<>("Aufzeichnungsart"), AUFZEICHNUNGSART, "aufzeichnungsart"));
+        SortableDataProvider<Aktivitaet, AktivitaetSortProperties> dataProvider = new AktivitaetSortableDataProvider(
+                VRSession.get().getUser().getUsername(), personService);
+        dataProvider.setSort(AKTIVITAETS_DATUM, SortOrder.DESCENDING);
+        final AjaxFallbackDefaultDataTable<Aktivitaet, AktivitaetSortProperties> table = new AjaxFallbackDefaultDataTable<Aktivitaet, AktivitaetSortProperties>("table", columns, dataProvider, 10);
+        columns.add(new AbstractColumn<Aktivitaet, AktivitaetSortProperties>(new Model<>("Aktionen")) {
             public void populateItem(Item<ICellPopulator<Aktivitaet>> cellItem, String componentId,
                                      IModel<Aktivitaet> model) {
                 cellItem.add(new ActionPanel(componentId, model) {

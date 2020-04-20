@@ -5,6 +5,7 @@ import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.SecurityRole;
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
+import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
@@ -117,5 +118,15 @@ public class PersonServiceMock implements PersonService {
     @Override
     public DbBackupMongo createBackup(String... username) {
         return DbBackupMongo.builder().build();
+    }
+
+    @Override
+    public List<Aktivitaet> searchActivities(AktivitaetSearchRequest searchRequest) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public long countActivities(String username) {
+        return 0L;
     }
 }

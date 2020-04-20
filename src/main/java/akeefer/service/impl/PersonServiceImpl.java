@@ -7,6 +7,7 @@ import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
+import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.repository.mongo.dto.TotalUserDistance;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
@@ -23,6 +24,9 @@ import org.joda.time.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -465,6 +469,27 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 .users(users)
                 .aktivitaeten(aktivitaeten)
                 .build();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Profiling
+    public List<Aktivitaet> searchActivities(AktivitaetSearchRequest searchRequest) {
+        Sort sort = searchRequest.isSortAsc()
+                ? Sort.by(searchRequest.getSortProperty().getFieldName()).ascending()
+                : Sort.by(searchRequest.getSortProperty().getFieldName()).descending();
+
+        int page = searchRequest.getPageableFirstElement() / searchRequest.getPageSize();
+        Pageable pageable = PageRequest.of(page, searchRequest.getPageSize(), sort);
+
+        return aktivitaetRepository.findByOwner(searchRequest.getOwner(), pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Profiling
+    public long countActivities(String username) {
+        return aktivitaetRepository.countByOwner(username);
     }
 
     private static final Comparator<Interval> INTERVAL_COMPARATOR = new IntervalComparator();

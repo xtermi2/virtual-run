@@ -7,12 +7,15 @@ import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
+import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
+import akeefer.repository.mongo.dto.AktivitaetSortProperties;
 import akeefer.repository.mongo.dto.TotalUserDistance;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.Sets;
+import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +30,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static akeefer.test.util.ProxyUtil.getTargetObject;
 import static org.junit.Assert.assertEquals;
@@ -45,6 +52,9 @@ public class PersonServiceImplTest {
     private MongoUserRepository userRepository;
 
     @Autowired
+    private MongoAktivitaetRepository aktivitaetRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -57,11 +67,13 @@ public class PersonServiceImplTest {
     @Before
     public void setUp() {
         helper.setUp();
+        aktivitaetRepository.deleteAll();
     }
 
     @After
     public void tearDown() {
         helper.tearDown();
+        aktivitaetRepository.deleteAll();
     }
 
     @Test
@@ -273,6 +285,218 @@ public class PersonServiceImplTest {
                         "... 10km gewandert" + LINE_SEPARATOR + LINE_SEPARATOR + LINE_SEPARATOR +
                         "http://localhost:8080",
                 mailBody);
+    }
+
+    @Test
+    public void searchAktivities_paging_works() {
+        String owner = "andi";
+        List<Aktivitaet> aktivities = createAktivities(owner, 12);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(owner)
+                .pageableFirstElement(0)
+                .pageSize(5)
+                .sortProperty(AktivitaetSortProperties.DISTANZ_IN_KILOMETER)
+                .sortAsc(true)
+                .build();
+
+        List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
+
+        Assertions.assertThat(firstPage)
+                .containsExactlyElementsOf(aktivities.subList(0, 5));
+
+        List<Aktivitaet> secondPage = personService.searchActivities(searchRequest.toBuilder()
+                .pageableFirstElement(5)
+                .build());
+
+        Assertions.assertThat(secondPage)
+                .containsExactlyElementsOf(aktivities.subList(5, 10));
+
+        List<Aktivitaet> thirdPage = personService.searchActivities(searchRequest.toBuilder()
+                .pageableFirstElement(10)
+                .build());
+
+        Assertions.assertThat(thirdPage)
+                .containsExactlyElementsOf(aktivities.subList(10, 12));
+    }
+
+    @Test
+    public void searchAktivities_filter_by_owner_works() {
+        String andi = "andi";
+        List<Aktivitaet> aktivitiesAndi = createAktivities(andi, 1);
+        String foo = "foo";
+        List<Aktivitaet> aktivitiesFoo = createAktivities(foo, 1);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(andi)
+                .pageableFirstElement(0)
+                .pageSize(5)
+                .sortProperty(AktivitaetSortProperties.DISTANZ_IN_KILOMETER)
+                .sortAsc(true)
+                .build();
+
+        List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
+
+        Assertions.assertThat(firstPage)
+                .containsExactlyElementsOf(aktivitiesAndi);
+    }
+
+    @Test
+    public void searchAktivities_sort_By_distance() {
+        String owner = "andi";
+        List<Aktivitaet> activities = createAktivities(owner, 12);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(owner)
+                .pageableFirstElement(0)
+                .pageSize(12)
+                .sortProperty(AktivitaetSortProperties.DISTANZ_IN_KILOMETER)
+                .sortAsc(false)
+                .build();
+
+        List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
+
+        activities.sort(Comparator.comparing(Aktivitaet::getDistanzInKilometer).reversed());
+        Assertions.assertThat(firstPage)
+                .containsExactlyElementsOf(activities);
+    }
+
+    @Test
+    public void searchAktivities_sort_By_activityDate() {
+        String owner = "andi";
+        List<Aktivitaet> activities = createAktivities(owner, 12);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(owner)
+                .pageableFirstElement(0)
+                .pageSize(12)
+                .sortProperty(AktivitaetSortProperties.AKTIVITAETS_DATUM)
+                .sortAsc(true)
+                .build();
+
+        List<Aktivitaet> asc = personService.searchActivities(searchRequest);
+
+        activities.sort(Comparator.comparing(Aktivitaet::getAktivitaetsDatum));
+        Assertions.assertThat(asc)
+                .containsExactlyElementsOf(activities);
+
+        List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
+                .sortAsc(false)
+                .build());
+
+        activities.sort(Comparator.comparing(Aktivitaet::getAktivitaetsDatum).reversed());
+        Assertions.assertThat(desc)
+                .containsExactlyElementsOf(activities);
+    }
+
+    @Test
+    public void searchAktivities_sort_By_aufzeichnungsart() {
+        String owner = "andi";
+        List<Aktivitaet> activities = createAktivities(owner, 12);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(owner)
+                .pageableFirstElement(0)
+                .pageSize(12)
+                .sortProperty(AktivitaetSortProperties.AUFZEICHNUNGSART)
+                .sortAsc(true)
+                .build();
+
+        List<Aktivitaet> asc = personService.searchActivities(searchRequest);
+
+        activities.sort(Comparator.comparing(Aktivitaet::getAufzeichnungsart));
+        Assertions.assertThat(asc)
+                .containsExactlyElementsOf(activities);
+
+        List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
+                .sortAsc(false)
+                .build());
+
+        activities.sort(Comparator.comparing(Aktivitaet::getAufzeichnungsart).reversed());
+        Assertions.assertThat(desc)
+                .containsExactlyElementsOf(activities);
+    }
+
+    @Test
+    public void searchAktivities_sort_By_bezeichnung() {
+        String owner = "andi";
+        List<Aktivitaet> activities = createAktivities(owner, 12);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(owner)
+                .pageableFirstElement(0)
+                .pageSize(12)
+                .sortProperty(AktivitaetSortProperties.BEZEICHNUNG)
+                .sortAsc(true)
+                .build();
+
+        List<Aktivitaet> asc = personService.searchActivities(searchRequest);
+
+        activities.sort(Comparator.comparing(Aktivitaet::getBezeichnung));
+        Assertions.assertThat(asc)
+                .containsExactlyElementsOf(activities);
+
+        List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
+                .sortAsc(false)
+                .build());
+
+        activities.sort(Comparator.comparing(Aktivitaet::getBezeichnung).reversed());
+        Assertions.assertThat(desc)
+                .containsExactlyElementsOf(activities);
+    }
+
+    @Test
+    public void searchAktivities_sort_By_typ() {
+        String owner = "andi";
+        List<Aktivitaet> activities = createAktivities(owner, 12);
+
+        AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
+                .owner(owner)
+                .pageableFirstElement(0)
+                .pageSize(12)
+                .sortProperty(AktivitaetSortProperties.TYP)
+                .sortAsc(true)
+                .build();
+
+        List<Aktivitaet> asc = personService.searchActivities(searchRequest);
+
+        activities.sort(Comparator.comparing(Aktivitaet::getTyp));
+        Assertions.assertThat(asc)
+                .containsExactlyElementsOf(activities);
+
+        List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
+                .sortAsc(false)
+                .build());
+
+        activities.sort(Comparator.comparing(Aktivitaet::getTyp).reversed());
+        Assertions.assertThat(desc)
+                .containsExactlyElementsOf(activities);
+    }
+
+    @Test
+    public void countActivities_should_count_activities_of_given_user() {
+        String owner = "andi";
+        List<Aktivitaet> activitiesOfAndi = createAktivities(owner, 12);
+        createAktivities("fred", 3);
+
+        long res = personService.countActivities(owner);
+
+        Assertions.assertThat(res)
+                .isEqualTo(activitiesOfAndi.size());
+    }
+
+    private List<Aktivitaet> createAktivities(String owner, int count) {
+        List<Aktivitaet> aktivitaets = IntStream.range(0, count)
+                .mapToObj(i -> Aktivitaet.builder()
+                        .owner(owner)
+                        .bezeichnung("bez " + i)
+                        .typ(AktivitaetsTyp.values()[count % AktivitaetsTyp.values().length])
+                        .distanzInKilometer(BigDecimal.valueOf(i))
+                        .aktivitaetsDatum(Date.valueOf(LocalDate.now().minusDays(i)))
+                        .aufzeichnungsart(AktivitaetsAufzeichnung.values()[count % AktivitaetsAufzeichnung.values().length])
+                        .build())
+                .collect(Collectors.toList());
+        return aktivitaetRepository.saveAll(aktivitaets);
     }
 
     private void printHash(PasswordEncoder encoder, String user) {

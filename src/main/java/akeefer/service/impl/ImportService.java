@@ -20,8 +20,6 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-// TODO enable when updated to latest spring-data
-//@Transactional
 @Slf4j
 public class ImportService {
 

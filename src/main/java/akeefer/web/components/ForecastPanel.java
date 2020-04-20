@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Sets;
 import com.googlecode.wickedcharts.highcharts.options.*;
 import com.googlecode.wickedcharts.highcharts.options.series.Coordinate;
@@ -18,6 +19,7 @@ import com.googlecode.wickedcharts.highcharts.options.series.CustomCoordinatesSe
 import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
 import com.googlecode.wickedcharts.wicket6.highcharts.JsonRendererFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
@@ -36,11 +38,15 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Andreas Keefer
  */
+@Slf4j
 public class ForecastPanel extends Panel {
 
     static {
@@ -127,6 +133,7 @@ public class ForecastPanel extends Panel {
     }
 
     private Options createChartOptions() {
+        Stopwatch stopwatch = Stopwatch.createStarted();
         Set<User> users;
         switch (forcastUser) {
             case Ich:
@@ -139,28 +146,29 @@ public class ForecastPanel extends Panel {
                 throw new IllegalStateException("forcastUser not supported: " + forcastUser);
         }
 
-        List<Series<?>> series = new ArrayList<>(users.size());
-        BigDecimal totalDistanceInKm = VRSession.get().getTotalDistanceInKm();
-        if (null == totalDistanceInKm) {
-            totalDistanceInKm = personService.getTotalDistance();
-        }
-        for (User user : users) {
-            final Map<LocalDate, BigDecimal> forecastData = personService.createForecastData(
-                    user.getUsername(), totalDistanceInKm);
-            if (MapUtils.isNotEmpty(forecastData)) {
-                ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
-                series.add(serie);
-                serie.setName(user.getAnzeigename());
-                serie.setZoneAxis("x");
-                serie.addZone(new Zone<String>()
-                        .setValue(FORMATTER.print(LocalDate.now())));
-                serie.addZone(new Zone<String>()
-                        .setDashStyle("dot"));
-                for (Map.Entry<LocalDate, BigDecimal> entry : forecastData.entrySet()) {
-                    serie.addPoint(new Coordinate<>(FORMATTER.print(entry.getKey()), entry.getValue()));
-                }
-            }
-        }
+        final BigDecimal totalDistanceInKm = null != VRSession.get().getTotalDistanceInKm()
+                ? VRSession.get().getTotalDistanceInKm()
+                : personService.getTotalDistance();
+        List<Series<?>> series = users.parallelStream()
+                .flatMap(user -> {
+                    final Map<LocalDate, BigDecimal> forecastData = personService.createForecastData(
+                            user.getUsername(), totalDistanceInKm);
+                    if (MapUtils.isNotEmpty(forecastData)) {
+                        ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
+                        serie.setName(user.getAnzeigename());
+                        serie.setZoneAxis("x");
+                        serie.addZone(new Zone<String>()
+                                .setValue(FORMATTER.print(LocalDate.now())));
+                        serie.addZone(new Zone<String>()
+                                .setDashStyle("dot"));
+                        for (Map.Entry<LocalDate, BigDecimal> entry : forecastData.entrySet()) {
+                            serie.addPoint(new Coordinate<>(FORMATTER.print(entry.getKey()), entry.getValue()));
+                        }
+                        return Stream.of(serie);
+                    }
+                    return Stream.empty();
+                })
+                .collect(Collectors.toList());
 
         // Build Options
         Options options = new Options()
@@ -188,6 +196,8 @@ public class ForecastPanel extends Panel {
                 )
                 .setSeries(series);
 
+        Duration runtime = stopwatch.stop().elapsed();
+        log.info("runtime of 'createChartOptions': {}", runtime);
         return options;
     }
 

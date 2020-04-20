@@ -4,6 +4,7 @@ import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
+import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
 import akeefer.web.charts.ChartIntervall;
@@ -52,4 +53,8 @@ public interface PersonService {
     BigDecimal getTotalDistance();
 
     DbBackupMongo createBackup(String... username);
+
+    List<Aktivitaet> searchActivities(AktivitaetSearchRequest searchRequest);
+
+    long countActivities(String username);
 }
