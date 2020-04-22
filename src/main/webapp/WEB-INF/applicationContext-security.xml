@@ -6,26 +6,12 @@
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security.xsd">
-
-    <!--<security:http use-expressions="true" create-session="never" auto-config="true">-->
-        <!--<security:remember-me/>-->
-        <!--&lt;!&ndash;<security:intercept-url pattern="/**"/>&ndash;&gt;-->
-        <!--&lt;!&ndash; the login page is a wicket page mounted in WicketApplication.init() &ndash;&gt;-->
-        <!--<security:form-login login-page="/login"/>-->
-    <!--</security:http>-->
-
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider user-service-ref="personServiceImpl">
             <security:password-encoder ref="encoder"/>
         </security:authentication-provider>
     </security:authentication-manager>
-
     <security:global-method-security secured-annotations="enabled"/>
-
-    <!-- This filter is responsible for storing the SecurityContextHolder between
-requests. Also see VRSession.authenticate(). -->
-    <!--<bean id="securityContextPersistenceFilter"-->
-          <!--class="org.springframework.security.web.context.SecurityContextPersistenceFilter"/>-->
 
     <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
         <constructor-arg name="strength" value="12"/>

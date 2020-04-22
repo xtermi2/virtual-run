@@ -81,7 +81,7 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
         mountPage("/user", UserDetailsPage.class);
         mountPage("/statistic", StatisticPage.class);
 
-        getHeaderContributorListenerCollection().add(new IHeaderContributor() {
+        getHeaderContributorListeners().add(new IHeaderContributor() {
             @Override
             public void renderHead(IHeaderResponse response) {
                 response.render(JavaScriptReferenceHeaderItem.forReference(

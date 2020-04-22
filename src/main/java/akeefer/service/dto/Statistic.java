@@ -1,8 +1,7 @@
 package akeefer.service.dto;
 
 import akeefer.model.AktivitaetsTyp;
-import akeefer.model.User;
-import org.apache.commons.lang3.SystemUtils;
+import akeefer.model.mongo.User;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

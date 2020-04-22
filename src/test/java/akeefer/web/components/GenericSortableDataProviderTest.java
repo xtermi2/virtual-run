@@ -1,9 +1,8 @@
 package akeefer.web.components;
 
-import akeefer.model.Aktivitaet;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
-import com.google.appengine.api.datastore.KeyFactory;
+import akeefer.model.mongo.Aktivitaet;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.Lists;
@@ -17,6 +16,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,7 +38,7 @@ public class GenericSortableDataProviderTest {
     @Test
     public void testSortierung() throws Exception {
         Aktivitaet akt1 = new Aktivitaet();
-        akt1.setId(KeyFactory.createKey("Aktivitaet", "a"));
+        akt1.setIdFromUUID(UUID.randomUUID());
         akt1.setDistanzInMeter(1);
         akt1.setAktivitaetsDatum(new DateTime().toDate());
         akt1.setTyp(AktivitaetsTyp.laufen);
@@ -46,7 +46,7 @@ public class GenericSortableDataProviderTest {
         akt1.setBezeichnung("a");
 
         Aktivitaet akt2 = new Aktivitaet();
-        akt2.setId(KeyFactory.createKey("Aktivitaet", "b"));
+        akt2.setIdFromUUID(UUID.randomUUID());
         akt2.setDistanzInMeter(2);
         akt2.setAktivitaetsDatum(new DateTime().plusDays(1).toDate());
         akt2.setTyp(AktivitaetsTyp.schwimmen);

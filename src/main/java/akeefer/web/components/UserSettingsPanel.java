@@ -1,7 +1,7 @@
 package akeefer.web.components;
 
 import akeefer.model.BenachrichtigunsIntervall;
-import akeefer.model.User;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
 import akeefer.web.components.interplay.conditional.ConditionalModification;
 import akeefer.web.components.interplay.conditional.IConditional;

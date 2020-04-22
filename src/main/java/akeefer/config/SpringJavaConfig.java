@@ -1,6 +1,6 @@
 package akeefer.config;
 
-import akeefer.model.Aktivitaet;
+import akeefer.model.mongo.Aktivitaet;
 import com.google.appengine.api.memcache.Expiration;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import net.eusashead.spring.gaecache.*;

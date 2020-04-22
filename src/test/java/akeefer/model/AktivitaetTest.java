@@ -1,18 +1,17 @@
 package akeefer.model;
 
-import org.hamcrest.Matchers;
+import akeefer.model.mongo.Aktivitaet;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class AktivitaetTest {
 
     @Test
-    public void testGetKilometer() throws Exception {
+    public void testGetKilometer() {
         Aktivitaet akt = new Aktivitaet();
 
         akt.setDistanzInMeter(0);
@@ -35,12 +34,13 @@ public class AktivitaetTest {
     }
 
     @Test
-    public void testSetKilometer() throws Exception {
+    public void testSetKilometer() {
         Aktivitaet akt = new Aktivitaet();
         akt.setDistanzInMeter(1);
 
-        akt.setDistanzInKilometer(null);
-        assertEquals(null, akt.getDistanzInMeter());
+        akt.setDistanzInKilometer(BigDecimal.ZERO);
+        assertThat(akt.getDistanzInMeter())
+                .isEqualTo(0);
 
         akt.setDistanzInKilometer(new BigDecimal(1.5));
         assertEquals(Integer.valueOf(1500), akt.getDistanzInMeter());
@@ -50,18 +50,5 @@ public class AktivitaetTest {
 
         akt.setDistanzInKilometer(new BigDecimal(1.9999));
         assertEquals(Integer.valueOf(1999), akt.getDistanzInMeter());
-    }
-
-    @Test
-    public void testCloneWithoutUser() throws Exception {
-        User user = User.newBuilder().withUsername("username1").build();
-        Aktivitaet akt = new Aktivitaet();
-        akt.setUser(user);
-        assertThat(akt.getOwner(), Matchers.is("username1"));
-
-        Aktivitaet clone = akt.cloneWithoutUser();
-        assertThat(clone, not(sameInstance(akt)));
-        assertThat(clone.getOwner(), is("username1"));
-        assertThat(clone.getUser(), nullValue());
     }
 }

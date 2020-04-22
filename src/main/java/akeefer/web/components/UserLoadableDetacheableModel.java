@@ -1,8 +1,7 @@
 package akeefer.web.components;
 
-import akeefer.model.User;
+import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
-import com.google.appengine.api.datastore.Key;
 import org.apache.commons.lang3.Validate;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -15,9 +14,9 @@ public class UserLoadableDetacheableModel extends LoadableDetachableModel<User> 
 
     @SpringBean
     private PersonService personService;
-    private Key userId;
+    private final String userId;
 
-    public UserLoadableDetacheableModel(Key userId) {
+    public UserLoadableDetacheableModel(String userId) {
         Validate.notNull(userId, "userId must not be null");
         Injector.get().inject(this);
         this.userId = userId;

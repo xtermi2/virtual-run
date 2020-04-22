@@ -1,8 +1,7 @@
 package akeefer.service.dto;
 
 import akeefer.model.AktivitaetsTyp;
-import akeefer.model.User;
-import com.google.appengine.api.datastore.KeyFactory;
+import akeefer.model.mongo.User;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import org.apache.commons.lang3.SystemUtils;
@@ -11,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.core.StringStartsWith.startsWith;
@@ -33,7 +33,7 @@ public class StatisticTest {
 
     @Test
     public void testToMailString() throws Exception {
-        User user = new User(KeyFactory.createKey("user", "user1"));
+        User user = new User(UUID.randomUUID());
         user.setNickname("Hans");
         Statistic statistic = new Statistic(user)
                 .add(AktivitaetsTyp.laufen, new BigDecimal("1.2345"))

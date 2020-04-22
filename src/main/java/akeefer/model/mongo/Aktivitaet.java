@@ -5,17 +5,23 @@ import akeefer.model.AktivitaetsTyp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
+import java.util.UUID;
 
 @Document(collection = "activities")
 @Data
@@ -23,9 +29,17 @@ import java.util.Date;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Aktivitaet {
+@CompoundIndexes({
+        @CompoundIndex(name = "owner_distanzInKilometer", def = "{'owner' : 1, 'distanzInKilometer': 1}")
+})
+public class Aktivitaet implements Serializable {
 
-    public static final BigDecimal TAUSEND = BigDecimal.valueOf(1000L);
+    public static final BigDecimal TAUSEND = BigDecimal.valueOf(1_000L);
+    public static final String FIELD_DISTANZ_IN_KILOMETER = "distanzInKilometer";
+    public static final String FIELD_TYP = "typ";
+    public static final String FIELD_AKTIVITAETS_DATUM = "aktivitaetsDatum";
+    public static final String FIELD_AUFZEICHNUNGSART = "aufzeichnungsart";
+    public static final String FIELD_BEZEICHNUNG = "bezeichnung";
 
     @Id
     @EqualsAndHashCode.Include
@@ -35,13 +49,16 @@ public class Aktivitaet {
     @NonNull
     @DecimalMin(value = "0.001")
     @Max(value = 1000)
+    @Field(FIELD_DISTANZ_IN_KILOMETER)
     private BigDecimal distanzInKilometer;
 
     @NotNull
     @NonNull
+    @Field(FIELD_TYP)
     private AktivitaetsTyp typ;
 
     @Past
+    @Field(FIELD_AKTIVITAETS_DATUM)
     private Date aktivitaetsDatum;
 
     // wird nur ein mal initial gesetzt
@@ -52,10 +69,13 @@ public class Aktivitaet {
 
     @NotNull
     @NonNull
+    @Field(FIELD_AUFZEICHNUNGSART)
     private AktivitaetsAufzeichnung aufzeichnungsart;
 
+    @Field(FIELD_BEZEICHNUNG)
     private String bezeichnung;
 
+    @Indexed
     private String owner;
 
     @Transient
@@ -87,7 +107,7 @@ public class Aktivitaet {
         return this;
     }
 
-    public void setUser(akeefer.model.mongo.User user) {
+    public void setUser(User user) {
         if (null == user) {
             this.owner = null;
         } else {
@@ -95,8 +115,11 @@ public class Aktivitaet {
         }
     }
 
-    public Aktivitaet cloneWithoutUser() {
-        return this.toBuilder()
-                .build();
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setIdFromUUID(UUID id) {
+        this.id = id.toString();
     }
 }

@@ -6,9 +6,6 @@ update_configs:
     ignored_updates:
       - match:
           dependency_name: "org.springframework.data:spring-data-releasetrain"
-          version_requirement: "Moore-x"
-      - match:
-          dependency_name: "org.springframework.data:spring-data-releasetrain"
           version_requirement: "Lovelace-x"
       - match:
           dependency_name: "org.springframework.data:spring-data-releasetrain"
