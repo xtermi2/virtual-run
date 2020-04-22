@@ -4,7 +4,6 @@ import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.repository.mongo.dto.TotalUserDistance;
-import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:testApplicationContext.xml"})
@@ -59,7 +60,7 @@ public class MongoAktivitaetRepositoryTest {
 
         List<TotalUserDistance> res = aktivitaetRepository.calculateTotalDistanceForAllUsers();
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .containsExactly(new TotalUserDistance("bar", BigDecimal.ONE),
                         new TotalUserDistance("foo", BigDecimal.valueOf(12L)));
     }

@@ -21,8 +21,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -155,17 +153,14 @@ public class PersonServiceImplTest {
 
         final List<User> users = Arrays.asList(user3, user1, user2);
         doReturn(users).when(spy).getAllUser();
-        doAnswer(new Answer() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                List<Aktivitaet> res = new ArrayList<>();
-                for (Aktivitaet akt : aktivitaetList) {
-                    if (invocation.getArguments()[0].equals(akt.getOwner())) {
-                        res.add(akt);
-                    }
+        doAnswer(invocation -> {
+            List<Aktivitaet> res = new ArrayList<>();
+            for (Aktivitaet akt : aktivitaetList) {
+                if (invocation.getArguments()[0].equals(akt.getOwner())) {
+                    res.add(akt);
                 }
-                return res;
             }
+            return res;
         }).when(spy).loadAktivitaetenByOwner(anyString());
 
         Set<Statistic> statistics = spy.createStatistic(BenachrichtigunsIntervall.deaktiviert);
