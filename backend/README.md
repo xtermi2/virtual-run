@@ -31,7 +31,7 @@ You can run your application in dev mode that enables live coding using:
 This will build a native image use GraalVM. 
 GraalVM must not be installed, it's build inside a GraalVM aware Docker image.
 ```bash
-./mvnw clean package -Pnative \
+./mvnw clean verify -Pnative \
     -Dquarkus.native.container-build=true \
     -Dquarkus.container-image.build=true \
     -Dquarkus.container-image.group=afrika-run \
@@ -53,7 +53,7 @@ GraalVM must not be installed, it's build inside a GraalVM aware Docker image.
 
 **build and push a native container:**
 ```bash
-./mvnw clean package -Pnative \
+./mvnw clean verify -Pnative \
     -Dquarkus.native.container-build=true \
     -Dquarkus.container-image.build=true \
     -Dquarkus.container-image.push=true \
@@ -62,3 +62,12 @@ GraalVM must not be installed, it's build inside a GraalVM aware Docker image.
     -Dquarkus.container-image.username=... \
     -Dquarkus.container-image.password=...
 ```
+
+### References
+
+-   Unofficial Google Cloud Run FAQ: https://github.com/ahmetb/cloud-run-faq
+-   QUARKUS - SIMPLIFIED MONGODB WITH PANACHE: https://quarkus.io/guides/mongodb-panache
+-   QUARKUS - USING SECURITY WITH .PROPERTIES FILE: https://quarkus.io/guides/security-properties
+-   QUARKUS - CONFIGURING YOUR APPLICATION: https://quarkus.io/guides/config
+-   QUARKUS - USING KOTLIN: https://quarkus.io/guides/kotlin
+-   QUARKUS - VALIDATION WITH HIBERNATE VALIDATOR: https://quarkus.io/guides/validation
