@@ -37,6 +37,7 @@ GraalVM must not be installed, it's build inside a GraalVM aware Docker image.
     -Dquarkus.container-image.group=afrika-run \
     -Dquarkus.container-image.registry=eu.gcr.io
 ```
+NOTE: currently native quarkus apps don't run on google cloud run (see https://github.com/google/gvisor/issues/1296)
 
 ## push the image to the docker registry
 

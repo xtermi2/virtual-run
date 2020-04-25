@@ -4,6 +4,8 @@ services:
   afrika-run:
     image: eu.gcr.io/afrika-run/virtual-run-backend:0.0.1
     container_name: afrika-run
+    # gvisor is not working on my machine :(
+    #runtime: runsc
     ports:
       - "8080:8080"
     restart: on-failure
