@@ -561,7 +561,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 .append(LINE_SEPARATOR);
         final String applicationId = getGaeApplicationId();
         if (null != applicationId) {
-            mailBody.append("https://").append(applicationId).append(".appspot.com");
+            mailBody.append("https://afrika-run.de");
         } else {
             mailBody.append("http://localhost:8080");
         }
