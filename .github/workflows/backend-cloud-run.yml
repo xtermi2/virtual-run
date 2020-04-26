@@ -1,6 +1,11 @@
 name: afrika-run-backend (GCR)
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'backend/**'
+      - '.github/**'
+      - '!**/*.md'
 
 env:
   DOCKER_REGISTY: eu.gcr.io
@@ -40,13 +45,20 @@ jobs:
         with:
           java-version: 11
 
-      - name: build and create container with Maven
-        run: |-
-          ./mvnw clean package \
-            -Dquarkus.container-image.build=true \
-            -Dquarkus.container-image.group=$PROJECT_ID \
-            -Dquarkus.container-image.tag=$GITHUB_SHA \
-            -Dquarkus.container-image.registry=$DOCKER_REGISTY
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+#      - name: build and create container with Maven
+#        run: |-
+#          ./mvnw clean package \
+#            -Dquarkus.container-image.build=true \
+#            -Dquarkus.container-image.group=$PROJECT_ID \
+#            -Dquarkus.container-image.tag=$GITHUB_SHA \
+#            -Dquarkus.container-image.registry=$DOCKER_REGISTY
 
       - name: build, create container and push to docker-registry with Maven
         run: |-
@@ -70,5 +82,6 @@ jobs:
             --max-instances=1 \
             --memory=256Mi \
             --port=8080 \
-            --timeout=900s
+            --timeout=900s \
+            --no-traffic
 
