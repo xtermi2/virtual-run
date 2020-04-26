@@ -25,11 +25,11 @@ jobs:
 
       - name: Setup gcloud CLI
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-          with:
-            version: '286.0.0'
-            service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
-            service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
-            project_id: ${{ secrets.GCR_PROJECT_ID }}
+        with:
+          version: '286.0.0'
+          service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
+          service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
+          project_id: ${{ secrets.GCR_PROJECT_ID }}
 
       - name: Setup gcloud docker auth
         run: gcloud auth configure-docker $DOCKER_REGISTY
