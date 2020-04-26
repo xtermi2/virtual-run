@@ -2,17 +2,18 @@ name: afrika-run-backend (GCR)
 
 on: [push]
 
+env:
+  DOCKER_REGISTY: eu.gcr.io
+  PROJECT_ID: ${{ secrets.GCR_PROJECT_ID }}
+  RUN_REGION: europe-west1
+  CONTAINER_NAME: virtual-run-backend
+  GCR_SERVICE_NAME: afrika-run
+  MONGODB_USER: ${{ secrets.MONGODB_USER }}
+  MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+
 defaults:
   run:
     working-directory: ./backend
-  env:
-    DOCKER_REGISTY: eu.gcr.io
-    PROJECT_ID: ${{ secrets.GCR_PROJECT_ID }}
-    RUN_REGION: europe-west1
-    CONTAINER_NAME: virtual-run-backend
-    GCR_SERVICE_NAME: afrika-run
-    MONGODB_USER: ${{ secrets.MONGODB_USER }}
-    MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
 
 jobs:
   build:
