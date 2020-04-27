@@ -85,8 +85,7 @@
 <!--  workaround to get quarkus-logging-json working in native mode  -->
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jsonp-deployment</artifactId>
-      <version>${quarkus.platform.version}</version>
+      <artifactId>quarkus-jsonp</artifactId>
     </dependency>
   </dependencies>
   <build>
