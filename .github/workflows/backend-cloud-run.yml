@@ -53,13 +53,10 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-#      - name: build and create container with Maven
-#        run: |-
-#          ./mvnw clean package \
-#            -Dquarkus.container-image.build=true \
-#            -Dquarkus.container-image.group=$PROJECT_ID \
-#            -Dquarkus.container-image.tag=$GITHUB_SHA \
-#            -Dquarkus.container-image.registry=$DOCKER_REGISTY
+      - name: build and verify native with Maven
+        run: |-
+          ./mvnw clean package -Pnative \
+            -Dquarkus.native.container-build=true
 
       - name: build, create container and push to docker-registry with Maven
         run: |-
