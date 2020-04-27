@@ -1,0 +1,20 @@
+version: '2.4'
+
+services:
+  afrika-run:
+    image: eu.gcr.io/afrika-run/virtual-run-backend:0.0.1
+    container_name: afrika-run
+    # gvisor is not working on my machine :(
+    #runtime: runsc
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    # restrict tu 256MB Memory
+    mem_limit: 256m
+    # restrict to 1 cpu core
+    cpuset: "1"
+    healthcheck:
+      test: curl -X GET -f http://localhost:8080 || exit 1
+      interval: 30s
+      timeout: 5s
+      retries: 3

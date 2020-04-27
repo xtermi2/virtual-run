@@ -17,7 +17,7 @@ TODO
 The restore will not override existing data. It just adds unknown data!  
 
 ```bash
-curl --location --request POST 'https://afrika-run.appspot.com/rest/backup/import' \
+curl --location --request POST 'https://afrika-run.de/rest/backup/import' \
 -u '<user>:<password>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
