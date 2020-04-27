@@ -11,5 +11,5 @@ update_configs:
           dependency_name: "org.springframework.data:spring-data-releasetrain"
           version_requirement: "Kay-x"
   - package_manager: "java:maven"
-      directory: "/backend/"
-      update_schedule: "daily"
+    directory: "/backend/"
+    update_schedule: "daily"
