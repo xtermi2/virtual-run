@@ -1,4 +1,4 @@
-package com.github.xtermi2.virtualrun
+package com.github.xtermi2.virtualrun.api
 
 import javax.ws.rs.GET
 import javax.ws.rs.Path

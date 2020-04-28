@@ -67,6 +67,7 @@ NOTE: currently native quarkus apps don't run on google cloud run (see https://g
 ### References
 
 -   Unofficial Google Cloud Run FAQ: https://github.com/ahmetb/cloud-run-faq
+-   QUARKUS - cheat-sheet: https://lordofthejars.github.io/quarkus-cheat-sheet/
 -   QUARKUS - SIMPLIFIED MONGODB WITH PANACHE: https://quarkus.io/guides/mongodb-panache
 -   QUARKUS - USING SECURITY WITH .PROPERTIES FILE: https://quarkus.io/guides/security-properties
 -   QUARKUS - CONFIGURING YOUR APPLICATION: https://quarkus.io/guides/config

@@ -1,4 +1,4 @@
-package com.github.xtermi2.virtualrun
+package com.github.xtermi2.virtualrun.api
 
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
@@ -6,7 +6,7 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Test
 
 @QuarkusTest
-open class ExampleResourceTest {
+class ExampleResourceTest {
 
     @Test
     fun testHelloEndpoint() {

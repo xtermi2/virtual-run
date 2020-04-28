@@ -455,7 +455,7 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
-        activities.sort(Comparator.comparing(Aktivitaet::getTyp));
+        activities.sort(Comparator.comparing(aktivitaet -> aktivitaet.getTyp().name()));
         Assertions.assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
@@ -463,7 +463,7 @@ public class PersonServiceImplTest {
                 .sortAsc(false)
                 .build());
 
-        activities.sort(Comparator.comparing(Aktivitaet::getTyp).reversed());
+        activities.sort(Comparator.comparing((Aktivitaet aktivitaet) -> aktivitaet.getTyp().name()).reversed());
         Assertions.assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
@@ -485,10 +485,10 @@ public class PersonServiceImplTest {
                 .mapToObj(i -> Aktivitaet.builder()
                         .owner(owner)
                         .bezeichnung("bez " + i)
-                        .typ(AktivitaetsTyp.values()[count % AktivitaetsTyp.values().length])
+                        .typ(AktivitaetsTyp.values()[i % AktivitaetsTyp.values().length])
                         .distanzInKilometer(BigDecimal.valueOf(i))
                         .aktivitaetsDatum(Date.valueOf(LocalDate.now().minusDays(i)))
-                        .aufzeichnungsart(AktivitaetsAufzeichnung.values()[count % AktivitaetsAufzeichnung.values().length])
+                        .aufzeichnungsart(AktivitaetsAufzeichnung.values()[i % AktivitaetsAufzeichnung.values().length])
                         .build())
                 .collect(Collectors.toList());
         return aktivitaetRepository.saveAll(aktivitaets);
