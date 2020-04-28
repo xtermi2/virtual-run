@@ -53,10 +53,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: build and verify native with Maven
-        run: |-
-          ./mvnw clean package -Pnative \
-            -Dquarkus.native.container-build=true
+# TODO: re-enable
+#      - name: build and verify native with Maven
+#        run: |-
+#          ./mvnw clean package -Pnative \
+#            -Dquarkus.native.container-build=true
 
       - name: build, create container and push to docker-registry with Maven
         run: |-
