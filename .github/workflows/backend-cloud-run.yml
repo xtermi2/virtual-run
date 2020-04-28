@@ -83,7 +83,7 @@ jobs:
             --port=8080 \
             --timeout=900s \
             --no-traffic \
-            --args="-Dmongodb.user=$MONGODB_USER,-Dmongodb.password=$MONGODB_PASSWORD"
+            --set-env-vars="MONGODB_USER=$MONGODB_USER,MONGODB_PASSWORD=$MONGODB_PASSWORD"
 
       - name: Cleanup Google Container Registry
         run: ./cleanup-google-container-registry.sh "$DOCKER_REGISTY/$PROJECT_ID/$CONTAINER_NAME" 8
