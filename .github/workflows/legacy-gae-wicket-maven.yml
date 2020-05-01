@@ -2,6 +2,8 @@ name: afrika-run (GAE/Legacy)
 
 on:
   push:
+    branches:
+      - master
     paths-ignore:
       - 'backend/**'
       - '.github/workflows/backend-cloud-run.yml'
@@ -37,6 +39,9 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Build with Maven
+        run: ./mvnw -B clean package -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
+
       - name: Setup gcloud CLI on pull requests
         if: ${{ github.event_name == 'pull_request'}}
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -47,9 +52,6 @@ jobs:
           service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
           project_id: ${{ secrets.GCR_PROJECT_ID }}
 
-      - name: Build with Maven
-        run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
-
       - name: Deploy to GAE on pull requests
         if: ${{ github.event_name == 'pull_request'}}
-        run: ./mvnw appengine:deploy -P prod
+        run: ./mvnw clean package appengine:deploy -P prod
