@@ -3,6 +3,7 @@ package akeefer.service.impl;
 import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.BenachrichtigunsIntervall;
+import akeefer.model.SecurityRole;
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoAktivitaetRepository;
@@ -12,11 +13,15 @@ import akeefer.repository.mongo.dto.AktivitaetSortProperties;
 import akeefer.repository.mongo.dto.TotalUserDistance;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
+import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Interval;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +35,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static akeefer.model.AktivitaetsTyp.laufen;
+import static akeefer.model.AktivitaetsTyp.radfahren;
 import static akeefer.test.util.ProxyUtil.getTargetObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -66,12 +75,14 @@ public class PersonServiceImplTest {
     public void setUp() {
         helper.setUp();
         aktivitaetRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @After
     public void tearDown() {
         helper.tearDown();
         aktivitaetRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -127,7 +138,7 @@ public class PersonServiceImplTest {
         user1.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.taeglich);
         final List<Aktivitaet> aktivitaetList = new ArrayList<>();
         aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build());
-        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user1.getUsername()).distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build());
@@ -136,7 +147,7 @@ public class PersonServiceImplTest {
         user2.setUsername("user2");
         user2.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.woechnetlich);
         aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build());
-        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user2.getUsername()).distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build());
@@ -145,7 +156,7 @@ public class PersonServiceImplTest {
         user3.setBenachrichtigunsIntervall(BenachrichtigunsIntervall.deaktiviert);
         user3.setUsername("user3");
         aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.ONE).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().toDate()).build());
-        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(AktivitaetsTyp.radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
+        aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(2)).typ(radfahren).eingabeDatum(new DateTime().minusDays(1).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(3)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(2).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(4)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(7).toDate()).build());
         aktivitaetList.add(createDefaultAkt().owner(user3.getUsername()).distanzInKilometer(BigDecimal.valueOf(5)).typ(AktivitaetsTyp.laufen).eingabeDatum(new DateTime().minusDays(8).toDate()).build());
@@ -174,14 +185,14 @@ public class PersonServiceImplTest {
         Statistic statistic = statistics.iterator().next();
         assertEquals(1, statistic.getAggregated().size());
         Map.Entry<AktivitaetsTyp, BigDecimal> entry = statistic.getAggregated().entrySet().iterator().next();
-        assertEquals(AktivitaetsTyp.radfahren, entry.getKey());
+        assertEquals(radfahren, entry.getKey());
         assertEquals(new BigDecimal("2"), entry.getValue());
 
         statistics = spy.createStatistic(BenachrichtigunsIntervall.woechnetlich);
         assertEquals(3, statistics.size());
         statistic = statistics.iterator().next();
         assertEquals(2, statistic.getAggregated().size());
-        assertEquals(new BigDecimal("2"), statistic.getAggregated().get(AktivitaetsTyp.radfahren));
+        assertEquals(new BigDecimal("2"), statistic.getAggregated().get(radfahren));
         assertEquals(new BigDecimal("7"), statistic.getAggregated().get(AktivitaetsTyp.laufen));
     }
 
@@ -478,6 +489,235 @@ public class PersonServiceImplTest {
 
         Assertions.assertThat(res)
                 .isEqualTo(activitiesOfAndi.size());
+    }
+
+    @Test
+    public void createStackedColumsChartData_noActivities() {
+        User user = userRepository.save(User.builder()
+                .username("andi")
+                .password("pw")
+                .role(SecurityRole.USER)
+                .build());
+        ChartIntervall chartIntervall = ChartIntervall.Woche;
+
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = personService.createStackedColumsChartData(
+                user.getId(), chartIntervall);
+
+        Assertions.assertThat(res)
+                .isEmpty();
+    }
+
+    @Test
+    public void createStackedColumsChartData_week() {
+        String username = "andi";
+        User user = userRepository.save(User.builder()
+                .username(username)
+                .password("pw")
+                .role(SecurityRole.USER)
+                .build());
+        createAkt(username, LocalDate.now(), "21", radfahren);
+        createAkt(username, LocalDate.now(), "1", radfahren);
+        createAkt(username, LocalDate.now(), "2", laufen);
+        createAkt(username, LocalDate.now().minusDays(6), "9", laufen);
+        createAkt(username, LocalDate.now().minusDays(7), "8", laufen);
+        createAkt(username, LocalDate.now().plusDays(1), "4", laufen);
+        createAkt("foo", LocalDate.now(), "8", laufen);
+        ChartIntervall chartIntervall = ChartIntervall.Woche;
+
+
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = personService.createStackedColumsChartData(
+                user.getId(), chartIntervall);
+
+
+        Assertions.assertThat(res)
+                .containsExactly(
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(5)),
+                                Collections.singletonMap(laufen, new BigDecimal("9"))),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(4)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(3)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(2)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(1)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).plusDays(1)),
+                                ImmutableMap.of(laufen, new BigDecimal("2"), radfahren, new BigDecimal("22")))
+                );
+    }
+
+    @Test
+    public void createStackedColumsChartData_month() {
+        String username = "andi";
+        User user = userRepository.save(User.builder()
+                .username(username)
+                .password("pw")
+                .role(SecurityRole.USER)
+                .build());
+        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
+        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
+        createAkt(username, LocalDate.now().minusMonths(1), "5", radfahren);
+        createAkt(username, LocalDate.now(), "1", laufen);
+        createAkt(username, LocalDate.now().plusDays(1), "4", laufen);
+        createAkt("foo", LocalDate.now(), "8", laufen);
+        ChartIntervall chartIntervall = ChartIntervall.Monat;
+
+
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = personService.createStackedColumsChartData(
+                user.getId(), chartIntervall);
+
+
+        PersonServiceImpl.IntervalIterator iterator = new PersonServiceImpl.IntervalIterator(
+                new Interval(chartIntervall.getIntervall().getStart(), chartIntervall.getIntervall().getEnd()), Days.ONE);
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> expectedRes = new HashMap<>();
+        boolean first = true;
+        while (iterator.hasNext()) {
+            Interval interval = iterator.next();
+            if (first) {
+                expectedRes.put(interval, ImmutableMap.of(laufen, BigDecimal.ONE));
+                first = false;
+            } else if (!iterator.hasNext()) {
+                expectedRes.put(interval, ImmutableMap.of(radfahren, BigDecimal.TEN));
+            } else {
+                expectedRes.put(interval, ImmutableMap.of());
+            }
+        }
+        Assertions.assertThat(res)
+                .containsExactlyInAnyOrderEntriesOf(expectedRes);
+    }
+
+    @Test
+    public void createStackedColumsChartData_year() {
+        String username = "andi";
+        User user = userRepository.save(User.builder()
+                .username(username)
+                .password("pw")
+                .role(SecurityRole.USER)
+                .build());
+        createAkt(username, LocalDate.now(), "21", radfahren);
+        createAkt(username, LocalDate.now().withDayOfMonth(1).plusMonths(1), "4", laufen);
+        createAkt("foo", LocalDate.now(), "8", laufen);
+        ChartIntervall chartIntervall = ChartIntervall.Jahr;
+
+
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = personService.createStackedColumsChartData(
+                user.getId(), chartIntervall);
+
+
+        Assertions.assertThat(res)
+                .containsExactly(
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(10)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(9)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(8)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(7)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(6)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(5)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(4)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(3)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(2)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(1)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).plusMonths(1)),
+                                ImmutableMap.of(radfahren, new BigDecimal("21")))
+                );
+    }
+
+    @Test
+    public void createStackedColumsChartData_total() {
+        String username = "andi";
+        User user = userRepository.save(User.builder()
+                .username(username)
+                .password("pw")
+                .role(SecurityRole.USER)
+                .build());
+        createAkt(username, LocalDate.now().withDayOfMonth(31).withMonth(12), "21", radfahren);
+        createAkt(username, LocalDate.now().withDayOfYear(1).withMonth(1).plusYears(1), "4", laufen);
+        createAkt("foo", LocalDate.now(), "8", laufen);
+        ChartIntervall chartIntervall = ChartIntervall.Gesamt;
+
+
+        Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = personService.createStackedColumsChartData(
+                user.getId(), chartIntervall);
+
+
+        Assertions.assertThat(res)
+                .containsExactly(
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(8)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(7)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(6)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(5)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(4)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(3)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(2)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(1)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1)),
+                                Collections.emptyMap()),
+                        new SimpleEntry(
+                                new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).plusYears(1)),
+                                ImmutableMap.of(radfahren, new BigDecimal("21")))
+                );
+    }
+
+    private Aktivitaet createAkt(String owner,
+                                 LocalDate aktDate,
+                                 String distance,
+                                 AktivitaetsTyp typ) {
+        return aktivitaetRepository.save(Aktivitaet.builder()
+                .owner(owner)
+                .distanzInKilometer(new BigDecimal(distance))
+                .aktivitaetsDatum(Date.from(aktDate.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .typ(typ)
+                .aufzeichnungsart(AktivitaetsAufzeichnung.aufgezeichnet)
+                .build());
     }
 
     private List<Aktivitaet> createAktivities(String owner, int count) {
