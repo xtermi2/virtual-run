@@ -49,6 +49,6 @@
         Note that this flag will put the jar in WEB-INF/lib rather than WEB-INF/classes.
         The classloader first looks in WEB-INF/classes and then WEB-INF/lib when loading a class.
         As a result, this flag could change classloading order, which may affect the behavior of your app. -->
-        <enable-jar-classes>true</enable-jar-classes>
+        <enable-jar-classes>false</enable-jar-classes><!-- true does not work on GAE deployment :( -->
     </staging>
 </appengine-web-app>
