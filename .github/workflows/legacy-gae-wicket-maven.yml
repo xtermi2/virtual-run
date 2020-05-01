@@ -20,7 +20,7 @@ env:
 
 jobs:
   build:
-
+    name: Build (and deploy on pull requests to GAE)
     runs-on: ubuntu-latest
 
     steps:
