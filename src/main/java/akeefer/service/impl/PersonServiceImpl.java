@@ -98,7 +98,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         Validate.notNull(logedInUserId);
 
         StringBuilder personScript = new StringBuilder("var personen = [\n");
-        Set<User> users = new TreeSet<User>(new UserHintenComparator(logedInUserId));
+        Set<User> users = new TreeSet<>(new UserHintenComparator(logedInUserId));
         List<User> allUser = getAllUser();
         users.addAll(allUser);
         Map<String, Integer> username2DistanzInMeter = aktivitaetRepository.calculateTotalDistanceForAllUsers().stream()
@@ -129,19 +129,17 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 rollen.add(grantedAuthority);
             }
         }
-        org.springframework.security.core.userdetails.User res = new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), rollen);
 
-        return res;
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), rollen);
     }
 
     // Sortiert den user mit dem Key nach unten
     static class UserHintenComparator implements Comparator<User> {
 
-        private String userId;
+        private final String userId;
 
         UserHintenComparator(String userId) {
-
             this.userId = userId;
         }
 
@@ -180,23 +178,23 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     public User createUserIfAbsent(User user, boolean skipPwEncoding) {
-        logger.info("createUserIfAbsent: " + user);
+        logger.info("createUserIfAbsent: {}", user);
         User userInDb = findUserByUsername(getAllUser(), user.getUsername());
         if (null != userInDb) {
-            logger.info(String.format("User username='%s' already exists, i will not create a new one", user.getUsername()));
+            logger.info("User username='{}' already exists, i will not create a new one", user.getUsername());
             if (!userInDb.getRoles().containsAll(user.getRoles())) {
                 logger.info("fuege Rollen hinzu");
                 userInDb.getRoles().addAll(user.getRoles());
             }
             if (userInDb.getUsername().equals(userInDb.getPassword())) {
-                logger.info("PW von user '" + userInDb.getUsername() + "' muss encoded werden");
+                logger.info("PW von user '{}' muss encoded werden", userInDb.getUsername());
                 userInDb.setPassword(passwordEncoder.encode(userInDb.getPassword()));
             }
 
             return userInDb;
         }
         if (!skipPwEncoding) {
-            logger.info("PW von user '" + user.getUsername() + "' wird encoded");
+            logger.info("PW von user '{}' wird encoded", user.getUsername());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
@@ -210,10 +208,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             Aktivitaet toDelete = aktivitaetRepository.findById(aktivitaet.getId())
                     .orElse(null);
             if (null != toDelete) {
-                logger.info("loesche aktivitaet " + toDelete.getId());
+                logger.info("loesche aktivitaet {}", toDelete.getId());
                 aktivitaetRepository.deleteAktivitaet(toDelete);
             } else {
-                logger.warn("akt nicht gefunden: " + aktivitaet.getId());
+                logger.warn("akt nicht gefunden: {}", aktivitaet.getId());
             }
         } else {
             logger.warn("null Akt kann nicht geloescht werden!");
@@ -234,7 +232,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     List<Aktivitaet> loadAktivitaetenByOwner(String owner) {
         final List<Aktivitaet> aktivitaeten = aktivitaetRepository.findAllByOwner(owner);
-        logger.info("Anzahl gefundene Aktivitaeten(" + owner + "): " + aktivitaeten.size());
+        logger.info("Anzahl gefundene Aktivitaeten({}): {}", owner, aktivitaeten.size());
         return aktivitaeten;
     }
 
@@ -243,7 +241,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     public void changePassword(String userId, String cleartextPassword) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user with id '" + userId + "' not found"));
-        logger.info("change password of user " + user);
+        logger.info("change password of user {}", user);
         user.setPassword(passwordEncoder.encode(cleartextPassword));
         userRepository.save(user);
     }
@@ -270,7 +268,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     @Transactional(readOnly = true)
     public Set<Statistic> createStatistic(BenachrichtigunsIntervall interval) {
-        logger.info("createStatistic: " + interval);
+        logger.info("createStatistic: {}", interval);
         List<User> users = getAllUser();
         if (Iterables.any(users, new BenachrichtigunsIntervallPredicate(interval))) {
             Set<Statistic> statistics = new HashSet<>(users.size());
@@ -286,8 +284,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             }
             return statistics;
         } else {
-            logger.info(String.format("no user configures '%s' as NotificationInterval", interval));
-            return null;
+            logger.info("no user configures '{}' as NotificationInterval", interval);
+            return Collections.emptySet();
         }
     }
 
@@ -295,7 +293,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     public void sendStatisticMail(BenachrichtigunsIntervall interval) {
         Validate.notNull(interval, "interval must not be null");
-        logger.info("sendStatisticMail: " + interval);
+        logger.info("sendStatisticMail: {}", interval);
         List<User> users = getAllUser();
         Set<Statistic> statistics = createStatistic(interval);
         if (CollectionUtils.isNotEmpty(statistics) && CollectionUtils.isNotEmpty(users)) {
@@ -306,10 +304,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             logger.info("... Mail Session wurde erzeugt");
             for (User user : getAllUser()) {
                 if (interval.equals(user.getBenachrichtigunsIntervall())) {
-                    logger.info("user hat passenden Intervall: " + interval);
+                    logger.info("user hat passenden Intervall: {}", interval);
                     String mailBody = buildMailBody(statistics, user, interval);
 
-                    logger.info("sending statistic mail to " + user.getEmail());
+                    logger.info("sending statistic mail to {}", user.getEmail());
                     try {
                         final Message msg = new MimeMessage(session);
                         final String applicationId = getGaeApplicationId();
@@ -325,7 +323,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 }
             }
         } else {
-            logger.info("sendStatisticMail: keine passenden Daten fuer " + interval);
+            logger.info("sendStatisticMail: keine passenden Daten fuer {}", interval);
         }
     }
 
@@ -355,11 +353,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
         for (Iterator<Interval> iter = new IntervalIterator(zeitraum, chartIntervall.getIteratorResolution()); iter.hasNext(); ) {
             Interval interval = iter.next();
-            Map<AktivitaetsTyp, BigDecimal> dataInInterval = res.get(interval);
-            if (null == dataInInterval) {
-                dataInInterval = new HashMap<>();
-                res.put(interval, dataInInterval);
-            }
+            Map<AktivitaetsTyp, BigDecimal> dataInInterval = res.computeIfAbsent(interval, k -> new HashMap<>());
             for (Iterator<Aktivitaet> aktIter = akts.iterator(); aktIter.hasNext(); ) {
                 Aktivitaet akt = aktIter.next();
                 if (interval.contains(new DateTime(akt.getAktivitaetsDatum()))) {
@@ -413,7 +407,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
         if (null != totalDistanceInKm) {
             Duration duration = firstAkt.toInterval().withEnd(new DateTime()).toDuration();
             BigDecimal days = BigDecimal.valueOf(duration.getStandardDays());
-            BigDecimal forecastDays = days.divide(distanceInKm, 3, BigDecimal.ROUND_HALF_UP)
+            BigDecimal forecastDays = days.divide(distanceInKm, 3, RoundingMode.HALF_UP)
                     .multiply(totalDistanceInKm).setScale(0, RoundingMode.HALF_UP);
             res.put(firstAkt.plusDays(forecastDays.intValue()), totalDistanceInKm);
         } else {
@@ -492,7 +486,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     static final class IntervalIterator implements Iterator<Interval> {
 
         private Interval zeitraum;
-        private ReadablePeriod resolution;
+        private final ReadablePeriod resolution;
 
         IntervalIterator(Interval zeitraum, ReadablePeriod resolution) {
 
@@ -618,8 +612,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     static final class AktivitaetsDatumVonBisFilter implements Predicate<Aktivitaet> {
 
-        private LocalDate von;
-        private LocalDate bis;
+        private final LocalDate von;
+        private final LocalDate bis;
 
         public AktivitaetsDatumVonBisFilter(LocalDate von, LocalDate bis) {
             this.von = von;
