@@ -6,6 +6,11 @@ on:
       - 'backend/**'
       - '.github/workflows/backend-cloud-run.yml'
       - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - 'backend/**'
+      - '.github/workflows/backend-cloud-run.yml'
+      - '**/*.md'
 
 env:
   MONGODB_USER: ${{ secrets.MONGODB_USER }}
