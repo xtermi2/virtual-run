@@ -40,7 +40,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build with Maven
-        run: ./mvnw -B clean package -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
+        run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
 
       - name: Setup gcloud CLI on pull requests
         if: ${{ github.event_name == 'pull_request'}}
@@ -54,4 +54,4 @@ jobs:
 
       - name: Deploy to GAE on pull requests
         if: ${{ github.event_name == 'pull_request'}}
-        run: ./mvnw clean package appengine:deploy -P prod
+        run: ./mvnw appengine:deploy -P prod
