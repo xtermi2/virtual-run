@@ -52,4 +52,4 @@ jobs:
 
       - name: Deploy to GAE on pull requests
         if: ${{ github.event_name == 'pull_request'}}
-        run: ./mvnw appengine:deployAll -P prod
+        run: ./mvnw appengine:deploy -P prod
