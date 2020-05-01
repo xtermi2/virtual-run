@@ -8,7 +8,6 @@ import akeefer.web.charts.functions.StackTotalKmFormatter;
 import akeefer.web.components.layout.Panel;
 import akeefer.web.components.validation.LocalizedPropertyValidator;
 import com.googlecode.wickedcharts.highcharts.options.*;
-import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.highcharts.options.series.SimpleSeries;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -101,7 +100,7 @@ public class StackedColumnChartPanel extends Panel {
             i++;
         }
 
-        Options options = new Options()
+        return new Options()
                 .setChartOptions(new ChartOptions().setType(SeriesType.COLUMN))
                 .setTitle(new Title(new StringResourceModel("statTitel", this, null).getString()))
                 .setTooltip(new Tooltip()
@@ -121,8 +120,7 @@ public class StackedColumnChartPanel extends Panel {
                         .setStackLabels(new StackLabels()
                                 .setEnabled(true)
                         ))
-                .setSeries(new ArrayList<Series<?>>(seriesMap.values()));
-        return options;
+                .setSeries(new ArrayList<>(seriesMap.values()));
     }
 
     private void initSeries(SimpleSeries pointSeries, int size) {

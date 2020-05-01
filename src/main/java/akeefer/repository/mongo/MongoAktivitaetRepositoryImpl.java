@@ -2,8 +2,12 @@ package akeefer.repository.mongo;
 
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.util.Profiling;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -61,6 +65,26 @@ public class MongoAktivitaetRepositoryImpl implements MongoAktivitaetRepositoryC
                 sort(Sort.Direction.ASC, previousOperation(), "owner"));
 
         AggregationResults<TotalUserDistance> res = mongoTemplate.aggregate(totalDistance, Aktivitaet.class, TotalUserDistance.class);
+        return res.getMappedResults();
+    }
+
+    @Override
+    @Profiling
+    public List<UserDistanceByType> sumDistanceGroupedByActivityTypeAndFilterByOwnerAndDateRange(String owner,
+                                                                                                 LocalDate from,
+                                                                                                 LocalDate to) {
+        LocalDateTime toEndOfDay = to.toLocalDateTime(LocalTime.MIDNIGHT.minusMillis(1));
+
+        Aggregation totalDistance = newAggregation(
+                match(where("owner").is(owner)
+                        .andOperator(
+                                where("aktivitaetsDatum").gte(from.toLocalDateTime(LocalTime.MIDNIGHT)),
+                                where("aktivitaetsDatum").lte(toEndOfDay))),
+                group("owner", "typ") // I have no glue, why group only works as expected when 2 arguments are provided
+                        .sum("distanzInKilometer")
+                        .as("totalDistanzInKilometer"));
+
+        AggregationResults<UserDistanceByType> res = mongoTemplate.aggregate(totalDistance, Aktivitaet.class, UserDistanceByType.class);
         return res.getMappedResults();
     }
 }

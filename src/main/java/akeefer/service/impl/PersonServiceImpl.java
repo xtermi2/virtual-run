@@ -9,6 +9,7 @@ import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
 import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
@@ -333,23 +334,10 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     public Map<AktivitaetsTyp, BigDecimal> createPieChartData(final String userId,
                                                               final LocalDate von,
                                                               final LocalDate bis) {
-        final List<Aktivitaet> aktivitaeten = loadAktivitaeten(userId);
-        if (CollectionUtils.isEmpty(aktivitaeten)) {
-            return Collections.emptyMap();
-        }
-
-        Map<AktivitaetsTyp, BigDecimal> res = new HashMap<>();
-        for (Aktivitaet akt : Collections2.filter(aktivitaeten, new AktivitaetsDatumVonBisFilter(von, bis))) {
-            BigDecimal distanz = res.get(akt.getTyp());
-            if (null == distanz) {
-                distanz = akt.getDistanzInKilometer();
-            } else {
-                distanz = distanz.add(akt.getDistanzInKilometer());
-            }
-            res.put(akt.getTyp(), distanz);
-        }
-
-        return res;
+        String username = findUserById(userId).getUsername();
+        return aktivitaetRepository.sumDistanceGroupedByActivityTypeAndFilterByOwnerAndDateRange(username, von, bis)
+                .stream()
+                .collect(Collectors.toMap(UserDistanceByType::getTyp, UserDistanceByType::getTotalDistanzInKilometer));
     }
 
     @Override
