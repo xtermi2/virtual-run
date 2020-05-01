@@ -1,4 +1,4 @@
-name: afrika-run (GAE/Legacy)
+name: afrika-run (GAE/Legacy/Wicket)
 
 on:
   push:
