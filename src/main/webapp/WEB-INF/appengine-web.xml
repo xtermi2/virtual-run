@@ -3,7 +3,7 @@
     <!--<application>noble-helper-766</application>-->
     <application>afrika-run</application>
     <runtime>java8</runtime>
-    <module>default</module>
+    <service>default</service>
     <version>034</version>
     <!-- Performancetuning: Wir haben ja eine Servletbasierte App, daher muss sie auch threadSave sein -->
     <threadsafe>true</threadsafe>
@@ -14,8 +14,8 @@
     <async-session-persistence enabled="false"/>
     <system-properties>
         <property name="appengine.datastore.disableChunkSizeWarning"
-                  value="true" />
-        <property name="javax.el.ExpressionFactory" value="com.sun.el.ExpressionFactoryImpl" />
+                  value="true"/>
+        <property name="javax.el.ExpressionFactory" value="com.sun.el.ExpressionFactoryImpl"/>
     </system-properties>
 
     <!-- Admin console fuer Appstats
@@ -36,4 +36,19 @@
         <!--<max-pending-latency>automatic</max-pending-latency>-->
         <max-concurrent-requests>50</max-concurrent-requests>
     </automatic-scaling>
+    <staging>
+        <!-- INFO: We detected that you have a large number of .class files in WEB-INF/classes.
+        You may be able to reduce request latency by packaging your .class files into jars.
+        To do this, supply <enable-jar-classes>true</enable-jar-classes> in the <staging> tag in appengine-web.xml or
+        one of the following methods:
+        You can supply the -\-enable_jar_classes flag when using appcfg on command line.
+        If you're using the Cloud SDK based app-maven-plugin, add <stage.enableJarClasses>true</stage.enableJarClasses>
+        in the plugin's <configuration> tag.
+        If you are using the AppCfg based appengine-maven-plugin, supply <enableJarClasses>true</enableJarClasses> in
+        the plugin's <configuration> tag.
+        Note that this flag will put the jar in WEB-INF/lib rather than WEB-INF/classes.
+        The classloader first looks in WEB-INF/classes and then WEB-INF/lib when loading a class.
+        As a result, this flag could change classloading order, which may affect the behavior of your app. -->
+        <enable-jar-classes>false</enable-jar-classes><!-- true does not work on GAE deployment :( -->
+    </staging>
 </appengine-web-app>
