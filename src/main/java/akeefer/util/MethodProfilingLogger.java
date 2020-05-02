@@ -33,7 +33,7 @@ public class MethodProfilingLogger {
 
         final long now = System.currentTimeMillis();
         if (logger.isInfoEnabled()) {
-            logger.info(methode + " runtime: " + String.valueOf(now - startZeitpunktInMs) + " ms");
+            logger.info("{} runtime: {} ms", methode, (now - startZeitpunktInMs));
         }
     }
 }

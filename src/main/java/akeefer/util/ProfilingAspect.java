@@ -28,11 +28,11 @@ public class ProfilingAspect {
         try {
             return pjp.proceed();
         } finally {
-            StringBuilder profiling = new StringBuilder("profiling ")
-                    .append(pjp.getTarget().getClass().getSimpleName())
-                    .append("#")
-                    .append(pjp.getSignature().getName());
-            endMethodProfiling(profiling.toString(), startTime);
+            String profiling = "profiling " +
+                    pjp.getTarget().getClass().getSimpleName() +
+                    "#" +
+                    pjp.getSignature().getName();
+            endMethodProfiling(profiling, startTime);
         }
     }
 }

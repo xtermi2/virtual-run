@@ -7,3 +7,4 @@ datanucleus.log
 /hs_err*
 .mvn/wrapper/maven-wrapper.jar
 /backup/*/*.json
+/*key.json

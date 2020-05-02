@@ -1,13 +1,13 @@
 package akeefer.util;
 
+
+import java.lang.annotation.*;
+
 /**
  * Markiert eine Methode fuers Profiling
  *
  * @author Andreas Keefer
  */
-
-import java.lang.annotation.*;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Target({ElementType.METHOD})
