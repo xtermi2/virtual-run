@@ -15,16 +15,13 @@ public class AktivitaetSearchRequest {
     @NonNull
     AktivitaetSortProperties sortProperty;
 
-    @NonNull
     boolean sortAsc;
 
     // PAGINATION
 
-    @NonNull
     @Min(0)
     int pageableFirstElement;
 
-    @NonNull
     @Min(1)
     int pageSize;
 

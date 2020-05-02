@@ -3,8 +3,6 @@ package akeefer.web.components.interplay.conditional;
 import org.apache.wicket.model.IChainingModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Abstract Impl of Conditionals.
@@ -14,16 +12,10 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public abstract class AbstractConditional<T> implements IConditional<T>, IChainingModel<T> {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(AbstractConditional.class);
-
     private Object target;
 
     public AbstractConditional(IModel<T> model) {
         this.target = model;
-    }
-
-    public AbstractConditional(T modelObject) {
-        this.target = modelObject;
     }
 
     public boolean isFulfilled() {

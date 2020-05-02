@@ -19,16 +19,6 @@ class IsOneOfConditional<T> extends AbstractConditional<T> {
         this.collectionObject = Arrays.asList(values);
     }
 
-    IsOneOfConditional(IModel<T> tiModel, Collection<T> collectionObject) {
-        super(tiModel);
-        this.collectionObject = collectionObject;
-    }
-
-    IsOneOfConditional(IModel<T> tiModel, IModel<? extends Collection<? extends T>> collectionObject) {
-        super(tiModel);
-        this.collectionObject = collectionObject;
-    }
-
     @Override
     public boolean isFulfilled(T modelObject) {
         return getCollection() != null && getCollection().contains(modelObject);

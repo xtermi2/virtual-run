@@ -15,10 +15,6 @@ public abstract class AbstractChainingConditional implements IConditional<Void> 
         this.conditionals = Arrays.asList(conditionals);
     }
 
-    public AbstractChainingConditional(List<? extends IConditional<?>> conditionals) {
-        this.conditionals = conditionals;
-    }
-
     @Override
     public final boolean isFulfilled() {
         return isFulfilled(conditionals);
