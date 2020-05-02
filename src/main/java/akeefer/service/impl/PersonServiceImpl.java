@@ -9,6 +9,7 @@ import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
 import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByDateAndType;
 import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
@@ -16,7 +17,6 @@ import akeefer.service.dto.Statistic;
 import akeefer.util.Profiling;
 import akeefer.web.charts.ChartIntervall;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +52,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -340,33 +341,35 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(String userId, ChartIntervall chartIntervall) {
-        final List<Aktivitaet> aktivitaeten = loadAktivitaeten(userId);
-        if (CollectionUtils.isEmpty(aktivitaeten)) {
+    public Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(String userId,
+                                                                                       ChartIntervall chartIntervall) {
+        String username = findUserById(userId).getUsername();
+        LocalDate from = chartIntervall.getIntervall().getStart().toLocalDate();
+        LocalDate to = chartIntervall.getIntervall().getEnd().toLocalDate();
+        List<UserDistanceByDateAndType> resRepo = new ArrayList<>(aktivitaetRepository.sumDistanceGroupedByDateAndActivityTypeAndFilterByOwnerAndDateRange(
+                username, from, to, chartIntervall));
+        if (resRepo.isEmpty()) {
             return Collections.emptyMap();
         }
 
         Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = new TreeMap<>(INTERVAL_COMPARATOR);
         Interval zeitraum = chartIntervall.getIntervall();
-        List<Aktivitaet> akts = new ArrayList<>(Collections2.filter(aktivitaeten,
-                new AktivitaetsDatumVonBisFilter(zeitraum.getStart().toLocalDate(), zeitraum.getEnd().toLocalDate())));
-
         for (Iterator<Interval> iter = new IntervalIterator(zeitraum, chartIntervall.getIteratorResolution()); iter.hasNext(); ) {
             Interval interval = iter.next();
             Map<AktivitaetsTyp, BigDecimal> dataInInterval = res.computeIfAbsent(interval, k -> new HashMap<>());
-            for (Iterator<Aktivitaet> aktIter = akts.iterator(); aktIter.hasNext(); ) {
-                Aktivitaet akt = aktIter.next();
-                if (interval.contains(new DateTime(akt.getAktivitaetsDatum()))) {
+            for (Iterator<UserDistanceByDateAndType> aktIter = resRepo.iterator(); aktIter.hasNext(); ) {
+                UserDistanceByDateAndType akt = aktIter.next();
+                java.time.LocalDate localDate = chartIntervall.parseMongoAggregationDate(akt.getDateKey());
+                if (interval.contains(new DateTime(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())))) {
                     aktIter.remove();
                     BigDecimal distanz = dataInInterval.get(akt.getTyp());
                     if (null == distanz) {
                         distanz = BigDecimal.ZERO;
                     }
-                    dataInInterval.put(akt.getTyp(), distanz.add(akt.getDistanzInKilometer()));
+                    dataInInterval.put(akt.getTyp(), distanz.add(akt.getTotalDistanzInKilometer()));
                 }
             }
         }
-
         return res;
     }
 

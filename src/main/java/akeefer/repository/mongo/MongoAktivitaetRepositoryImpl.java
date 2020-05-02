@@ -2,8 +2,10 @@ package akeefer.repository.mongo;
 
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByDateAndType;
 import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.util.Profiling;
+import akeefer.web.charts.ChartIntervall;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -85,6 +87,29 @@ public class MongoAktivitaetRepositoryImpl implements MongoAktivitaetRepositoryC
                         .as("totalDistanzInKilometer"));
 
         AggregationResults<UserDistanceByType> res = mongoTemplate.aggregate(totalDistance, Aktivitaet.class, UserDistanceByType.class);
+        return res.getMappedResults();
+    }
+
+    @Override
+    @Profiling
+    public List<UserDistanceByDateAndType> sumDistanceGroupedByDateAndActivityTypeAndFilterByOwnerAndDateRange(String owner,
+                                                                                                               LocalDate from,
+                                                                                                               LocalDate to,
+                                                                                                               ChartIntervall chartIntervall) {
+        LocalDateTime toEndOfDay = to.toLocalDateTime(LocalTime.MIDNIGHT.minusMillis(1));
+
+        Aggregation totalDistance = newAggregation(
+                match(where("owner").is(owner)
+                        .andOperator(
+                                where("aktivitaetsDatum").gte(from.toLocalDateTime(LocalTime.MIDNIGHT)),
+                                where("aktivitaetsDatum").lt(toEndOfDay))),
+                project("owner", "aktivitaetsDatum", "typ", "distanzInKilometer")
+                        .and("aktivitaetsDatum").dateAsFormattedString(chartIntervall.getMongoAggregationPattern()).as("dateKey"),
+                group("owner", "dateKey", "typ")// I have no glue, why group only works as expected when 2 arguments are provided
+                        .sum("distanzInKilometer")
+                        .as("totalDistanzInKilometer"));
+
+        AggregationResults<UserDistanceByDateAndType> res = mongoTemplate.aggregate(totalDistance, Aktivitaet.class, UserDistanceByDateAndType.class);
         return res.getMappedResults();
     }
 }
