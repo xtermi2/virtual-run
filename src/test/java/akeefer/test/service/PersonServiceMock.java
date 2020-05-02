@@ -9,6 +9,7 @@ import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
+import akeefer.service.dto.UserForecast;
 import akeefer.test.TestScopedComponent;
 import akeefer.web.charts.ChartIntervall;
 import com.google.common.collect.Lists;
@@ -101,8 +102,8 @@ public class PersonServiceMock implements PersonService {
     }
 
     @Override
-    public Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm) {
-        return Collections.emptyMap();
+    public List<UserForecast> createForecastData(BigDecimal totalDistanceInKm, String... username) {
+        return Collections.emptyList();
     }
 
     @Override

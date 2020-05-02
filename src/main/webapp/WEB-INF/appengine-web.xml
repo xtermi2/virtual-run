@@ -13,17 +13,8 @@
     -> "true" scheint nicht zu funktionieren :( -->
     <async-session-persistence enabled="false"/>
     <system-properties>
-        <property name="appengine.datastore.disableChunkSizeWarning"
-                  value="true"/>
         <property name="javax.el.ExpressionFactory" value="com.sun.el.ExpressionFactoryImpl"/>
     </system-properties>
-
-    <!-- Admin console fuer Appstats
-     https://cloud.google.com/appengine/docs/java/tools/appstats
-     -->
-    <admin-console>
-        <page name="Appstats" url="/appstats"/>
-    </admin-console>
 
     <!-- Instance Settings -->
     <!--<instance-class>F2</instance-class>-->

@@ -2,6 +2,7 @@ package akeefer.web.components;
 
 import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
+import akeefer.service.dto.UserForecast;
 import akeefer.web.VRSession;
 import akeefer.web.charts.ChartIntervall;
 import akeefer.web.charts.UserSelect;
@@ -151,20 +152,23 @@ public class ForecastPanel extends Panel {
                 : personService.getTotalDistance();
         List<Series<?>> series = users.parallelStream()
                 .flatMap(user -> {
-                    final Map<LocalDate, BigDecimal> forecastData = personService.createForecastData(
-                            user.getUsername(), totalDistanceInKm);
-                    if (MapUtils.isNotEmpty(forecastData)) {
-                        ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
-                        serie.setName(user.getAnzeigename());
-                        serie.setZoneAxis("x");
-                        serie.addZone(new Zone<String>()
-                                .setValue(FORMATTER.print(LocalDate.now())));
-                        serie.addZone(new Zone<String>()
-                                .setDashStyle("dot"));
-                        for (Map.Entry<LocalDate, BigDecimal> entry : forecastData.entrySet()) {
-                            serie.addPoint(new Coordinate<>(FORMATTER.print(entry.getKey()), entry.getValue()));
+                    List<UserForecast> res = personService.createForecastData(
+                            totalDistanceInKm, user.getUsername());
+                    if (!res.isEmpty()) {
+                        final Map<LocalDate, BigDecimal> forecastData = res.get(0).getAggregatedDistancesPerDay();
+                        if (MapUtils.isNotEmpty(forecastData)) {
+                            ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
+                            serie.setName(user.getAnzeigename());
+                            serie.setZoneAxis("x");
+                            serie.addZone(new Zone<String>()
+                                    .setValue(FORMATTER.print(LocalDate.now())));
+                            serie.addZone(new Zone<String>()
+                                    .setDashStyle("dot"));
+                            for (Map.Entry<LocalDate, BigDecimal> entry : forecastData.entrySet()) {
+                                serie.addPoint(new Coordinate<>(FORMATTER.print(entry.getKey()), entry.getValue()));
+                            }
+                            return Stream.of(serie);
                         }
-                        return Stream.of(serie);
                     }
                     return Stream.empty();
                 })

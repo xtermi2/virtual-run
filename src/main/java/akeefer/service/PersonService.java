@@ -7,6 +7,7 @@ import akeefer.model.mongo.User;
 import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
+import akeefer.service.dto.UserForecast;
 import akeefer.web.charts.ChartIntervall;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -46,7 +47,7 @@ public interface PersonService {
     Map<Interval, Map<AktivitaetsTyp, BigDecimal>> createStackedColumsChartData(String userId,
                                                                                 ChartIntervall chartIntervall);
 
-    Map<LocalDate, BigDecimal> createForecastData(String username, BigDecimal totalDistanceInKm);
+    List<UserForecast> createForecastData(BigDecimal totalDistanceInKm, String... username);
 
     BigDecimal updateTotalDistance(BigDecimal totalDistanceInKm);
 

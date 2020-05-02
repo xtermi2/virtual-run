@@ -14,6 +14,7 @@ import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
+import akeefer.service.dto.UserForecast;
 import akeefer.util.Profiling;
 import akeefer.web.charts.ChartIntervall;
 import com.google.common.base.Predicate;
@@ -39,7 +40,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.cache.annotation.CacheKey;
 import javax.cache.annotation.CachePut;
 import javax.cache.annotation.CacheResult;
 import javax.cache.annotation.CacheValue;
@@ -117,14 +117,14 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = getUserByUsername(username);
         if (null == user) {
-            throw new UsernameNotFoundException(username + " not found in GAE Datastore.");
+            throw new UsernameNotFoundException("'" + username + "' not found in Database.");
         }
 
         Set<GrantedAuthority> rollen = new HashSet<>();
-        if (null != user.getRoles()) {
+        if (CollectionUtils.isNotEmpty(user.getRoles())) {
             for (SecurityRole role : user.getRoles()) {
                 SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role.name());
                 rollen.add(grantedAuthority);
@@ -160,9 +160,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
 //    @CacheRemove(cacheName = "aktivitaeten")
-    public Aktivitaet createAktivitaet(@CacheKey Aktivitaet akt, final User user, boolean setDate) {
-        User userTmp = userRepository.findById(user.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user with id '" + user.getId() + "' not found"));
+    public Aktivitaet createAktivitaet(/*@CacheKey*/ Aktivitaet akt, final User user, boolean setDate) {
+        User userTmp = findUserById(user.getId());
         if (null == akt.getId()) {
             // neue Aktivitaet
             if (setDate) {
@@ -240,8 +239,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Override
     @Profiling
     public void changePassword(String userId, String cleartextPassword) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user with id '" + userId + "' not found"));
+        User user = findUserById(userId);
         logger.info("change password of user {}", user);
         user.setPassword(passwordEncoder.encode(cleartextPassword));
         userRepository.save(user);
@@ -375,11 +373,13 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public Map<LocalDate, BigDecimal> createForecastData(String username,
-                                                         BigDecimal totalDistanceInKm) {
+    public List<UserForecast> createForecastData(BigDecimal totalDistanceInKm,
+                                                 String... usernames) {
+
+        String username = usernames[0];
         final List<Aktivitaet> aktivitaeten = loadAktivitaetenByOwner(username);
         if (CollectionUtils.isEmpty(aktivitaeten)) {
-            return Collections.emptyMap();
+            return Collections.emptyList();
         }
         final NavigableMap<LocalDate, BigDecimal> res = new TreeMap<>();
 
@@ -417,7 +417,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
             logger.warn("totalDistanceInKm is null! Can't calculate forecast!");
         }
 
-        return res;
+        return Collections.singletonList(new UserForecast(username, res));
     }
 
     @Profiling

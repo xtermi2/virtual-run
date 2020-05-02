@@ -13,7 +13,6 @@
         <Logger name="org.apache.wicket.protocol.http.HttpSessionStore" level="info"/>
         <Logger name="org.apache.wicket.version" level="info"/>
         <Logger name="org.apache.wicket.RequestCycle" level="info"/>
-<!--        <Logger name="com.google.appengine.tools.appstats.AppstatsFilter" level="info"/>-->
         <Logger name="net.eusashead.spring.gaecache" level="info"/>
 <!--        <Logger name="org.springframework.data.mongodb.core.MongoTemplate" level="debug"/>-->
     </Loggers>
