@@ -1,6 +1,5 @@
 package akeefer.repository.mongo.dto;
 
-import akeefer.model.AktivitaetsTyp;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.Value;
@@ -8,11 +7,11 @@ import lombok.Value;
 import java.math.BigDecimal;
 
 /**
- * The summed distance a user has tracked, grouped by data and typ
+ * The summed distance a user has tracked, grouped by date
  */
 @Value
 @AllArgsConstructor
-public class UserDistanceByDateAndType {
+public class UserDistanceByDate {
     /**
      * the username
      */
@@ -20,8 +19,6 @@ public class UserDistanceByDateAndType {
     String owner;
     @NonNull
     String dateKey;
-    @NonNull
-    AktivitaetsTyp typ;
     @NonNull
     BigDecimal totalDistanzInKilometer;
 }

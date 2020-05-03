@@ -13,6 +13,7 @@ import akeefer.repository.mongo.dto.AktivitaetSortProperties;
 import akeefer.repository.mongo.dto.TotalUserDistance;
 import akeefer.service.PersonService;
 import akeefer.service.dto.Statistic;
+import akeefer.service.dto.UserForecast;
 import akeefer.web.charts.ChartIntervall;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -41,8 +42,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static akeefer.model.AktivitaetsTyp.laufen;
-import static akeefer.model.AktivitaetsTyp.radfahren;
+import static akeefer.model.AktivitaetsTyp.*;
 import static akeefer.test.util.ProxyUtil.getTargetObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -705,6 +705,78 @@ public class PersonServiceImplTest {
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).plusYears(1)),
                                 ImmutableMap.of(radfahren, new BigDecimal("21")))
                 );
+    }
+
+    @Test
+    public void createForecastData_singleUser_noData() {
+        String username = "andi";
+        userRepository.save(User.builder()
+                .username(username)
+                .password("pw")
+                .role(SecurityRole.USER)
+                .build());
+
+        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), username);
+
+        Assertions.assertThat(res)
+                .isEmpty();
+    }
+
+    @Test
+    public void createForecastData_singleUser_withData() {
+        String username = "andi";
+        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", wandern);
+        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
+        createAkt(username, LocalDate.now().minusMonths(1), "245", radfahren);
+        createAkt(username, LocalDate.now(), "1", laufen);
+        createAkt(username, LocalDate.now().minusDays(1), "4", laufen);
+        createAkt("foo", LocalDate.now(), "8", laufen);
+        createAkt("foo", LocalDate.now().minusDays(1), "42", radfahren);
+
+
+        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), username);
+
+
+        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expected = new TreeMap<>();
+        expected.put(org.joda.time.LocalDate.now().minusMonths(1), new BigDecimal("245"));
+        expected.put(org.joda.time.LocalDate.now().minusMonths(1).plusDays(1), new BigDecimal("255"));
+        expected.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("259"));
+        expected.put(org.joda.time.LocalDate.now(), new BigDecimal("260"));
+        expected.put(org.joda.time.LocalDate.now().plusDays(85), new BigDecimal("1000"));
+        Assertions.assertThat(res)
+                .containsExactly(new UserForecast(username, expected));
+    }
+
+    @Test
+    public void createForecastData_multiUser_withData() {
+        String usernameAndi = "andi";
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).plusDays(1), "5", wandern);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1), "245", radfahren);
+        createAkt(usernameAndi, LocalDate.now(), "1", laufen);
+        createAkt(usernameAndi, LocalDate.now().minusDays(1), "4", laufen);
+        String usernameFoo = "foo";
+        createAkt(usernameFoo, LocalDate.now(), "8", laufen);
+        createAkt(usernameFoo, LocalDate.now().minusDays(1), "42", radfahren);
+
+
+        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi, usernameFoo);
+
+
+        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedAndi = new TreeMap<>();
+        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1), new BigDecimal("245"));
+        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1).plusDays(1), new BigDecimal("255"));
+        expectedAndi.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("259"));
+        expectedAndi.put(org.joda.time.LocalDate.now(), new BigDecimal("260"));
+        expectedAndi.put(org.joda.time.LocalDate.now().plusDays(85), new BigDecimal("1000"));
+        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedFoo = new TreeMap<>();
+        expectedFoo.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("42"));
+        expectedFoo.put(org.joda.time.LocalDate.now(), new BigDecimal("50"));
+        expectedFoo.put(org.joda.time.LocalDate.now().plusDays(19), new BigDecimal("1000"));
+        Assertions.assertThat(res)
+                .containsExactlyInAnyOrder(
+                        new UserForecast(usernameAndi, expectedAndi),
+                        new UserForecast(usernameFoo, expectedFoo));
     }
 
     private Aktivitaet createAkt(String owner,

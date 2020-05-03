@@ -2,6 +2,7 @@ package akeefer.repository.mongo;
 
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByDate;
 import akeefer.repository.mongo.dto.UserDistanceByDateAndType;
 import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.util.Profiling;
@@ -14,9 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -82,7 +85,7 @@ public class MongoAktivitaetRepositoryImpl implements MongoAktivitaetRepositoryC
                         .andOperator(
                                 where("aktivitaetsDatum").gte(from.toLocalDateTime(LocalTime.MIDNIGHT)),
                                 where("aktivitaetsDatum").lte(toEndOfDay))),
-                group("owner", "typ") // I have no glue, why group only works as expected when 2 arguments are provided
+                group("owner", "typ")
                         .sum("distanzInKilometer")
                         .as("totalDistanzInKilometer"));
 
@@ -105,11 +108,30 @@ public class MongoAktivitaetRepositoryImpl implements MongoAktivitaetRepositoryC
                                 where("aktivitaetsDatum").lt(toEndOfDay))),
                 project("owner", "aktivitaetsDatum", "typ", "distanzInKilometer")
                         .and("aktivitaetsDatum").dateAsFormattedString(chartIntervall.getMongoAggregationPattern()).as("dateKey"),
-                group("owner", "dateKey", "typ")// I have no glue, why group only works as expected when 2 arguments are provided
+                group("owner", "dateKey", "typ")
                         .sum("distanzInKilometer")
                         .as("totalDistanzInKilometer"));
 
         AggregationResults<UserDistanceByDateAndType> res = mongoTemplate.aggregate(totalDistance, Aktivitaet.class, UserDistanceByDateAndType.class);
+        return res.getMappedResults();
+    }
+
+    @Override
+    @Profiling
+    public List<UserDistanceByDate> sumDistanceGroupedByDateAndFilterByOwner(String... owners) {
+        List<AggregationOperation> operations = new ArrayList<>();
+        if (null != owners && owners.length > 0) {
+            operations.add(match(where("owner").in(owners)));
+        }
+        operations.add(project("owner", "aktivitaetsDatum", "distanzInKilometer")
+                .and("aktivitaetsDatum").dateAsFormattedString("%Y-%m-%d").as("dateKey"));
+        operations.add(group("owner", "dateKey")
+                .sum("distanzInKilometer")
+                .as("totalDistanzInKilometer"));
+
+        Aggregation totalDistance = newAggregation(operations);
+
+        AggregationResults<UserDistanceByDate> res = mongoTemplate.aggregate(totalDistance, Aktivitaet.class, UserDistanceByDate.class);
         return res.getMappedResults();
     }
 }

@@ -2,14 +2,12 @@ package akeefer.web.components;
 
 import akeefer.model.mongo.User;
 import akeefer.service.PersonService;
-import akeefer.service.dto.UserForecast;
 import akeefer.web.VRSession;
 import akeefer.web.charts.ChartIntervall;
 import akeefer.web.charts.UserSelect;
 import akeefer.web.components.layout.Panel;
 import akeefer.web.components.validation.LocalizedPropertyValidator;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.google.common.base.Stopwatch;
@@ -21,7 +19,6 @@ import com.googlecode.wickedcharts.highcharts.options.series.Series;
 import com.googlecode.wickedcharts.wicket6.highcharts.Chart;
 import com.googlecode.wickedcharts.wicket6.highcharts.JsonRendererFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
@@ -42,7 +39,6 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Andreas Keefer
@@ -53,7 +49,7 @@ public class ForecastPanel extends Panel {
     static {
         JsonRendererFactory.getInstance().getRenderer().addSerializer(Zone.class, new JsonSerializer<Zone>() {
             @Override
-            public void serialize(Zone value, JsonGenerator jgen, SerializerProvider serializers) throws IOException, JsonProcessingException {
+            public void serialize(Zone value, JsonGenerator jgen, SerializerProvider serializers) throws IOException {
                 jgen.writeStartObject();
 
                 if (null != value.getValue()) {
@@ -150,27 +146,30 @@ public class ForecastPanel extends Panel {
         final BigDecimal totalDistanceInKm = null != VRSession.get().getTotalDistanceInKm()
                 ? VRSession.get().getTotalDistanceInKm()
                 : personService.getTotalDistance();
-        List<Series<?>> series = users.parallelStream()
-                .flatMap(user -> {
-                    List<UserForecast> res = personService.createForecastData(
-                            totalDistanceInKm, user.getUsername());
-                    if (!res.isEmpty()) {
-                        final Map<LocalDate, BigDecimal> forecastData = res.get(0).getAggregatedDistancesPerDay();
-                        if (MapUtils.isNotEmpty(forecastData)) {
-                            ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
-                            serie.setName(user.getAnzeigename());
-                            serie.setZoneAxis("x");
-                            serie.addZone(new Zone<String>()
-                                    .setValue(FORMATTER.print(LocalDate.now())));
-                            serie.addZone(new Zone<String>()
-                                    .setDashStyle("dot"));
-                            for (Map.Entry<LocalDate, BigDecimal> entry : forecastData.entrySet()) {
-                                serie.addPoint(new Coordinate<>(FORMATTER.print(entry.getKey()), entry.getValue()));
-                            }
-                            return Stream.of(serie);
-                        }
+
+        String[] usernames = users.stream()
+                .map(User::getUsername)
+                .toArray(String[]::new);
+
+        List<Series<?>> series = personService.createForecastData(totalDistanceInKm, usernames).stream()
+                .map(res -> {
+                    final Map<LocalDate, BigDecimal> forecastData = res.getAggregatedDistancesPerDay();
+                    ZoneSeries<String, BigDecimal> serie = new ZoneSeries<>();
+                    serie.setName(users.stream()
+                            .filter(u -> res.getUsername().equals(u.getUsername()))
+                            .findFirst()
+                            .orElseThrow(() -> new IllegalStateException("Found data for user " + res.getUsername() +
+                                    " which was not requested! Looks like a implementation issue"))
+                            .getAnzeigename());
+                    serie.setZoneAxis("x");
+                    serie.addZone(new Zone<String>()
+                            .setValue(FORMATTER.print(LocalDate.now())));
+                    serie.addZone(new Zone<String>()
+                            .setDashStyle("dot"));
+                    for (Map.Entry<LocalDate, BigDecimal> entry : forecastData.entrySet()) {
+                        serie.addPoint(new Coordinate<>(FORMATTER.print(entry.getKey()), entry.getValue()));
                     }
-                    return Stream.empty();
+                    return serie;
                 })
                 .collect(Collectors.toList());
 

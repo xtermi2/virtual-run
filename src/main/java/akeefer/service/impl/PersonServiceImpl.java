@@ -7,10 +7,7 @@ import akeefer.model.mongo.Aktivitaet;
 import akeefer.model.mongo.User;
 import akeefer.repository.mongo.MongoAktivitaetRepository;
 import akeefer.repository.mongo.MongoUserRepository;
-import akeefer.repository.mongo.dto.AktivitaetSearchRequest;
-import akeefer.repository.mongo.dto.TotalUserDistance;
-import akeefer.repository.mongo.dto.UserDistanceByDateAndType;
-import akeefer.repository.mongo.dto.UserDistanceByType;
+import akeefer.repository.mongo.dto.*;
 import akeefer.service.PersonService;
 import akeefer.service.dto.DbBackupMongo;
 import akeefer.service.dto.Statistic;
@@ -55,6 +52,9 @@ import java.math.RoundingMode;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 
 @Service("personServiceImpl")
 @Transactional
@@ -373,51 +373,48 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
 
     @Override
     @Profiling
-    public List<UserForecast> createForecastData(BigDecimal totalDistanceInKm,
+    public List<UserForecast> createForecastData(final BigDecimal totalDistanceInKm,
                                                  String... usernames) {
 
-        String username = usernames[0];
-        final List<Aktivitaet> aktivitaeten = loadAktivitaetenByOwner(username);
-        if (CollectionUtils.isEmpty(aktivitaeten)) {
+        List<UserDistanceByDate> aggregation = aktivitaetRepository.sumDistanceGroupedByDateAndFilterByOwner(usernames);
+        if (CollectionUtils.isEmpty(aggregation)) {
             return Collections.emptyList();
         }
-        final NavigableMap<LocalDate, BigDecimal> res = new TreeMap<>();
 
-        for (Aktivitaet akt : aktivitaeten) {
-            final LocalDate aktDate = new LocalDate(akt.getAktivitaetsDatum());
+        return aggregation.stream()
+                .collect(groupingBy(UserDistanceByDate::getOwner,
+                        mapping((UserDistanceByDate userDistanceByDate) -> userDistanceByDate,
+                                Collectors.toMap(
+                                        (UserDistanceByDate userDistanceByDate) -> LocalDate.parse(userDistanceByDate.getDateKey()),
+                                        UserDistanceByDate::getTotalDistanzInKilometer,
+                                        BigDecimal::add,
+                                        TreeMap::new
+                                ))
+                        )
+                ).entrySet().stream().map(user2res -> {
+                    NavigableMap<LocalDate, BigDecimal> res = user2res.getValue();
+                    // aufsummieren
+                    BigDecimal distanceInKm = BigDecimal.ZERO;
+                    for (Map.Entry<LocalDate, BigDecimal> entry : res.entrySet()) {
+                        // Gesammtdaten berechnen
+                        distanceInKm = distanceInKm.add(entry.getValue());
+                        entry.setValue(distanceInKm);
+                    }
 
-            // Tagesstatistik erstellen
-            BigDecimal dayDistance = res.get(aktDate);
-            if (null == dayDistance) {
-                dayDistance = akt.getDistanzInKilometer();
-            } else {
-                dayDistance = dayDistance.add(akt.getDistanzInKilometer());
-            }
-            res.put(aktDate, dayDistance);
-        }
-
-        // aufsummieren
-        BigDecimal distanceInKm = BigDecimal.ZERO;
-        for (Map.Entry<LocalDate, BigDecimal> entry : res.entrySet()) {
-            // Gesammtdaten berechnen
-            distanceInKm = distanceInKm.add(entry.getValue());
-            entry.setValue(distanceInKm);
-        }
-
-        final LocalDate firstAkt = res.firstKey();
-
-        // forecast berechnen
-        if (null != totalDistanceInKm) {
-            Duration duration = firstAkt.toInterval().withEnd(new DateTime()).toDuration();
-            BigDecimal days = BigDecimal.valueOf(duration.getStandardDays());
-            BigDecimal forecastDays = days.divide(distanceInKm, 3, RoundingMode.HALF_UP)
-                    .multiply(totalDistanceInKm).setScale(0, RoundingMode.HALF_UP);
-            res.put(firstAkt.plusDays(forecastDays.intValue()), totalDistanceInKm);
-        } else {
-            logger.warn("totalDistanceInKm is null! Can't calculate forecast!");
-        }
-
-        return Collections.singletonList(new UserForecast(username, res));
+                    final LocalDate firstAkt = res.firstKey();
+                    // forecast berechnen
+                    if (null != totalDistanceInKm) {
+                        Duration duration = firstAkt.toInterval().withEnd(new DateTime()).toDuration();
+                        BigDecimal days = BigDecimal.valueOf(duration.getStandardDays());
+                        BigDecimal forecastDays = days.divide(distanceInKm, 3, RoundingMode.HALF_UP)
+                                .multiply(totalDistanceInKm).setScale(0, RoundingMode.HALF_UP);
+                        res.put(firstAkt.plusDays(forecastDays.intValue()), totalDistanceInKm);
+                    } else {
+                        logger.warn("totalDistanceInKm is null! Can't calculate forecast!");
+                    }
+                    return new UserForecast(user2res.getKey(), res);
+                })
+                .collect(Collectors.toList());
     }
 
     @Profiling

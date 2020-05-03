@@ -2,6 +2,7 @@ package akeefer.repository.mongo;
 
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByDate;
 import akeefer.repository.mongo.dto.UserDistanceByDateAndType;
 import akeefer.repository.mongo.dto.UserDistanceByType;
 import akeefer.web.charts.ChartIntervall;
@@ -29,10 +30,9 @@ public interface MongoAktivitaetRepositoryCustom {
                                                                                           LocalDate to);
 
     /**
-     *
-     * @param owner a user to filter by
-     * @param from Date range start filter (inclusive)
-     * @param to Date range end filter (exclusive)
+     * @param owner          a user to filter by
+     * @param from           Date range start filter (inclusive)
+     * @param to             Date range end filter (exclusive)
      * @param chartIntervall defines the date pattern (date interval aggregation)
      * @return List containing all aggregated (summed) distances of the given user grouped by date and ActivityType
      */
@@ -40,4 +40,10 @@ public interface MongoAktivitaetRepositoryCustom {
                                                                                                         LocalDate from,
                                                                                                         LocalDate to,
                                                                                                         ChartIntervall chartIntervall);
+
+    /**
+     * @param owners usernames to filter by, if empty, no filter is set
+     * @return List containing all aggregated (summed) distances of the given users grouped by date
+     */
+    List<UserDistanceByDate> sumDistanceGroupedByDateAndFilterByOwner(String... owners);
 }
