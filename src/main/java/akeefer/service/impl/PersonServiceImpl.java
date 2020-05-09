@@ -36,6 +36,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import org.threeten.extra.YearWeek;
 
 import javax.cache.annotation.CachePut;
 import javax.cache.annotation.CacheResult;
@@ -49,6 +50,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -385,7 +387,12 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                 .collect(groupingBy(UserDistanceByDate::getOwner,
                         mapping((UserDistanceByDate userDistanceByDate) -> userDistanceByDate,
                                 Collectors.toMap(
-                                        (UserDistanceByDate userDistanceByDate) -> LocalDate.parse(userDistanceByDate.getDateKey()),
+                                        (UserDistanceByDate userDistanceByDate) -> {
+                                            java.time.LocalDate localDateJava = YearWeek.parse(userDistanceByDate.getDateKey())
+                                                    .atDay(DayOfWeek.SUNDAY);
+                                            return new LocalDate(localDateJava.getYear(), localDateJava.getMonthValue(), localDateJava.getDayOfMonth());
+//                                            return LocalDate.parse(userDistanceByDate.getDateKey());
+                                        },
                                         UserDistanceByDate::getTotalDistanzInKilometer,
                                         BigDecimal::add,
                                         TreeMap::new
@@ -408,7 +415,7 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                         BigDecimal days = BigDecimal.valueOf(duration.getStandardDays());
                         BigDecimal forecastDays = days.divide(distanceInKm, 3, RoundingMode.HALF_UP)
                                 .multiply(totalDistanceInKm).setScale(0, RoundingMode.HALF_UP);
-                        res.put(firstAkt.plusDays(forecastDays.intValue()), totalDistanceInKm);
+                        res.put(firstAkt.plusDays(forecastDays.intValue()).withDayOfWeek(7), totalDistanceInKm);
                     } else {
                         logger.warn("totalDistanceInKm is null! Can't calculate forecast!");
                     }

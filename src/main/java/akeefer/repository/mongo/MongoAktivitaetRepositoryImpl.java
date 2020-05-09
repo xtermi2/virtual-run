@@ -124,7 +124,8 @@ public class MongoAktivitaetRepositoryImpl implements MongoAktivitaetRepositoryC
             operations.add(match(where("owner").in(owners)));
         }
         operations.add(project("owner", "aktivitaetsDatum", "distanzInKilometer")
-                .and("aktivitaetsDatum").dateAsFormattedString("%Y-%m-%d").as("dateKey"));
+//                .and("aktivitaetsDatum").dateAsFormattedString("%Y-%m-%d").as("dateKey"));
+         .and("aktivitaetsDatum").dateAsFormattedString("%Y-W%V").as("dateKey"));
         operations.add(group("owner", "dateKey")
                 .sum("distanzInKilometer")
                 .as("totalDistanzInKilometer"));

@@ -44,6 +44,7 @@ import java.util.stream.IntStream;
 
 import static akeefer.model.AktivitaetsTyp.*;
 import static akeefer.test.util.ProxyUtil.getTargetObject;
+import static java.time.temporal.ChronoField.DAY_OF_WEEK;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.anyString;
@@ -724,55 +725,54 @@ public class PersonServiceImplTest {
 
     @Test
     public void createForecastData_singleUser_withData() {
-        String username = "andi";
-        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", wandern);
-        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
-        createAkt(username, LocalDate.now().minusMonths(1), "245", radfahren);
-        createAkt(username, LocalDate.now(), "1", laufen);
-        createAkt(username, LocalDate.now().minusDays(1), "4", laufen);
-        createAkt("foo", LocalDate.now(), "8", laufen);
-        createAkt("foo", LocalDate.now().minusDays(1), "42", radfahren);
+        String usernameAndi = "andi";
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", wandern);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", radfahren);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 1), "245", radfahren);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1), "1", laufen);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "4", laufen);
+        String usernameFoo = "foo";
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 2), "8", laufen);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "42", radfahren);
 
 
-        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), username);
+        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi);
 
 
-        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expected = new TreeMap<>();
-        expected.put(org.joda.time.LocalDate.now().minusMonths(1), new BigDecimal("245"));
-        expected.put(org.joda.time.LocalDate.now().minusMonths(1).plusDays(1), new BigDecimal("255"));
-        expected.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("259"));
-        expected.put(org.joda.time.LocalDate.now(), new BigDecimal("260"));
-        expected.put(org.joda.time.LocalDate.now().plusDays(85), new BigDecimal("1000"));
+        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedAndi = new TreeMap<>();
+        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1).withDayOfWeek(7), new BigDecimal("255"));
+        expectedAndi.put(org.joda.time.LocalDate.now().minusWeeks(1).withDayOfWeek(7), new BigDecimal("259"));
+        expectedAndi.put(org.joda.time.LocalDate.now().withDayOfWeek(7), new BigDecimal("260"));
+        expectedAndi.put(org.joda.time.LocalDate.now().plusDays(75).withDayOfWeek(7), new BigDecimal("1000"));
         Assertions.assertThat(res)
-                .containsExactly(new UserForecast(username, expected));
+                .containsExactly(new UserForecast(usernameAndi, expectedAndi));
     }
 
     @Test
     public void createForecastData_multiUser_withData() {
         String usernameAndi = "andi";
-        createAkt(usernameAndi, LocalDate.now().minusMonths(1).plusDays(1), "5", wandern);
-        createAkt(usernameAndi, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
-        createAkt(usernameAndi, LocalDate.now().minusMonths(1), "245", radfahren);
-        createAkt(usernameAndi, LocalDate.now(), "1", laufen);
-        createAkt(usernameAndi, LocalDate.now().minusDays(1), "4", laufen);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", wandern);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", radfahren);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 1), "245", radfahren);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1), "1", laufen);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "4", laufen);
         String usernameFoo = "foo";
-        createAkt(usernameFoo, LocalDate.now(), "8", laufen);
-        createAkt(usernameFoo, LocalDate.now().minusDays(1), "42", radfahren);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 2), "8", laufen);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "42", radfahren);
 
 
         List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi, usernameFoo);
 
 
         final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedAndi = new TreeMap<>();
-        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1), new BigDecimal("245"));
-        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1).plusDays(1), new BigDecimal("255"));
-        expectedAndi.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("259"));
-        expectedAndi.put(org.joda.time.LocalDate.now(), new BigDecimal("260"));
-        expectedAndi.put(org.joda.time.LocalDate.now().plusDays(85), new BigDecimal("1000"));
+        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1).withDayOfWeek(7), new BigDecimal("255"));
+        expectedAndi.put(org.joda.time.LocalDate.now().minusWeeks(1).withDayOfWeek(7), new BigDecimal("259"));
+        expectedAndi.put(org.joda.time.LocalDate.now().withDayOfWeek(7), new BigDecimal("260"));
+        expectedAndi.put(org.joda.time.LocalDate.now().plusDays(75).withDayOfWeek(7), new BigDecimal("1000"));
         final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedFoo = new TreeMap<>();
-        expectedFoo.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("42"));
-        expectedFoo.put(org.joda.time.LocalDate.now(), new BigDecimal("50"));
-        expectedFoo.put(org.joda.time.LocalDate.now().plusDays(19), new BigDecimal("1000"));
+        expectedFoo.put(org.joda.time.LocalDate.now().withDayOfWeek(7).minusWeeks(1), new BigDecimal("42"));
+        expectedFoo.put(org.joda.time.LocalDate.now().withDayOfWeek(7), new BigDecimal("50"));
+        expectedFoo.put(org.joda.time.LocalDate.now().plusDays(120).withDayOfWeek(7), new BigDecimal("1000"));
         Assertions.assertThat(res)
                 .containsExactlyInAnyOrder(
                         new UserForecast(usernameAndi, expectedAndi),
