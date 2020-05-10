@@ -43,8 +43,7 @@ public interface MongoAktivitaetRepositoryCustom {
 
     /**
      * @param owners usernames to filter by, if empty, no filter is set
-     * @return List containing all aggregated (summed) distances of the given users grouped by date
-     * with pattern <YYYY>-W<2 digit Week of Year in ISO 8601 forma (01-53)> e.g 2020-46
+     * @return List containing all aggregated (summed) distances of the given users grouped by year and week number
      */
     List<UserDistanceByDate> sumDistanceGroupedByDateAndFilterByOwner(String... owners);
 }
