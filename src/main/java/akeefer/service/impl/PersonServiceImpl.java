@@ -388,10 +388,9 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
                         mapping((UserDistanceByDate userDistanceByDate) -> userDistanceByDate,
                                 Collectors.toMap(
                                         (UserDistanceByDate userDistanceByDate) -> {
-                                            java.time.LocalDate localDateJava = YearWeek.parse(userDistanceByDate.getDateKey())
+                                            java.time.LocalDate localDateJava = YearWeek.of(userDistanceByDate.getIsoWeekYear(), userDistanceByDate.getIsoWeekOfYear())
                                                     .atDay(DayOfWeek.SUNDAY);
                                             return new LocalDate(localDateJava.getYear(), localDateJava.getMonthValue(), localDateJava.getDayOfMonth());
-//                                            return LocalDate.parse(userDistanceByDate.getDateKey());
                                         },
                                         UserDistanceByDate::getTotalDistanzInKilometer,
                                         BigDecimal::add,

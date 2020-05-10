@@ -4,6 +4,7 @@ import akeefer.model.AktivitaetsAufzeichnung;
 import akeefer.model.AktivitaetsTyp;
 import akeefer.model.mongo.Aktivitaet;
 import akeefer.repository.mongo.dto.TotalUserDistance;
+import akeefer.repository.mongo.dto.UserDistanceByDate;
 import akeefer.repository.mongo.dto.UserDistanceByType;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -17,8 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
+import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -138,6 +142,40 @@ public class MongoAktivitaetRepositoryTest {
                 .containsExactlyInAnyOrder(
                         new UserDistanceByType(owner, AktivitaetsTyp.radfahren, new BigDecimal("4.7")),
                         new UserDistanceByType(owner, AktivitaetsTyp.schwimmen, new BigDecimal("0.222"))
+                );
+    }
+
+    @Test
+    public void sumDistanceGroupedByDateAndFilterByOwner_year_change_works_correct() {
+        // Monday
+        java.time.LocalDate startInclusive = java.time.LocalDate.of(2014, 12, 15);
+        // Sunday
+        java.time.LocalDate endInclusive = java.time.LocalDate.of(2015, 1, 18);
+
+        String owner = "andi";
+        long distance = 0;
+        // create a Activity every day (5 Weeks, 35 Activities)
+        for (java.time.LocalDate d = startInclusive; !d.isAfter(endInclusive); d = d.plusDays(1)) {
+            distance++;
+            aktivitaetRepository.save(defaultBuilder()
+                    .owner(owner)
+                    .distanzInKilometer(BigDecimal.valueOf(distance))
+                    .aktivitaetsDatum(Date.from(d.atStartOfDay().toInstant(ZoneOffset.UTC)))
+                    .build());
+        }
+
+        List<UserDistanceByDate> res = aktivitaetRepository.sumDistanceGroupedByDateAndFilterByOwner(owner).stream()
+                .sorted(Comparator.comparing(UserDistanceByDate::getIsoWeekYear)
+                        .thenComparing(UserDistanceByDate::getIsoWeekOfYear))
+                .collect(Collectors.toList());
+
+        assertThat(res)
+                .containsExactly(
+                        new UserDistanceByDate(owner, 2014, 51, BigDecimal.valueOf(1 + 2 + 3 + 4 + 5 + 6 + 7)),
+                        new UserDistanceByDate(owner, 2014, 52, BigDecimal.valueOf(8 + 9 + 10 + 11 + 12 + 13 + 14)),
+                        new UserDistanceByDate(owner, 2015, 1, BigDecimal.valueOf(15 + 16 + 17 + 18 + 19 + 20 + 21)),
+                        new UserDistanceByDate(owner, 2015, 2, BigDecimal.valueOf(22 + 23 + 24 + 25 + 26 + 27 + 28)),
+                        new UserDistanceByDate(owner, 2015, 3, BigDecimal.valueOf(29 + 30 + 31 + 32 + 33 + 34 + 35))
                 );
     }
 

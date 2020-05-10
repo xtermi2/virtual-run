@@ -17,6 +17,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.DateOperators;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -123,10 +124,11 @@ public class MongoAktivitaetRepositoryImpl implements MongoAktivitaetRepositoryC
         if (null != owners && owners.length > 0) {
             operations.add(match(where("owner").in(owners)));
         }
-        operations.add(project("owner", "aktivitaetsDatum", "distanzInKilometer")
-//                .and("aktivitaetsDatum").dateAsFormattedString("%Y-%m-%d").as("dateKey"));
-         .and("aktivitaetsDatum").dateAsFormattedString("%Y-W%V").as("dateKey"));
-        operations.add(group("owner", "dateKey")
+        operations.add(project("owner", "distanzInKilometer")
+                .and(DateOperators.IsoWeekYear.isoWeekYearOf("aktivitaetsDatum")).as("isoWeekYear")
+                .and(DateOperators.IsoWeek.isoWeekOf("aktivitaetsDatum")).as("isoWeekOfYear")
+        );
+        operations.add(group("owner", "isoWeekYear", "isoWeekOfYear")
                 .sum("distanzInKilometer")
                 .as("totalDistanzInKilometer"));
 
