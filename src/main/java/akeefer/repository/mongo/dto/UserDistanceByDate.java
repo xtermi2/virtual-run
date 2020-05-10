@@ -17,8 +17,8 @@ public class UserDistanceByDate {
      */
     @NonNull
     String owner;
-    @NonNull
-    String dateKey;
+    int isoWeekYear;
+    int isoWeekOfYear;
     @NonNull
     BigDecimal totalDistanzInKilometer;
 }

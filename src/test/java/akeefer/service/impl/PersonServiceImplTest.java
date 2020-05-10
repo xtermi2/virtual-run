@@ -19,7 +19,6 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import org.assertj.core.api.Assertions;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Interval;
@@ -44,8 +43,10 @@ import java.util.stream.IntStream;
 
 import static akeefer.model.AktivitaetsTyp.*;
 import static akeefer.test.util.ProxyUtil.getTargetObject;
+import static java.time.temporal.ChronoField.DAY_OF_WEEK;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -97,7 +98,7 @@ public class PersonServiceImplTest {
         user2.setUsername("user2");
         User user3 = new User("3");
         user3.setUsername("user3");
-        assertFalse("user1 is equals user2", user1.equals(user2));
+        assertNotEquals("user1 is equals user2", user1, user2);
         final List<User> users = Arrays.asList(user3, user1, user2);
         doReturn(users).when(spy).getAllUser();
         User logedIn = new User(user1.getId());
@@ -308,21 +309,21 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
 
-        Assertions.assertThat(firstPage)
+        assertThat(firstPage)
                 .containsExactlyElementsOf(aktivities.subList(0, 5));
 
         List<Aktivitaet> secondPage = personService.searchActivities(searchRequest.toBuilder()
                 .pageableFirstElement(5)
                 .build());
 
-        Assertions.assertThat(secondPage)
+        assertThat(secondPage)
                 .containsExactlyElementsOf(aktivities.subList(5, 10));
 
         List<Aktivitaet> thirdPage = personService.searchActivities(searchRequest.toBuilder()
                 .pageableFirstElement(10)
                 .build());
 
-        Assertions.assertThat(thirdPage)
+        assertThat(thirdPage)
                 .containsExactlyElementsOf(aktivities.subList(10, 12));
     }
 
@@ -331,7 +332,7 @@ public class PersonServiceImplTest {
         String andi = "andi";
         List<Aktivitaet> aktivitiesAndi = createAktivities(andi, 1);
         String foo = "foo";
-        List<Aktivitaet> aktivitiesFoo = createAktivities(foo, 1);
+        createAktivities(foo, 1);
 
         AktivitaetSearchRequest searchRequest = AktivitaetSearchRequest.builder()
                 .owner(andi)
@@ -343,7 +344,7 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
 
-        Assertions.assertThat(firstPage)
+        assertThat(firstPage)
                 .containsExactlyElementsOf(aktivitiesAndi);
     }
 
@@ -363,7 +364,7 @@ public class PersonServiceImplTest {
         List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
 
         activities.sort(Comparator.comparing(Aktivitaet::getDistanzInKilometer).reversed());
-        Assertions.assertThat(firstPage)
+        assertThat(firstPage)
                 .containsExactlyElementsOf(activities);
     }
 
@@ -383,7 +384,7 @@ public class PersonServiceImplTest {
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
         activities.sort(Comparator.comparing(Aktivitaet::getAktivitaetsDatum));
-        Assertions.assertThat(asc)
+        assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
         List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
@@ -391,7 +392,7 @@ public class PersonServiceImplTest {
                 .build());
 
         activities.sort(Comparator.comparing(Aktivitaet::getAktivitaetsDatum).reversed());
-        Assertions.assertThat(desc)
+        assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
 
@@ -411,7 +412,7 @@ public class PersonServiceImplTest {
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
         activities.sort(Comparator.comparing(Aktivitaet::getAufzeichnungsart));
-        Assertions.assertThat(asc)
+        assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
         List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
@@ -419,7 +420,7 @@ public class PersonServiceImplTest {
                 .build());
 
         activities.sort(Comparator.comparing(Aktivitaet::getAufzeichnungsart).reversed());
-        Assertions.assertThat(desc)
+        assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
 
@@ -439,7 +440,7 @@ public class PersonServiceImplTest {
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
         activities.sort(Comparator.comparing(Aktivitaet::getBezeichnung));
-        Assertions.assertThat(asc)
+        assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
         List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
@@ -447,7 +448,7 @@ public class PersonServiceImplTest {
                 .build());
 
         activities.sort(Comparator.comparing(Aktivitaet::getBezeichnung).reversed());
-        Assertions.assertThat(desc)
+        assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
 
@@ -467,7 +468,7 @@ public class PersonServiceImplTest {
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
         activities.sort(Comparator.comparing(aktivitaet -> aktivitaet.getTyp().name()));
-        Assertions.assertThat(asc)
+        assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
         List<Aktivitaet> desc = personService.searchActivities(searchRequest.toBuilder()
@@ -475,7 +476,7 @@ public class PersonServiceImplTest {
                 .build());
 
         activities.sort(Comparator.comparing((Aktivitaet aktivitaet) -> aktivitaet.getTyp().name()).reversed());
-        Assertions.assertThat(desc)
+        assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
 
@@ -487,7 +488,7 @@ public class PersonServiceImplTest {
 
         long res = personService.countActivities(owner);
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .isEqualTo(activitiesOfAndi.size());
     }
 
@@ -503,7 +504,7 @@ public class PersonServiceImplTest {
         Map<Interval, Map<AktivitaetsTyp, BigDecimal>> res = personService.createStackedColumsChartData(
                 user.getId(), chartIntervall);
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .isEmpty();
     }
 
@@ -529,27 +530,27 @@ public class PersonServiceImplTest {
                 user.getId(), chartIntervall);
 
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .containsExactly(
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(5)),
                                 Collections.singletonMap(laufen, new BigDecimal("9"))),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(4)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(3)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(2)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).minusDays(1)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).plusDays(1)),
                                 ImmutableMap.of(laufen, new BigDecimal("2"), radfahren, new BigDecimal("22")))
                 );
@@ -591,7 +592,7 @@ public class PersonServiceImplTest {
                 expectedRes.put(interval, ImmutableMap.of());
             }
         }
-        Assertions.assertThat(res)
+        assertThat(res)
                 .containsExactlyInAnyOrderEntriesOf(expectedRes);
     }
 
@@ -613,42 +614,42 @@ public class PersonServiceImplTest {
                 user.getId(), chartIntervall);
 
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .containsExactly(
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(10)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(9)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(8)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(7)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(6)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(5)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(4)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(3)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(2)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).minusMonths(1)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfMonth(1).plusMonths(1)),
                                 ImmutableMap.of(radfahren, new BigDecimal("21")))
                 );
@@ -672,36 +673,36 @@ public class PersonServiceImplTest {
                 user.getId(), chartIntervall);
 
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .containsExactly(
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(8)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(7)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(6)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(5)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(4)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(3)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(2)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).minusYears(1)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1)),
                                 Collections.emptyMap()),
-                        new SimpleEntry(
+                        new SimpleEntry<>(
                                 new Interval(chartIntervall.getIteratorResolution(), DateTime.now().withMillisOfDay(0).withDayOfYear(1).plusYears(1)),
                                 ImmutableMap.of(radfahren, new BigDecimal("21")))
                 );
@@ -718,65 +719,99 @@ public class PersonServiceImplTest {
 
         List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), username);
 
-        Assertions.assertThat(res)
+        assertThat(res)
                 .isEmpty();
     }
 
     @Test
     public void createForecastData_singleUser_withData() {
-        String username = "andi";
-        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", wandern);
-        createAkt(username, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
-        createAkt(username, LocalDate.now().minusMonths(1), "245", radfahren);
-        createAkt(username, LocalDate.now(), "1", laufen);
-        createAkt(username, LocalDate.now().minusDays(1), "4", laufen);
-        createAkt("foo", LocalDate.now(), "8", laufen);
-        createAkt("foo", LocalDate.now().minusDays(1), "42", radfahren);
+        String usernameAndi = "andi";
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", wandern);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", radfahren);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 1), "245", radfahren);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1), "1", laufen);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "4", laufen);
+        String usernameFoo = "foo";
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 2), "8", laufen);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "42", radfahren);
 
 
-        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), username);
+        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi);
 
 
-        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expected = new TreeMap<>();
-        expected.put(org.joda.time.LocalDate.now().minusMonths(1), new BigDecimal("245"));
-        expected.put(org.joda.time.LocalDate.now().minusMonths(1).plusDays(1), new BigDecimal("255"));
-        expected.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("259"));
-        expected.put(org.joda.time.LocalDate.now(), new BigDecimal("260"));
-        expected.put(org.joda.time.LocalDate.now().plusDays(85), new BigDecimal("1000"));
-        Assertions.assertThat(res)
-                .containsExactly(new UserForecast(username, expected));
+        org.joda.time.LocalDate now = org.joda.time.LocalDate.now();
+        assertThat(res)
+                .hasSize(1)
+                .allSatisfy(userForecast -> {
+                    assertThat(userForecast.getUsername()).isEqualTo(usernameAndi);
+                    assertThat(userForecast.getAggregatedDistancesPerDay())
+                            .contains(
+                                    new SimpleEntry<>(now.minusMonths(1).withDayOfWeek(7), new BigDecimal("255")),
+                                    new SimpleEntry<>(now.minusWeeks(1).withDayOfWeek(7), new BigDecimal("259")),
+                                    new SimpleEntry<>(now.withDayOfWeek(7), new BigDecimal("260"))
+                            )
+                            .hasSize(4);
+                    Map.Entry<org.joda.time.LocalDate, BigDecimal> lastEntry = userForecast.getAggregatedDistancesPerDay().lastEntry();
+                    assertThat(lastEntry.getValue())
+                            .isEqualByComparingTo(new BigDecimal("1000"));
+                    assertThat(lastEntry.getKey())
+                            .isBetween(now.withDayOfWeek(1).plusWeeks(12), now.withDayOfWeek(7).plusWeeks(12));
+                });
     }
 
     @Test
     public void createForecastData_multiUser_withData() {
         String usernameAndi = "andi";
-        createAkt(usernameAndi, LocalDate.now().minusMonths(1).plusDays(1), "5", wandern);
-        createAkt(usernameAndi, LocalDate.now().minusMonths(1).plusDays(1), "5", radfahren);
-        createAkt(usernameAndi, LocalDate.now().minusMonths(1), "245", radfahren);
-        createAkt(usernameAndi, LocalDate.now(), "1", laufen);
-        createAkt(usernameAndi, LocalDate.now().minusDays(1), "4", laufen);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", wandern);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 2), "5", radfahren);
+        createAkt(usernameAndi, LocalDate.now().minusMonths(1).with(DAY_OF_WEEK, 1), "245", radfahren);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1), "1", laufen);
+        createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "4", laufen);
         String usernameFoo = "foo";
-        createAkt(usernameFoo, LocalDate.now(), "8", laufen);
-        createAkt(usernameFoo, LocalDate.now().minusDays(1), "42", radfahren);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 2), "8", laufen);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "42", radfahren);
 
 
-        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi, usernameFoo);
+        List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi, usernameFoo)
+                .stream()
+                .sorted(Comparator.comparing(UserForecast::getUsername))
+                .collect(Collectors.toList());
 
 
-        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedAndi = new TreeMap<>();
-        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1), new BigDecimal("245"));
-        expectedAndi.put(org.joda.time.LocalDate.now().minusMonths(1).plusDays(1), new BigDecimal("255"));
-        expectedAndi.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("259"));
-        expectedAndi.put(org.joda.time.LocalDate.now(), new BigDecimal("260"));
-        expectedAndi.put(org.joda.time.LocalDate.now().plusDays(85), new BigDecimal("1000"));
-        final NavigableMap<org.joda.time.LocalDate, BigDecimal> expectedFoo = new TreeMap<>();
-        expectedFoo.put(org.joda.time.LocalDate.now().minusDays(1), new BigDecimal("42"));
-        expectedFoo.put(org.joda.time.LocalDate.now(), new BigDecimal("50"));
-        expectedFoo.put(org.joda.time.LocalDate.now().plusDays(19), new BigDecimal("1000"));
-        Assertions.assertThat(res)
-                .containsExactlyInAnyOrder(
-                        new UserForecast(usernameAndi, expectedAndi),
-                        new UserForecast(usernameFoo, expectedFoo));
+        org.joda.time.LocalDate now = org.joda.time.LocalDate.now();
+        assertThat(res)
+                .hasSize(2);
+        {
+            UserForecast andiForecast = res.get(0);
+            assertThat(andiForecast.getUsername()).isEqualTo(usernameAndi);
+            assertThat(andiForecast.getAggregatedDistancesPerDay())
+                    .contains(
+                            new SimpleEntry<>(now.minusMonths(1).withDayOfWeek(7), new BigDecimal("255")),
+                            new SimpleEntry<>(now.minusWeeks(1).withDayOfWeek(7), new BigDecimal("259")),
+                            new SimpleEntry<>(now.withDayOfWeek(7), new BigDecimal("260"))
+                    )
+                    .hasSize(4);
+            Map.Entry<org.joda.time.LocalDate, BigDecimal> lastEntryAndi = andiForecast.getAggregatedDistancesPerDay().lastEntry();
+            assertThat(lastEntryAndi.getValue())
+                    .isEqualByComparingTo(new BigDecimal("1000"));
+            assertThat(lastEntryAndi.getKey())
+                    .isBetween(now.withDayOfWeek(1).plusWeeks(12), now.withDayOfWeek(7).plusWeeks(12));
+        }
+        {
+            UserForecast fooForecast = res.get(1);
+            assertThat(fooForecast.getUsername()).isEqualTo(usernameFoo);
+            assertThat(fooForecast.getAggregatedDistancesPerDay())
+                    .contains(
+                            new SimpleEntry<>(now.withDayOfWeek(7).minusWeeks(1), new BigDecimal("42")),
+                            new SimpleEntry<>(now.withDayOfWeek(7), new BigDecimal("50"))
+                    )
+                    .hasSize(3);
+            Map.Entry<org.joda.time.LocalDate, BigDecimal> lastEntryFoo = fooForecast.getAggregatedDistancesPerDay().lastEntry();
+            assertThat(lastEntryFoo.getValue())
+                    .isEqualByComparingTo(new BigDecimal("1000"));
+            assertThat(lastEntryFoo.getKey())
+                    .isBetween(now.withDayOfWeek(1).plusWeeks(19), now.withDayOfWeek(7).plusWeeks(19));
+        }
     }
 
     private Aktivitaet createAkt(String owner,
