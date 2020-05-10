@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -59,6 +60,7 @@ public class Aktivitaet implements Serializable {
 
     @Past
     @Field(FIELD_AKTIVITAETS_DATUM)
+    @Indexed(direction = IndexDirection.DESCENDING)
     private Date aktivitaetsDatum;
 
     // wird nur ein mal initial gesetzt
