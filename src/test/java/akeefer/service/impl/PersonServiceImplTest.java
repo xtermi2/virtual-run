@@ -755,7 +755,7 @@ public class PersonServiceImplTest {
                     assertThat(lastEntry.getValue())
                             .isEqualByComparingTo(new BigDecimal("1000"));
                     assertThat(lastEntry.getKey())
-                            .isBetween(now.withDayOfWeek(1).plusWeeks(12), now.withDayOfWeek(7).plusWeeks(12));
+                            .isBetween(now.withDayOfWeek(1).plusWeeks(12).minusDays(1), now.withDayOfWeek(7).plusWeeks(12));
                 });
     }
 
@@ -768,8 +768,9 @@ public class PersonServiceImplTest {
         createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1), "1", laufen);
         createAkt(usernameAndi, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "4", laufen);
         String usernameFoo = "foo";
-        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 2), "8", laufen);
-        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 1).minusDays(1), "42", radfahren);
+        createAkt(usernameFoo, LocalDate.now().with(DAY_OF_WEEK, 2), "21", laufen);
+        createAkt(usernameFoo, LocalDate.now().minusWeeks(1), "82", radfahren);
+        createAkt(usernameFoo, LocalDate.now().minusWeeks(4), "65", wandern);
 
 
         List<UserForecast> res = personService.createForecastData(BigDecimal.valueOf(1000), usernameAndi, usernameFoo)
@@ -795,22 +796,23 @@ public class PersonServiceImplTest {
             assertThat(lastEntryAndi.getValue())
                     .isEqualByComparingTo(new BigDecimal("1000"));
             assertThat(lastEntryAndi.getKey())
-                    .isBetween(now.withDayOfWeek(1).plusWeeks(12), now.withDayOfWeek(7).plusWeeks(12));
+                    .isBetween(now.withDayOfWeek(1).plusWeeks(12).minusDays(2), now.withDayOfWeek(7).plusWeeks(12));
         }
         {
             UserForecast fooForecast = res.get(1);
             assertThat(fooForecast.getUsername()).isEqualTo(usernameFoo);
             assertThat(fooForecast.getAggregatedDistancesPerDay())
                     .contains(
-                            new SimpleEntry<>(now.withDayOfWeek(7).minusWeeks(1), new BigDecimal("42")),
-                            new SimpleEntry<>(now.withDayOfWeek(7), new BigDecimal("50"))
+                            new SimpleEntry<>(now.withDayOfWeek(7).minusWeeks(4), new BigDecimal("65")),
+                            new SimpleEntry<>(now.withDayOfWeek(7).minusWeeks(1), new BigDecimal("147")),
+                            new SimpleEntry<>(now.withDayOfWeek(7), new BigDecimal("168"))
                     )
-                    .hasSize(3);
+                    .hasSize(4);
             Map.Entry<org.joda.time.LocalDate, BigDecimal> lastEntryFoo = fooForecast.getAggregatedDistancesPerDay().lastEntry();
             assertThat(lastEntryFoo.getValue())
                     .isEqualByComparingTo(new BigDecimal("1000"));
             assertThat(lastEntryFoo.getKey())
-                    .isBetween(now.withDayOfWeek(1).plusWeeks(19), now.withDayOfWeek(7).plusWeeks(19));
+                    .isBetween(now.withDayOfWeek(1).plusWeeks(15), now.withDayOfWeek(7).plusWeeks(16));
         }
     }
 
