@@ -844,6 +844,8 @@ public class PersonServiceImplTest {
     }
 
     private void printHash(PasswordEncoder encoder, String user) {
-        System.out.println(user + ": " + encoder.encode(user));
+        String encodedPw = encoder.encode(user);
+        System.out.println(user + ": " + encodedPw);
+        assertThat(encodedPw).isNotBlank();
     }
 }
