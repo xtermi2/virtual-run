@@ -812,7 +812,7 @@ public class PersonServiceImplTest {
             assertThat(lastEntryFoo.getValue())
                     .isEqualByComparingTo(new BigDecimal("1000"));
             assertThat(lastEntryFoo.getKey())
-                    .isBetween(now.withDayOfWeek(1).plusWeeks(15), now.withDayOfWeek(7).plusWeeks(16));
+                    .isBetween(now.withDayOfWeek(1).plusWeeks(15), now.withDayOfWeek(7).plusWeeks(20));
         }
     }
 
