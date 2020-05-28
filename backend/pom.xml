@@ -190,9 +190,13 @@
                   <goal>verify</goal>
                 </goals>
                 <configuration>
-                  <systemProperties>
+                  <systemPropertyVariables>
                     <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                  </systemProperties>
+<!--                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>-->
+<!--                    &lt;!&ndash;            <quarkus.log.level>DEBUG</quarkus.log.level>&ndash;&gt;-->
+<!--                    <mongodb.user>admin</mongodb.user>-->
+<!--                    <mongodb.password>FuqFej8_</mongodb.password>-->
+                  </systemPropertyVariables>
                 </configuration>
               </execution>
             </executions>
