@@ -663,7 +663,7 @@ public class PersonServiceImplTest {
                 .password("pw")
                 .role(SecurityRole.USER)
                 .build());
-        createAkt(username, LocalDate.now().withDayOfMonth(31).withMonth(12), "21", radfahren);
+        createAkt(username, LocalDate.now().withMonth(12).withDayOfMonth(31), "21", radfahren);
         createAkt(username, LocalDate.now().withDayOfYear(1).withMonth(1).plusYears(1), "4", laufen);
         createAkt("foo", LocalDate.now(), "8", laufen);
         ChartIntervall chartIntervall = ChartIntervall.Gesamt;
@@ -755,7 +755,7 @@ public class PersonServiceImplTest {
                     assertThat(lastEntry.getValue())
                             .isEqualByComparingTo(new BigDecimal("1000"));
                     assertThat(lastEntry.getKey())
-                            .isBetween(now.withDayOfWeek(1).plusWeeks(12).minusDays(1), now.withDayOfWeek(7).plusWeeks(12));
+                            .isBetween(now.withDayOfWeek(1).plusWeeks(11).minusDays(1), now.withDayOfWeek(7).plusWeeks(12));
                 });
     }
 
@@ -796,7 +796,7 @@ public class PersonServiceImplTest {
             assertThat(lastEntryAndi.getValue())
                     .isEqualByComparingTo(new BigDecimal("1000"));
             assertThat(lastEntryAndi.getKey())
-                    .isBetween(now.withDayOfWeek(1).plusWeeks(12).minusDays(2), now.withDayOfWeek(7).plusWeeks(12));
+                    .isBetween(now.withDayOfWeek(1).plusWeeks(11).minusDays(2), now.withDayOfWeek(7).plusWeeks(12));
         }
         {
             UserForecast fooForecast = res.get(1);
