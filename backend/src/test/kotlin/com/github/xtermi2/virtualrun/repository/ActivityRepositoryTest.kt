@@ -1,16 +1,13 @@
 package com.github.xtermi2.virtualrun.repository
 
+import com.github.xtermi2.virtualrun.helper.createActivities
 import com.github.xtermi2.virtualrun.model.Activity
-import com.github.xtermi2.virtualrun.model.AktivitaetsAufzeichnung
-import com.github.xtermi2.virtualrun.model.AktivitaetsTyp
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
 import com.github.xtermi2.virtualrun.repository.dto.AktivitaetSortProperties
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.math.BigDecimal
-import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 
@@ -27,9 +24,9 @@ class ActivityRepositoryTest {
 
     @Test
     internal fun findByOwnerIn() {
-        createActivities("andi", 1)
-        createActivities("foo", 2)
-        createActivities("bar", 1)
+        createActivities("andi", 1, activityRepository)
+        createActivities("foo", 2, activityRepository)
+        createActivities("bar", 1, activityRepository)
 
         val res = activityRepository!!.findByOwnerIn(setOf("andi", "foo"))
 
@@ -44,7 +41,7 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_paging_works() {
         val owner = "andi"
-        val aktivities: List<Activity> = createActivities(owner, 12)
+        val aktivities: List<Activity> = createActivities(owner, 12, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = owner,
                 pageableFirstElement = 0,
@@ -68,9 +65,9 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_filter_by_owner_works() {
         val andi = "andi"
-        val aktivitiesAndi: List<Activity> = createActivities(andi, 1)
+        val aktivitiesAndi: List<Activity> = createActivities(andi, 1, activityRepository)
         val foo = "foo"
-        createActivities(foo, 1)
+        createActivities(foo, 1, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = andi,
                 pageableFirstElement = 0,
@@ -87,7 +84,7 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_sort_By_distance() {
         val owner = "andi"
-        var activities: List<Activity> = createActivities(owner, 12)
+        var activities: List<Activity> = createActivities(owner, 12, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = owner,
                 pageableFirstElement = 0,
@@ -105,7 +102,7 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_sort_By_activityDate() {
         val owner = "andi"
-        var activities: List<Activity> = createActivities(owner, 12)
+        var activities: List<Activity> = createActivities(owner, 12, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = owner,
                 pageableFirstElement = 0,
@@ -127,7 +124,7 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_sort_By_aufzeichnungsart() {
         val owner = "andi"
-        var activities: List<Activity> = createActivities(owner, 12)
+        var activities: List<Activity> = createActivities(owner, 12, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = owner,
                 pageableFirstElement = 0,
@@ -149,7 +146,7 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_sort_By_bezeichnung() {
         val owner = "andi"
-        var activities = createActivities(owner, 12)
+        var activities = createActivities(owner, 12, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = owner,
                 pageableFirstElement = 0,
@@ -171,7 +168,7 @@ class ActivityRepositoryTest {
     @Test
     fun searchAktivities_sort_By_typ() {
         val owner = "andi"
-        var activities: List<Activity> = createActivities(owner, 12)
+        var activities: List<Activity> = createActivities(owner, 12, activityRepository)
         val searchRequest = ActivitySearchRequest(
                 owner = owner,
                 pageableFirstElement = 0,
@@ -194,26 +191,10 @@ class ActivityRepositoryTest {
     @Test
     fun countActivities_should_count_activities_of_given_user() {
         val owner = "andi"
-        val activitiesOfAndi: List<Activity> = createActivities(owner, 12)
-        createActivities("fred", 3)
+        val activitiesOfAndi: List<Activity> = createActivities(owner, 12, activityRepository)
+        createActivities("fred", 3, activityRepository)
         val res: Long = activityRepository!!.countByOwner(owner)
         assertThat(res)
                 .isEqualTo(activitiesOfAndi.size.toLong())
-    }
-
-    private fun createActivities(owner: String, count: Int): List<Activity> {
-        val activities = IntRange(0, count - 1).map { i ->
-            Activity(owner = owner,
-                    bezeichnung = "bez $i",
-                    typ = AktivitaetsTyp.values()[i % AktivitaetsTyp.values().size],
-                    distanzInKilometer = BigDecimal.valueOf(i.toLong()),
-                    aktivitaetsDatum = LocalDateTime.now().minusDays(i.toLong()),
-                    aufzeichnungsart = AktivitaetsAufzeichnung.values()[i % AktivitaetsAufzeichnung.values().size],
-                    eingabeDatum = LocalDateTime.now()
-            )
-        }
-
-        activityRepository!!.persist(activities)
-        return activities
     }
 }
