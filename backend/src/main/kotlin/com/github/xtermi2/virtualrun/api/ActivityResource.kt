@@ -1,7 +1,10 @@
 package com.github.xtermi2.virtualrun.api
 
+import com.github.xtermi2.virtualrun.model.Activity
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
+import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
 import org.bson.types.ObjectId
+import javax.validation.Valid
 import javax.validation.constraints.NotNull
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
@@ -18,5 +21,10 @@ class ActivityResource(val activityRepository: ActivityRepository) {
         return activityRepository.findByIdOptional(id)
                 .map { Response.ok(it).build() }
                 .orElse(Response.status(Response.Status.NOT_FOUND).build())
+    }
+
+    @POST
+    fun findByOwner(@NotNull @Valid searchRequest: ActivitySearchRequest): List<Activity> {
+        return activityRepository.findByOwner(searchRequest)
     }
 }

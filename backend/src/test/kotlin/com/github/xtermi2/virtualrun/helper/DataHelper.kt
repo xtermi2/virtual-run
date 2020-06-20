@@ -6,6 +6,24 @@ import com.github.xtermi2.virtualrun.model.AktivitaetsTyp
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
+import java.util.*
+
+val LOCAL_DATE_TIME_FORMATTER = DateTimeFormatterBuilder()
+        .parseCaseInsensitive()
+        .append(DateTimeFormatter.ISO_LOCAL_DATE)
+        .appendLiteral('T')
+        .appendValue(ChronoField.HOUR_OF_DAY, 2)
+        .appendLiteral(':')
+        .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+        .optionalStart()
+        .appendLiteral(':')
+        .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+        .optionalStart()
+        .appendFraction(ChronoField.MILLI_OF_SECOND, 0, 3, true)
+        .toFormatter(Locale.GERMAN)
 
 fun createActivities(owner: String,
                      count: Int,

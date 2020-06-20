@@ -1,12 +1,16 @@
 package com.github.xtermi2.virtualrun.api
 
+import com.github.xtermi2.virtualrun.helper.LOCAL_DATE_TIME_FORMATTER
 import com.github.xtermi2.virtualrun.helper.createActivities
 import com.github.xtermi2.virtualrun.model.Activity
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
+import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
+import io.restassured.http.ContentType
 import org.assertj.core.api.Assertions.assertThat
 import org.bson.types.ObjectId
+import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -33,6 +37,7 @@ class ActivityResourceTest {
                 .then()
                 .statusCode(200)
                 .body("id", equalTo(andisActivity.id.toString()))
+                .body("aktivitaetsDatum", equalTo(andisActivity.aktivitaetsDatum.format(LOCAL_DATE_TIME_FORMATTER)))
                 .extract().`as`(Activity::class.java)
 
         assertThat(res)
@@ -45,5 +50,50 @@ class ActivityResourceTest {
                 .get("/activities/{id}", ObjectId(Date()).toString())
                 .then()
                 .statusCode(404)
+    }
+
+    @Test
+    fun findByOwner_with_defaults() {
+        val andisActivities = createActivities("andi", 5, activityRepository)
+        createActivities("foo", 2, activityRepository)[0]
+
+        val res = given().`when`()
+                .body(ActivitySearchRequest(owner = "andi"))
+                .contentType(ContentType.JSON)
+                .log().all(true)
+                .post("/activities")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("size()", `is`(andisActivities.size))
+                .log().all(true)
+                .extract().`as`(Array<Activity>::class.java)
+
+        assertThat(res)
+                .containsExactlyElementsOf(andisActivities.sortedByDescending { it.aktivitaetsDatum })
+    }
+
+    @Test
+    fun findByOwner_empty_result() {
+        val res = given().`when`()
+                .body("""{
+                    "owner": "unknown",
+                    "sortProperty": "AKTIVITAETS_DATUM",
+                    "sortAsc": false,
+                    "pageableFirstElement": 0,
+                    "pageSize": 10
+                    }""")
+                .contentType(ContentType.JSON)
+                .log().all(true)
+                .post("/activities")
+                .then()
+                .statusCode(200)
+                .assertThat()
+                .body("size()", `is`(0))
+                .log().all(true)
+                .extract().`as`(Array<Activity>::class.java)
+
+        assertThat(res)
+                .isEmpty()
     }
 }
