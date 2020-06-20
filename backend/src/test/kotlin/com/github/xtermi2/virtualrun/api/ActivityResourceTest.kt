@@ -33,6 +33,7 @@ class ActivityResourceTest {
         val andisActivity = createActivities("andi", 1, activityRepository)[0]
 
         val res = given().`when`()
+                .auth().basic("andi", "superSecret")
                 .get("/activities/{id}", andisActivity.id.toString())
                 .then()
                 .statusCode(200)
@@ -47,9 +48,18 @@ class ActivityResourceTest {
     @Test
     fun findById_notFound() {
         given().`when`()
+                .auth().basic("andi", "superSecret")
                 .get("/activities/{id}", ObjectId(Date()).toString())
                 .then()
                 .statusCode(404)
+    }
+
+    @Test
+    fun findById_unauthorized() {
+        given().`when`()
+                .get("/activities/{id}", ObjectId(Date()).toString())
+                .then()
+                .statusCode(401)
     }
 
     @Test
@@ -58,6 +68,7 @@ class ActivityResourceTest {
         createActivities("foo", 2, activityRepository)[0]
 
         val res = given().`when`()
+                .auth().basic("andi", "superSecret")
                 .body(ActivitySearchRequest(owner = "andi"))
                 .contentType(ContentType.JSON)
                 .log().all(true)
@@ -76,6 +87,7 @@ class ActivityResourceTest {
     @Test
     fun findByOwner_empty_result() {
         val res = given().`when`()
+                .auth().basic("andi", "superSecret")
                 .body("""{
                     "owner": "unknown",
                     "sortProperty": "AKTIVITAETS_DATUM",
@@ -95,5 +107,16 @@ class ActivityResourceTest {
 
         assertThat(res)
                 .isEmpty()
+    }
+
+    @Test
+    fun findByOwner_unauthorized() {
+        given().`when`()
+                .body(ActivitySearchRequest(owner = "andi"))
+                .contentType(ContentType.JSON)
+                .log().all(true)
+                .post("/activities")
+                .then()
+                .statusCode(401)
     }
 }
