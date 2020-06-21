@@ -60,10 +60,17 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-kotlin</artifactId>
     </dependency>
+
+    <!-- Dependencies needed to impl basic auth against MongoDB with MongoIdentityProvider -->
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-elytron-security-properties-file</artifactId>
+      <artifactId>quarkus-elytron-security-common</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-security</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jackson</artifactId>
@@ -71,10 +78,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-jackson</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-elytron-security-properties-file</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

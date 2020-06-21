@@ -3,7 +3,11 @@ package com.github.xtermi2.virtualrun.api
 import com.github.xtermi2.virtualrun.helper.LOCAL_DATE_TIME_FORMATTER
 import com.github.xtermi2.virtualrun.helper.createActivities
 import com.github.xtermi2.virtualrun.model.Activity
+import com.github.xtermi2.virtualrun.model.EMPTY_USER
+import com.github.xtermi2.virtualrun.model.SecurityRole
+import com.github.xtermi2.virtualrun.model.User
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
+import com.github.xtermi2.virtualrun.repository.UserRepository
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
@@ -23,9 +27,18 @@ class ActivityResourceTest {
     @Inject
     private var activityRepository: ActivityRepository? = null
 
+    @Inject
+    private var userRepository: UserRepository? = null
+
+    private val cleartextPassword = "superSecret"
+    private var user: User = EMPTY_USER
+
     @BeforeEach
     internal fun setUp() {
+        userRepository!!.deleteAll()
         activityRepository!!.deleteAll()
+
+        user = userRepository!!.createNewUser("andi", cleartextPassword, setOf(SecurityRole.USER))
     }
 
     @Test
@@ -33,9 +46,11 @@ class ActivityResourceTest {
         val andisActivity = createActivities("andi", 1, activityRepository)[0]
 
         val res = given().`when`()
-                .auth().basic("andi", "superSecret")
+                .log().ifValidationFails()
+                .auth().basic(user.username, cleartextPassword)
                 .get("/activities/{id}", andisActivity.id.toString())
                 .then()
+                .log().ifValidationFails()
                 .statusCode(200)
                 .body("id", equalTo(andisActivity.id.toString()))
                 .body("aktivitaetsDatum", equalTo(andisActivity.aktivitaetsDatum.format(LOCAL_DATE_TIME_FORMATTER)))
@@ -48,17 +63,21 @@ class ActivityResourceTest {
     @Test
     fun findById_notFound() {
         given().`when`()
-                .auth().basic("andi", "superSecret")
+                .log().ifValidationFails()
+                .auth().basic(user.username, cleartextPassword)
                 .get("/activities/{id}", ObjectId(Date()).toString())
                 .then()
+                .log().ifValidationFails()
                 .statusCode(404)
     }
 
     @Test
     fun findById_unauthorized() {
         given().`when`()
+                .log().ifValidationFails()
                 .get("/activities/{id}", ObjectId(Date()).toString())
                 .then()
+                .log().ifValidationFails()
                 .statusCode(401)
     }
 
@@ -68,16 +87,16 @@ class ActivityResourceTest {
         createActivities("foo", 2, activityRepository)[0]
 
         val res = given().`when`()
-                .auth().basic("andi", "superSecret")
+                .auth().basic(user.username, cleartextPassword)
                 .body(ActivitySearchRequest(owner = "andi"))
                 .contentType(ContentType.JSON)
-                .log().all(true)
+                .log().ifValidationFails()
                 .post("/activities")
                 .then()
                 .statusCode(200)
                 .assertThat()
                 .body("size()", `is`(andisActivities.size))
-                .log().all(true)
+                .log().ifValidationFails()
                 .extract().`as`(Array<Activity>::class.java)
 
         assertThat(res)
@@ -87,7 +106,7 @@ class ActivityResourceTest {
     @Test
     fun findByOwner_empty_result() {
         val res = given().`when`()
-                .auth().basic("andi", "superSecret")
+                .auth().basic(user.username, cleartextPassword)
                 .body("""{
                     "owner": "unknown",
                     "sortProperty": "AKTIVITAETS_DATUM",
@@ -96,13 +115,13 @@ class ActivityResourceTest {
                     "pageSize": 10
                     }""")
                 .contentType(ContentType.JSON)
-                .log().all(true)
+                .log().ifValidationFails()
                 .post("/activities")
                 .then()
                 .statusCode(200)
                 .assertThat()
                 .body("size()", `is`(0))
-                .log().all(true)
+                .log().ifValidationFails()
                 .extract().`as`(Array<Activity>::class.java)
 
         assertThat(res)
@@ -114,9 +133,10 @@ class ActivityResourceTest {
         given().`when`()
                 .body(ActivitySearchRequest(owner = "andi"))
                 .contentType(ContentType.JSON)
-                .log().all(true)
+                .log().ifValidationFails()
                 .post("/activities")
                 .then()
+                .log().ifValidationFails()
                 .statusCode(401)
     }
 }
