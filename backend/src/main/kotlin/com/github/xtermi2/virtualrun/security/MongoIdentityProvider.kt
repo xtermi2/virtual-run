@@ -47,7 +47,9 @@ class MongoIdentityProvider(val userRepository: UserRepository) : IdentityProvid
             val mcfPassword = getMcfPassword(userDB.password)
             val builder = checkPassword(mcfPassword, request)
             return builder
-                    .addRoles(setOf("ADMIN", "USER"))
+                    .addRoles(userDB.roles
+                            .map { it.text }
+                            .toSet())
                     .build()
         } else {
             throw AuthenticationFailedException("request is null")
