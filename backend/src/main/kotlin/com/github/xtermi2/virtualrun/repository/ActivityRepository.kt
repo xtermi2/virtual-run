@@ -2,14 +2,14 @@ package com.github.xtermi2.virtualrun.repository
 
 import com.github.xtermi2.virtualrun.model.Activity
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
-import io.quarkus.mongodb.panache.PanacheMongoRepository
+import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase
 import io.quarkus.mongodb.panache.PanacheQuery
 import io.quarkus.panache.common.Page
 import io.quarkus.panache.common.Sort
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class ActivityRepository : PanacheMongoRepository<Activity> {
+class ActivityRepository : PanacheMongoRepositoryBase<Activity, String> {
 
     fun findByOwnerIn(usernameFilter: Set<String>): List<Activity> {
         // totally ugly, but seems panache does not support list/array parameters

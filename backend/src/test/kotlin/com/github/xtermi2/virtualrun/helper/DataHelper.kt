@@ -1,6 +1,7 @@
 package com.github.xtermi2.virtualrun.helper
 
 import com.github.xtermi2.virtualrun.model.Activity
+import com.github.xtermi2.virtualrun.model.ActivityId
 import com.github.xtermi2.virtualrun.model.AktivitaetsAufzeichnung
 import com.github.xtermi2.virtualrun.model.AktivitaetsTyp
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
@@ -29,7 +30,9 @@ fun createActivities(owner: String,
                      count: Int,
                      activityRepository: ActivityRepository?): List<Activity> {
     val activities = IntRange(0, count - 1).map { i ->
-        Activity(owner = owner,
+        Activity(
+                id = ActivityId(),
+                owner = owner,
                 bezeichnung = "bez $i",
                 typ = AktivitaetsTyp.values()[i % AktivitaetsTyp.values().size],
                 distanzInKilometer = BigDecimal.valueOf(i.toLong()),

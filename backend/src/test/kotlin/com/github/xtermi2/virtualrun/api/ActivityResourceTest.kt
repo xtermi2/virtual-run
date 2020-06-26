@@ -52,7 +52,7 @@ class ActivityResourceTest {
                 .then()
                 .log().ifValidationFails()
                 .statusCode(200)
-                .body("id", equalTo(andisActivity.id.toString()))
+                .body("id.id", equalTo(andisActivity.id.toString()))
                 .body("aktivitaetsDatum", equalTo(andisActivity.aktivitaetsDatum.format(LOCAL_DATE_TIME_FORMATTER)))
                 .extract().`as`(Activity::class.java)
 
@@ -105,7 +105,7 @@ class ActivityResourceTest {
 
     @Test
     fun findByOwner_empty_result() {
-        val res = given().`when`()
+        given().`when`()
                 .auth().basic(user.username, cleartextPassword)
                 .body("""{
                     "owner": "unknown",
@@ -122,10 +122,6 @@ class ActivityResourceTest {
                 .assertThat()
                 .body("size()", `is`(0))
                 .log().ifValidationFails()
-                .extract().`as`(Array<Activity>::class.java)
-
-        assertThat(res)
-                .isEmpty()
     }
 
     @Test

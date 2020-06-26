@@ -4,7 +4,6 @@ import com.github.xtermi2.virtualrun.model.Activity
 import com.github.xtermi2.virtualrun.model.USER_STRING
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
-import org.bson.types.ObjectId
 import javax.annotation.security.RolesAllowed
 import javax.validation.Valid
 import javax.validation.constraints.NotNull
@@ -20,7 +19,7 @@ class ActivityResource(val activityRepository: ActivityRepository) {
 
     @GET
     @Path("/{id}")
-    fun getById(@NotNull @PathParam("id") id: ObjectId): Response {
+    fun getById(@NotNull @PathParam("id") id: String): Response {
         return activityRepository.findByIdOptional(id)
                 .map { Response.ok(it).build() }
                 .orElse(Response.status(Response.Status.NOT_FOUND).build())

@@ -2,13 +2,14 @@ package com.github.xtermi2.virtualrun.repository
 
 import com.github.xtermi2.virtualrun.model.SecurityRole
 import com.github.xtermi2.virtualrun.model.User
+import com.github.xtermi2.virtualrun.model.UserId
 import com.github.xtermi2.virtualrun.security.BcryptPasswordEncoder
-import io.quarkus.mongodb.panache.PanacheMongoRepository
+import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase
 import java.util.stream.Collectors
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class UserRepository(val passwordEncoder: BcryptPasswordEncoder) : PanacheMongoRepository<User> {
+class UserRepository(val passwordEncoder: BcryptPasswordEncoder) : PanacheMongoRepositoryBase<User, String> {
 
     fun findByUsername(username: String): User? {
         return find("username", username)
@@ -30,7 +31,9 @@ class UserRepository(val passwordEncoder: BcryptPasswordEncoder) : PanacheMongoR
     }
 
     fun createNewUser(username: String, password: String, roles: Set<SecurityRole>): User {
-        val newUser = User(username = username,
+        val newUser = User(
+                id = UserId(),
+                username = username,
                 password = passwordEncoder.encode(password),
                 roles = roles)
         persist(newUser)

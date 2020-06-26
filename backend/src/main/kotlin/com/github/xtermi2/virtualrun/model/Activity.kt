@@ -13,11 +13,17 @@ import javax.validation.constraints.Past
 
 val TAUSEND = BigDecimal.valueOf(1000L)
 
+data class ActivityId(var id: String = ObjectId().toString()) {
+    constructor(id: ObjectId) : this(id.toString())
+
+    override fun toString() = id
+}
+
 @MongoEntity(collection = "activities")
 data class Activity(
 
         @BsonId
-        var id: ObjectId? = null,
+        var id: ActivityId,
 
         @DecimalMin(value = "0.001")
         @Max(value = 1000)
@@ -50,7 +56,7 @@ data class Activity(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 
     @JsonIgnore

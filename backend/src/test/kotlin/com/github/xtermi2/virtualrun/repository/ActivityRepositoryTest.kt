@@ -2,12 +2,19 @@ package com.github.xtermi2.virtualrun.repository
 
 import com.github.xtermi2.virtualrun.helper.createActivities
 import com.github.xtermi2.virtualrun.model.Activity
+import com.github.xtermi2.virtualrun.model.ActivityId
+import com.github.xtermi2.virtualrun.model.AktivitaetsAufzeichnung
+import com.github.xtermi2.virtualrun.model.AktivitaetsTyp
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
 import com.github.xtermi2.virtualrun.repository.dto.AktivitaetSortProperties
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
+import org.bson.Document
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 
@@ -196,5 +203,69 @@ class ActivityRepositoryTest {
         val res: Long = activityRepository!!.countByOwner(owner)
         assertThat(res)
                 .isEqualTo(activitiesOfAndi.size.toLong())
+    }
+
+    @Test
+    internal fun convert_ObjectId_to_ActivityId_field() {
+        val id = ObjectId()
+        val akt = Activity(
+                id = ActivityId(id),
+                owner = "owner",
+                typ = AktivitaetsTyp.laufen,
+                distanzInKilometer = BigDecimal.ONE,
+                aktivitaetsDatum = LocalDateTime.now().minusDays(1).withNano(0),
+                aufzeichnungsart = AktivitaetsAufzeichnung.aufgezeichnet,
+                eingabeDatum = LocalDateTime.now().withNano(0)
+        )
+        val document = Document(mapOf(
+                "_id" to id,
+                "owner" to akt.owner,
+                "typ" to akt.typ.name,
+                "distanzInKilometer" to akt.distanzInKilometer,
+                "aktivitaetsDatum" to akt.aktivitaetsDatum,
+                "aufzeichnungsart" to akt.aufzeichnungsart.name,
+                "eingabeDatum" to akt.eingabeDatum
+        ))
+        val collection = activityRepository!!.mongoDatabase().getCollection("activities")
+        collection.insertOne(document)
+
+
+        val res = activityRepository!!.findAll().firstResult<Activity>()
+
+
+        assertThat(res)
+                .isEqualToComparingFieldByField(akt)
+    }
+
+    @Test
+    internal fun convert_String_to_ActivityId_field() {
+        val id = UUID.randomUUID().toString()
+        val akt = Activity(
+                id = ActivityId(id),
+                owner = "owner",
+                typ = AktivitaetsTyp.laufen,
+                distanzInKilometer = BigDecimal.ONE,
+                aktivitaetsDatum = LocalDateTime.now().minusDays(1).withNano(0),
+                aufzeichnungsart = AktivitaetsAufzeichnung.aufgezeichnet,
+                eingabeDatum = LocalDateTime.now().withNano(0)
+        )
+        val document = Document(mapOf(
+                "_id" to id,
+                "owner" to akt.owner,
+                "typ" to akt.typ.name,
+                "distanzInKilometer" to akt.distanzInKilometer,
+                "aktivitaetsDatum" to akt.aktivitaetsDatum,
+                "aufzeichnungsart" to akt.aufzeichnungsart.name,
+                "eingabeDatum" to akt.eingabeDatum
+        ))
+        val collection = activityRepository!!.mongoDatabase().getCollection("activities")
+        collection.insertOne(document)
+
+
+        val res = activityRepository!!.findAll().firstResult<Activity>()
+
+
+        assertThat(res)
+                .isEqualToComparingFieldByField(akt)
     }
 }

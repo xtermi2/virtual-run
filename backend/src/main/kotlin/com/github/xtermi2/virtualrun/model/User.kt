@@ -9,12 +9,18 @@ import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
-val EMPTY_USER: User = User(username = "DUMMY", password = "DUMMY")
+val EMPTY_USER: User = User(id = UserId(), username = "DUMMY", password = "DUMMY")
+
+data class UserId(var id: String = ObjectId().toString()) {
+    constructor(id: ObjectId) : this(id.toString())
+
+    override fun toString() = id
+}
 
 @MongoEntity(collection = "users")
 data class User(
         @BsonId
-        var id: ObjectId? = null,
+        var id: UserId,
 
         @NotBlank
         var username: String,
@@ -48,7 +54,7 @@ data class User(
 
     override fun compareTo(other: User) =
             Comparator
-                    .comparing(User::id)
+                    .comparing<User, String> { it.id.id }
                     .compare(this, other)
 
     override fun equals(other: Any?): Boolean {
@@ -63,11 +69,11 @@ data class User(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 
     override fun toString(): String {
-        return "User(id=$id, username='$username', roles=$roles, nickname=$nickname, email=$email, " +
+        return "User(id=${id}, username='$username', roles=$roles, nickname=$nickname, email=$email, " +
                 "benachrichtigunsIntervall=$benachrichtigunsIntervall, includeMeInStatisticMail=$includeMeInStatisticMail)"
     }
 }

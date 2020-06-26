@@ -6,10 +6,18 @@ services:
     container_name: afrika-run
     # gvisor is not working on my machine :(
     #runtime: runsc
+    env_file:
+      # setting MONGODB_USER and MONGODB_PASSWORD
+      - .env
+    environment:
+      - quarkus.log.console.json=false
+      - quarkus.log.category."io.quarkus.mongodb.panache".level=DEBUG
+      - quarkus.log.category."io.quarkus".level=DEBUG
+      - quarkus.log.level=INFO
     ports:
       - "8080:8080"
     restart: on-failure
-    # restrict tu 256MB Memory
+    # restrict to 256MB Memory
     mem_limit: 256m
     # restrict to 1 cpu core
     cpuset: "1"

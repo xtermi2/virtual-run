@@ -1,10 +1,15 @@
 package com.github.xtermi2.virtualrun.repository
 
 import com.github.xtermi2.virtualrun.model.SecurityRole
+import com.github.xtermi2.virtualrun.model.User
+import com.github.xtermi2.virtualrun.model.UserId
 import io.quarkus.test.junit.QuarkusTest
 import org.assertj.core.api.Assertions.assertThat
+import org.bson.Document
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 import javax.inject.Inject
 
 @QuarkusTest
@@ -101,5 +106,57 @@ class UserRepositoryTest {
         assertThat(newUser.roles)
                 .`as`("createNewUser.roles")
                 .containsExactlyInAnyOrder(SecurityRole.ADMIN)
+    }
+
+    @Test
+    internal fun convert_ObjectId_to_UserId_field() {
+        val id = ObjectId()
+        val user = User(
+                id = UserId(id),
+                username = "name",
+                password = "pw"
+        )
+        val document = Document(mapOf(
+                "_id" to id,
+                "username" to user.username,
+                "password" to user.password,
+                "benachrichtigunsIntervall" to user.benachrichtigunsIntervall.name,
+                "roles" to user.roles
+        ))
+        val collection = userRepository!!.mongoDatabase().getCollection("users")
+        collection.insertOne(document)
+
+
+        val res = userRepository!!.findAll().firstResult<User>()
+
+
+        assertThat(res)
+                .isEqualToComparingFieldByField(user)
+    }
+
+    @Test
+    internal fun convert_String_to_UserId_field() {
+        val id = UUID.randomUUID().toString()
+        val user = User(
+                id = UserId(id),
+                username = "name",
+                password = "pw"
+        )
+        val document = Document(mapOf(
+                "_id" to id,
+                "username" to user.username,
+                "password" to user.password,
+                "benachrichtigunsIntervall" to user.benachrichtigunsIntervall.name,
+                "roles" to user.roles
+        ))
+        val collection = userRepository!!.mongoDatabase().getCollection("users")
+        collection.insertOne(document)
+
+
+        val res = userRepository!!.findAll().firstResult<User>()
+
+
+        assertThat(res)
+                .isEqualToComparingFieldByField(user)
     }
 }
