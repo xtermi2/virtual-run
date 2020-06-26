@@ -30,6 +30,16 @@ class ActivityRepositoryTest {
     }
 
     @Test
+    internal fun findById_ObjectIdString() {
+        val activity = createActivities("andi", 1, activityRepository, { ActivityId(ObjectId().toString()) })[0]
+
+        val res = activityRepository!!.findById(activity.id)
+
+        assertThat(res)
+                .isEqualTo(activity)
+    }
+
+    @Test
     internal fun findByOwnerIn() {
         createActivities("andi", 1, activityRepository)
         createActivities("foo", 2, activityRepository)
@@ -235,6 +245,10 @@ class ActivityRepositoryTest {
 
         assertThat(res)
                 .isEqualToComparingFieldByField(akt)
+
+        assertThat(activityRepository!!.findByIdOrObjectId(akt.id))
+                .`as`("findById")
+                .isEqualTo(akt)
     }
 
     @Test
@@ -267,5 +281,17 @@ class ActivityRepositoryTest {
 
         assertThat(res)
                 .isEqualToComparingFieldByField(akt)
+
+        assertThat(activityRepository!!.findByIdOrObjectId(akt.id))
+                .`as`("findByIdOrObjectId")
+                .isEqualTo(akt)
+
+        assertThat(activityRepository!!.findById(akt.id))
+                .`as`("findById")
+                .isEqualTo(akt)
+
+        assertThat(activityRepository!!.findByIdOptional(akt.id))
+                .`as`("findByIdOptional")
+                .contains(akt)
     }
 }

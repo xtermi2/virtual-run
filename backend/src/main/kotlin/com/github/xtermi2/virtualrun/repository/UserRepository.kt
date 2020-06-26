@@ -5,11 +5,37 @@ import com.github.xtermi2.virtualrun.model.User
 import com.github.xtermi2.virtualrun.model.UserId
 import com.github.xtermi2.virtualrun.security.BcryptPasswordEncoder
 import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase
+import org.bson.types.ObjectId
+import java.util.*
 import java.util.stream.Collectors
 import javax.enterprise.context.ApplicationScoped
 
 @ApplicationScoped
-class UserRepository(val passwordEncoder: BcryptPasswordEncoder) : PanacheMongoRepositoryBase<User, String> {
+class UserRepository(val passwordEncoder: BcryptPasswordEncoder) : PanacheMongoRepositoryBase<User, UserId> {
+
+    override fun findByIdOptional(id: UserId): Optional<User> {
+        return Optional.ofNullable(findByIdOrObjectId(id))
+    }
+
+    override fun findById(id: UserId): User? {
+        return findByIdOrObjectId(id)
+    }
+
+    fun findByIdOrObjectId(id: UserId): User? {
+        return if (ObjectId.isValid(id.toString())) {
+            find("_id", ObjectId(id.toString()))
+                    .singleResultOptional<User>()
+                    .orElse(findByIdAsString(id.toString()))
+        } else {
+            findByIdAsString(id.toString())
+        }
+    }
+
+    private fun findByIdAsString(id: String): User? {
+        return find("_id", id)
+                .singleResultOptional<User>()
+                .orElse(null)
+    }
 
     fun findByUsername(username: String): User? {
         return find("username", username)

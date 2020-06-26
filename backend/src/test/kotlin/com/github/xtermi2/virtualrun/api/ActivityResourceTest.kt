@@ -13,7 +13,6 @@ import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.assertj.core.api.Assertions.assertThat
-import org.bson.types.ObjectId
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.BeforeEach
@@ -65,7 +64,7 @@ class ActivityResourceTest {
         given().`when`()
                 .log().ifValidationFails()
                 .auth().basic(user.username, cleartextPassword)
-                .get("/activities/{id}", ObjectId(Date()).toString())
+                .get("/activities/{id}", UUID.randomUUID().toString())
                 .then()
                 .log().ifValidationFails()
                 .statusCode(404)
@@ -75,7 +74,7 @@ class ActivityResourceTest {
     fun findById_unauthorized() {
         given().`when`()
                 .log().ifValidationFails()
-                .get("/activities/{id}", ObjectId(Date()).toString())
+                .get("/activities/{id}", UUID.randomUUID().toString())
                 .then()
                 .log().ifValidationFails()
                 .statusCode(401)

@@ -28,10 +28,11 @@ val LOCAL_DATE_TIME_FORMATTER = DateTimeFormatterBuilder()
 
 fun createActivities(owner: String,
                      count: Int,
-                     activityRepository: ActivityRepository?): List<Activity> {
+                     activityRepository: ActivityRepository?,
+                     idSupplier: () -> ActivityId = { ActivityId() }): List<Activity> {
     val activities = IntRange(0, count - 1).map { i ->
         Activity(
-                id = ActivityId(),
+                id = idSupplier.invoke(),
                 owner = owner,
                 bezeichnung = "bez $i",
                 typ = AktivitaetsTyp.values()[i % AktivitaetsTyp.values().size],

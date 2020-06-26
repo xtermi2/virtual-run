@@ -7,13 +7,14 @@ import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bson.types.ObjectId
 import java.math.BigDecimal
 import java.time.LocalDateTime
+import java.util.*
 import javax.validation.constraints.DecimalMin
 import javax.validation.constraints.Max
 import javax.validation.constraints.Past
 
 val TAUSEND = BigDecimal.valueOf(1000L)
 
-data class ActivityId(var id: String = ObjectId().toString()) {
+data class ActivityId(var id: String = UUID.randomUUID().toString()) {
     constructor(id: ObjectId) : this(id.toString())
 
     override fun toString() = id

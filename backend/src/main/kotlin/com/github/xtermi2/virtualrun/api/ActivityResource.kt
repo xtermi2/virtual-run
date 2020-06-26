@@ -1,6 +1,7 @@
 package com.github.xtermi2.virtualrun.api
 
 import com.github.xtermi2.virtualrun.model.Activity
+import com.github.xtermi2.virtualrun.model.ActivityId
 import com.github.xtermi2.virtualrun.model.USER_STRING
 import com.github.xtermi2.virtualrun.repository.ActivityRepository
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
@@ -20,7 +21,7 @@ class ActivityResource(val activityRepository: ActivityRepository) {
     @GET
     @Path("/{id}")
     fun getById(@NotNull @PathParam("id") id: String): Response {
-        return activityRepository.findByIdOptional(id)
+        return activityRepository.findByIdOptional(ActivityId(id))
                 .map { Response.ok(it).build() }
                 .orElse(Response.status(Response.Status.NOT_FOUND).build())
     }

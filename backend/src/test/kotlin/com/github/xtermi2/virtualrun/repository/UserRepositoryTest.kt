@@ -23,6 +23,19 @@ class UserRepositoryTest {
     }
 
     @Test
+    internal fun findById_ObjectIdString() {
+        val user = User(id = UserId(ObjectId().toString()),
+                username = "andi",
+                password = "secret")
+        userRepository!!.persist(user)
+
+        val res = userRepository!!.findById(user.id)
+
+        assertThat(res)
+                .isEqualTo(user)
+    }
+
+    @Test
     internal fun findByUsername_found_existing_user() {
         val username = "andi"
         val newUser = userRepository!!.createNewUser(username, "andi", setOf(SecurityRole.USER))
@@ -132,6 +145,10 @@ class UserRepositoryTest {
 
         assertThat(res)
                 .isEqualToComparingFieldByField(user)
+
+        assertThat(userRepository!!.findByIdOrObjectId(user.id))
+                .`as`("findById")
+                .isEqualTo(user)
     }
 
     @Test
@@ -158,5 +175,17 @@ class UserRepositoryTest {
 
         assertThat(res)
                 .isEqualToComparingFieldByField(user)
+
+        assertThat(userRepository!!.findByIdOrObjectId(user.id))
+                .`as`("findByIdOrObjectId")
+                .isEqualTo(user)
+
+        assertThat(userRepository!!.findById(user.id))
+                .`as`("findById")
+                .isEqualTo(user)
+
+        assertThat(userRepository!!.findByIdOptional(user.id))
+                .`as`("findByIdOptional")
+                .contains(user)
     }
 }
