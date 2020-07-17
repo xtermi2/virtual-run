@@ -10,6 +10,36 @@ update_configs:
       - match:
           dependency_name: "org.springframework.data:spring-data-releasetrain"
           version_requirement: "Kay-x"
+      - match:
+          dependency_name: "org.apache.wicket:wicket-core"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicket-extensions"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicket-spring"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicket-auth-roles"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicket-datetime"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicket-bean-validation"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicketstuff-lazymodel"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicketstuff-restannotations"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicketstuff-restannotations-json"
+          version_requirement: "9.x"
+      - match:
+          dependency_name: "org.apache.wicket:wicketstuff-gae-initializer"
+          version_requirement: "9.x"
   - package_manager: "java:maven"
     directory: "/backend/"
     update_schedule: "daily"
