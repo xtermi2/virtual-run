@@ -3,6 +3,8 @@ update_configs:
   - package_manager: "java:maven"
     directory: "/"
     update_schedule: "daily"
+    default_assignees:
+      - "xtermi2"
     ignored_updates:
       - match:
           dependency_name: "org.springframework.data:spring-data-releasetrain"
@@ -43,3 +45,5 @@ update_configs:
   - package_manager: "java:maven"
     directory: "/backend/"
     update_schedule: "daily"
+    default_assignees:
+      - "xtermi2"
