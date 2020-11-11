@@ -45,7 +45,7 @@
         <wicket.version>8.8.0</wicket.version>
         <wicked-charts.version>2.0.1</wicked-charts.version>
 
-        <log4j2.version>2.13.3</log4j2.version>
+        <log4j2.version>2.14.0</log4j2.version>
     </properties>
     <dependencyManagement>
         <dependencies>
