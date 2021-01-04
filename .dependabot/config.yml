@@ -42,6 +42,10 @@ update_configs:
       - match:
           dependency_name: "org.apache.wicket:wicketstuff-gae-initializer"
           version_requirement: "9.x"
+      - match:
+          # ignore hibernate-validator 7.x because it's not compatible with wicket 8.x
+          dependency_name: "org.hibernate.validator:hibernate-validator"
+          version_requirement: "7.x"
   - package_manager: "java:maven"
     directory: "/backend/"
     update_schedule: "daily"
