@@ -363,7 +363,9 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> firstPage = personService.searchActivities(searchRequest);
 
-        activities.sort(Comparator.comparing(Aktivitaet::getDistanzInKilometer).reversed());
+        activities.sort(Comparator.comparing(Aktivitaet::getDistanzInKilometer)
+                .thenComparing(Aktivitaet::getId)
+                .reversed());
         assertThat(firstPage)
                 .containsExactlyElementsOf(activities);
     }
@@ -383,7 +385,9 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
-        activities.sort(Comparator.comparing(Aktivitaet::getAktivitaetsDatum));
+        final Comparator<Aktivitaet> ascComparator = Comparator.comparing(Aktivitaet::getAktivitaetsDatum)
+                .thenComparing(Aktivitaet::getId);
+        activities.sort(ascComparator);
         assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
@@ -391,7 +395,7 @@ public class PersonServiceImplTest {
                 .sortAsc(false)
                 .build());
 
-        activities.sort(Comparator.comparing(Aktivitaet::getAktivitaetsDatum).reversed());
+        activities.sort(ascComparator.reversed());
         assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
@@ -411,7 +415,9 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
-        activities.sort(Comparator.comparing(Aktivitaet::getAufzeichnungsart));
+        final Comparator<Aktivitaet> ascComparator = Comparator.comparing(Aktivitaet::getAufzeichnungsart)
+                .thenComparing(Aktivitaet::getId);
+        activities.sort(ascComparator);
         assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
@@ -419,7 +425,7 @@ public class PersonServiceImplTest {
                 .sortAsc(false)
                 .build());
 
-        activities.sort(Comparator.comparing(Aktivitaet::getAufzeichnungsart).reversed());
+        activities.sort(ascComparator.reversed());
         assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
@@ -439,7 +445,9 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
-        activities.sort(Comparator.comparing(Aktivitaet::getBezeichnung));
+        Comparator<Aktivitaet> ascComparator = Comparator.comparing(Aktivitaet::getBezeichnung)
+                .thenComparing(Aktivitaet::getId);
+        activities.sort(ascComparator);
         assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
@@ -447,7 +455,7 @@ public class PersonServiceImplTest {
                 .sortAsc(false)
                 .build());
 
-        activities.sort(Comparator.comparing(Aktivitaet::getBezeichnung).reversed());
+        activities.sort(ascComparator.reversed());
         assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }
@@ -467,7 +475,9 @@ public class PersonServiceImplTest {
 
         List<Aktivitaet> asc = personService.searchActivities(searchRequest);
 
-        activities.sort(Comparator.comparing(aktivitaet -> aktivitaet.getTyp().name()));
+        Comparator<Aktivitaet> ascComparator = Comparator.comparing((Aktivitaet aktivitaet) -> aktivitaet.getTyp().name())
+                .thenComparing(Aktivitaet::getId);
+        activities.sort(ascComparator);
         assertThat(asc)
                 .containsExactlyElementsOf(activities);
 
@@ -475,7 +485,7 @@ public class PersonServiceImplTest {
                 .sortAsc(false)
                 .build());
 
-        activities.sort(Comparator.comparing((Aktivitaet aktivitaet) -> aktivitaet.getTyp().name()).reversed());
+        activities.sort(ascComparator.reversed());
         assertThat(desc)
                 .containsExactlyElementsOf(activities);
     }

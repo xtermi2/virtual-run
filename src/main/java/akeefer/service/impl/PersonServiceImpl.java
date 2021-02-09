@@ -464,8 +464,8 @@ public class PersonServiceImpl implements PersonService, UserDetailsService {
     @Profiling
     public List<Aktivitaet> searchActivities(AktivitaetSearchRequest searchRequest) {
         Sort sort = searchRequest.isSortAsc()
-                ? Sort.by(searchRequest.getSortProperty().getFieldName()).ascending()
-                : Sort.by(searchRequest.getSortProperty().getFieldName()).descending();
+                ? Sort.by(searchRequest.getSortProperty().getFieldName(), "id").ascending()
+                : Sort.by(searchRequest.getSortProperty().getFieldName(), "id").descending();
 
         int page = searchRequest.getPageableFirstElement() / searchRequest.getPageSize();
         Pageable pageable = PageRequest.of(page, searchRequest.getPageSize(), sort);
