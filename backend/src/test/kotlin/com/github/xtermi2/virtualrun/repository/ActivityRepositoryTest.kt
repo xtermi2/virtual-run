@@ -150,12 +150,14 @@ class ActivityRepositoryTest {
                 sortAsc = true)
 
         val asc: List<Activity> = activityRepository!!.findByOwner(searchRequest)
-        activities = activities.sortedWith(Comparator.comparing(Activity::aufzeichnungsart))
+        val ascComparator = Comparator.comparing(Activity::aufzeichnungsart)
+            .thenComparing(Activity::aktivitaetsDatum)
+        activities = activities.sortedWith(ascComparator)
         assertThat(asc)
                 .containsExactlyElementsOf(activities)
         val desc: List<Activity> = activityRepository!!.findByOwner(searchRequest.copy(
                 sortAsc = false))
-        activities = activities.sortedWith(Comparator.comparing(Activity::aufzeichnungsart).reversed())
+        activities = activities.sortedWith(ascComparator.reversed())
         assertThat(desc)
                 .containsExactlyElementsOf(activities)
     }

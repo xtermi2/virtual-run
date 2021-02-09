@@ -3,6 +3,7 @@ package com.github.xtermi2.virtualrun.repository
 import com.github.xtermi2.virtualrun.model.Activity
 import com.github.xtermi2.virtualrun.model.ActivityId
 import com.github.xtermi2.virtualrun.repository.dto.ActivitySearchRequest
+import com.github.xtermi2.virtualrun.repository.dto.AktivitaetSortProperties
 import io.quarkus.mongodb.panache.PanacheMongoRepositoryBase
 import io.quarkus.mongodb.panache.PanacheQuery
 import io.quarkus.panache.common.Page
@@ -47,8 +48,8 @@ class ActivityRepository : PanacheMongoRepositoryBase<Activity, ActivityId> {
     fun findByOwner(searchRequest: ActivitySearchRequest): List<Activity> {
         val pageIndex = searchRequest.pageableFirstElement / searchRequest.pageSize
         val sort = when {
-            searchRequest.sortAsc -> Sort.by(searchRequest.sortProperty.fieldName).ascending()
-            else -> Sort.by(searchRequest.sortProperty.fieldName).descending()
+            searchRequest.sortAsc -> Sort.by(searchRequest.sortProperty.fieldName, AktivitaetSortProperties.AKTIVITAETS_DATUM.fieldName, "id").ascending()
+            else -> Sort.by(searchRequest.sortProperty.fieldName, AktivitaetSortProperties.AKTIVITAETS_DATUM.fieldName, "id").descending()
         }
         return createFindByOwnerQuery(searchRequest.owner, sort)
                 .page<Activity>(Page.of(pageIndex, searchRequest.pageSize))
