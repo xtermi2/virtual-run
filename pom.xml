@@ -344,8 +344,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <!--since 22.0 guava is on java 8-->
-            <version>29.0-jre</version>
+            <version>30.1.1-jre</version>
         </dependency>
 
         <dependency>
