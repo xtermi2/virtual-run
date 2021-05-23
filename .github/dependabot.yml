@@ -26,7 +26,7 @@ updates:
   directory: "/backend"
   schedule:
     interval: daily
-    time: "04:00"
+    time: "02:00"
     timezone: Europe/Berlin
   open-pull-requests-limit: 20
   assignees:
