@@ -10,93 +10,18 @@ updates:
   assignees:
   - xtermi2
   ignore:
-  - dependency-name: org.apache.wicket:wicket-auth-roles
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicket-bean-validation
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicket-core
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicket-datetime
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicket-extensions
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicket-spring
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicketstuff-gae-initializer
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicketstuff-lazymodel
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicketstuff-restannotations
-    versions:
-    - 9.x
-  - dependency-name: org.apache.wicket:wicketstuff-restannotations-json
-    versions:
-    - 9.x
+  - dependency-name: org.apache.wicket:*
+    update-types: [ "version-update:semver-major" ]
   - dependency-name: org.hibernate.validator:hibernate-validator
-    versions:
-    - 7.x
+    update-types: [ "version-update:semver-major" ]
   - dependency-name: org.springframework.data:spring-data-releasetrain
     versions:
     - Kay-x
   - dependency-name: org.springframework.data:spring-data-releasetrain
     versions:
     - Lovelace-x
-  - dependency-name: org.wicketstuff:wicketstuff-gae-initializer
-    versions:
-    - 9.3.0
-  - dependency-name: org.wicketstuff:wicketstuff-restannotations-json
-    versions:
-    - 9.3.0
-  - dependency-name: org.wicketstuff:wicketstuff-restannotations
-    versions:
-    - 9.3.0
-  - dependency-name: org.wicketstuff:wicketstuff-lazymodel
-    versions:
-    - 9.3.0
-  - dependency-name: org.apache.wicket:wicket-bean-validation
-    versions:
-    - 9.3.0
-  - dependency-name: org.wicketstuff:wicket-datetime
-    versions:
-    - 9.3.0
-  - dependency-name: org.apache.wicket:wicket-auth-roles
-    versions:
-    - 9.3.0
-  - dependency-name: org.apache.wicket:wicket-spring
-    versions:
-    - 9.3.0
-  - dependency-name: org.apache.wicket:wicket-extensions
-    versions:
-    - 9.3.0
-  - dependency-name: org.apache.wicket:wicket-core
-    versions:
-    - 9.3.0
-  - dependency-name: org.hibernate.validator:hibernate-validator
-    versions:
-    - 7.0.1.Final
-  - dependency-name: com.google.appengine:appengine-api-labs
-    versions:
-    - 1.9.85
-  - dependency-name: com.google.appengine:appengine-api-stubs
-    versions:
-    - 1.9.85
-  - dependency-name: com.google.appengine:appengine-testing
-    versions:
-    - 1.9.85
-  - dependency-name: com.google.appengine:appengine-api-1.0-sdk
-    versions:
-    - 1.9.85
-  - dependency-name: org.projectlombok:lombok
-    versions:
-    - 1.18.18
+  - dependency-name: org.wicketstuff:*
+    update-types: [ "version-update:semver-major" ]
 - package-ecosystem: maven
   directory: "/backend"
   schedule:
