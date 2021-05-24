@@ -69,7 +69,8 @@ jobs:
             -Dquarkus.container-image.push=true \
             -Dquarkus.container-image.group=$PROJECT_ID \
             -Dquarkus.container-image.tag=$GITHUB_SHA \
-            -Dquarkus.container-image.registry=$DOCKER_REGISTY
+            -Dquarkus.container-image.registry=$DOCKER_REGISTY \
+            -Dquarkus.jib.base-jvm-image=adoptopenjdk/openjdk11:jre
 
       - name: Deploy image to Cloud Run
         run: |-
