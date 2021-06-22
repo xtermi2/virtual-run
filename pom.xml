@@ -40,7 +40,7 @@
         <slf4j.version>1.7.31</slf4j.version>
         <spring.version>5.3.8</spring.version>
         <spring-data-releasetrain.version>Moore-SR13</spring-data-releasetrain.version>
-        <spring.security.version>5.5.0</spring.security.version>
+        <spring.security.version>5.5.1</spring.security.version>
 
         <wicket.version>8.12.0</wicket.version>
         <wicked-charts.version>2.0.1</wicked-charts.version>
