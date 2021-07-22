@@ -35,7 +35,7 @@
 
         <mockito.version>1.10.19</mockito.version>
 
-        <querydsl.version>4.4.0</querydsl.version>
+        <querydsl.version>5.0.0</querydsl.version>
 
         <slf4j.version>1.7.32</slf4j.version>
         <spring.version>5.3.9</spring.version>
