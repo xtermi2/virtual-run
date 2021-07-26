@@ -43,7 +43,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build with Maven
-        run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
+        run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD || ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
 
       - name: Setup gcloud CLI on pull requests
         if: ${{ github.event_name == 'pull_request'}}
