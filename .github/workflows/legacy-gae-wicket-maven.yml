@@ -47,7 +47,7 @@ jobs:
 
       - name: Setup gcloud CLI on pull requests
         if: ${{ github.event_name == 'pull_request'}}
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@master
         with:
           # version of gcloud - defaults to latest
           # version: '290.0.0'
