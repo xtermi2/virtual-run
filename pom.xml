@@ -23,7 +23,7 @@
         <appengine.target.version>1.9.88</appengine.target.version>
         <appengine.target.plugin.version>${appengine.target.version}</appengine.target.plugin.version>
 
-        <aspectj.version>1.9.7</aspectj.version>
+        <aspectj.version>1.9.8</aspectj.version>
 
         <hamcrest.version>2.2</hamcrest.version>
 
