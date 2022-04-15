@@ -3,7 +3,7 @@ updates:
 - package-ecosystem: maven
   directory: "/"
   schedule:
-    interval: daily
+    interval: weekly
     time: "04:00"
     timezone: Europe/Berlin
   open-pull-requests-limit: 20
@@ -25,7 +25,7 @@ updates:
 - package-ecosystem: maven
   directory: "/backend"
   schedule:
-    interval: daily
+    interval: weekly
     time: "02:00"
     timezone: Europe/Berlin
   open-pull-requests-limit: 20
