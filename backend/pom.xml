@@ -15,7 +15,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
-    <quarkus.version>2.3.1.Final</quarkus.version>
+    <quarkus.version>2.8.0.Final</quarkus.version>
     <surefire-plugin.version>2.22.2</surefire-plugin.version>
   </properties>
   <dependencyManagement>
@@ -96,6 +96,8 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
+      <!--newer versions have some strange compile issues -->
+      <version>3.20.2 </version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -170,7 +172,7 @@
             <option>all-open:annotation=javax.ws.rs.Path</option>
             <option>all-open:annotation=javax.enterprise.context.ApplicationScoped</option>
             <option>all-open:annotation=io.quarkus.test.junit.QuarkusTest</option>
-            <option>no-arg:annotation=io.quarkus.mongodb.panache.MongoEntity</option>
+            <option>no-arg:annotation=io.quarkus.mongodb.panache.common.MongoEntity</option>
           </pluginOptions>
         </configuration>
       </plugin>

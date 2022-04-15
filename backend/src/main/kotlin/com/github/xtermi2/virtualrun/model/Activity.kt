@@ -1,7 +1,7 @@
 package com.github.xtermi2.virtualrun.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import io.quarkus.mongodb.panache.MongoEntity
+import io.quarkus.mongodb.panache.common.MongoEntity
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.codecs.pojo.annotations.BsonIgnore
 import org.bson.types.ObjectId
