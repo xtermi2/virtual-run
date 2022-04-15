@@ -96,6 +96,8 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
+      <!--newer versions have some strange compile issues -->
+      <version>3.20.2 </version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -170,7 +172,7 @@
             <option>all-open:annotation=javax.ws.rs.Path</option>
             <option>all-open:annotation=javax.enterprise.context.ApplicationScoped</option>
             <option>all-open:annotation=io.quarkus.test.junit.QuarkusTest</option>
-            <option>no-arg:annotation=io.quarkus.mongodb.panache.MongoEntity</option>
+            <option>no-arg:annotation=io.quarkus.mongodb.panache.common.MongoEntity</option>
           </pluginOptions>
         </configuration>
       </plugin>
