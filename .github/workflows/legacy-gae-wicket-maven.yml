@@ -42,10 +42,16 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+          # Learn more about CodeQL language support at https://git.io/codeql-language-support
+          languages: java
       - name: Build with Maven
         run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD || ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
-
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
       - name: Setup gcloud CLI on pull requests
         if: ${{ github.event_name == 'pull_request'}}
         uses: google-github-actions/setup-gcloud@v0
