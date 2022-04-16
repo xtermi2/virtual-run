@@ -64,12 +64,6 @@ jobs:
 #            -Dquarkus.native.container-build=true
 
       # Initializes the CodeQL tools for scanning.
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
-          # Learn more about CodeQL language support at https://git.io/codeql-language-support
-          languages: java
       - name: build, create container and push to docker-registry with Maven
         run: |-
           ./mvnw clean package \
@@ -79,8 +73,6 @@ jobs:
             -Dquarkus.container-image.tag=$GITHUB_SHA \
             -Dquarkus.container-image.registry=$DOCKER_REGISTY \
             -Dquarkus.jib.base-jvm-image=adoptopenjdk/openjdk11:jre
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
       - name: Deploy image to Cloud Run
         run: |-
           gcloud run deploy "$GCR_SERVICE_NAME" \
