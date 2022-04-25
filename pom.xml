@@ -31,7 +31,7 @@
         <joda-time.version>2.10.14</joda-time.version>
         <junit.version>4.13.2</junit.version>
 
-        <lombok.version>1.18.22</lombok.version>
+        <lombok.version>1.18.24</lombok.version>
 
         <mockito.version>1.10.19</mockito.version>
 
