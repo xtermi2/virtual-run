@@ -1,4 +1,4 @@
-name: afrika-run (GAE/Legacy/Wicket)
+name: afrika-run (GAE/Legacy/Wicket) CodeQL
 
 concurrency: my-no-concurrency-group
 
@@ -10,19 +10,14 @@ on:
       - 'backend/**'
       - '.github/workflows/backend-cloud-run.yml'
       - '**/*.md'
-  pull_request:
-    paths-ignore:
-      - 'backend/**'
-      - '.github/workflows/backend-cloud-run.yml'
-      - '**/*.md'
 
 env:
   MONGODB_USER: ${{ secrets.MONGODB_USER }}
   MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
 
 jobs:
-  build:
-    name: Build (and deploy on pull requests to GAE)
+  codeql:
+    name: Build an run codeql on master
     runs-on: ubuntu-latest
 
     steps:
@@ -42,18 +37,13 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+          # Learn more about CodeQL language support at https://git.io/codeql-language-support
+          languages: java
       - name: Build with Maven
         run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD || ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
-      - name: Setup gcloud CLI on pull requests
-        if: ${{ github.event_name == 'pull_request'}}
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          # version of gcloud - defaults to latest
-          # version: '290.0.0'
-          service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
-          service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
-          project_id: ${{ secrets.GCR_PROJECT_ID }}
-
-      - name: Deploy to GAE on pull requests
-        if: ${{ github.event_name == 'pull_request'}}
-        run: ./mvnw appengine:deploy -P prod
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
