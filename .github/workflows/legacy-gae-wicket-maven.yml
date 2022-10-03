@@ -38,7 +38,7 @@ jobs:
       - name: Build with Maven
         run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD || ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
 
-      - name: gcloud auth
+      - name: gcloud auth on pull requests
         if: ${{ github.event_name == 'pull_request'}}
         uses: google-github-actions/auth@v0
         with:

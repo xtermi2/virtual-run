@@ -31,13 +31,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: gcloud auth
+        uses: google-github-actions/auth@v0
+        with:
+          service_account: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
+          credentials_json: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
       - name: Setup gcloud CLI
         uses: google-github-actions/setup-gcloud@v0
         with:
           # version of gcloud - defaults to latest
           # version: '290.0.0'
-          service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
-          service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
+          #service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
+          #service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
           project_id: ${{ secrets.GCR_PROJECT_ID }}
 
       - name: Setup gcloud docker auth
