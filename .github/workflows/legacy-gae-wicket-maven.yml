@@ -3,13 +3,6 @@ name: afrika-run (GAE/Legacy/Wicket)
 concurrency: my-no-concurrency-group
 
 on:
-  push:
-    branches-ignore:
-      - master
-    paths-ignore:
-      - 'backend/**'
-      - '.github/workflows/backend-cloud-run.yml'
-      - '**/*.md'
   pull_request:
     paths-ignore:
       - 'backend/**'
