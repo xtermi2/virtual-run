@@ -52,7 +52,7 @@ public class MongodbConfig extends AbstractMongoClientConfiguration {
     @Override
     public MongoClient mongoClient() {
         return MongoClients.create(
-                "mongodb+srv://" + mongodbUser + ":" + mongodbPassword + "@cluster0-9dkn1.mongodb.net/" + mongodbDatabaseName + "?retryWrites=true&w=majority");
+                "mongodb+srv://" + mongodbUser + ":" + mongodbPassword + "@cluster0-9dkn1.mongodb.net/?retryWrites=true&w=majority");
     }
 
     @Override
