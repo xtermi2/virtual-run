@@ -37,14 +37,21 @@ jobs:
 #            ${{ runner.os }}-maven-
       - name: Build with Maven
         run: ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD || ./mvnw -B clean package -P prod -Dmongodb.user=$MONGODB_USER -Dmongodb.password=$MONGODB_PASSWORD
+
+      - name: gcloud auth on pull requests
+        if: ${{ github.event_name == 'pull_request'}}
+        uses: google-github-actions/auth@v0
+        with:
+          service_account: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
+          credentials_json: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
       - name: Setup gcloud CLI on pull requests
         if: ${{ github.event_name == 'pull_request'}}
         uses: google-github-actions/setup-gcloud@v0
         with:
           # version of gcloud - defaults to latest
           # version: '290.0.0'
-          service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
-          service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
+          #service_account_email: ${{ secrets.GOOGLE_CLOUD_RUN_SA_EMAIL }}
+          #service_account_key: ${{ secrets.GOOGLE_CLOUD_RUN_SA_KEY }}
           project_id: ${{ secrets.GCR_PROJECT_ID }}
 
       - name: Deploy to GAE on pull requests
