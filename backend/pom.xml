@@ -205,7 +205,7 @@
 <!--                    <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>-->
 <!--                    &lt;!&ndash;            <quarkus.log.level>DEBUG</quarkus.log.level>&ndash;&gt;-->
 <!--                    <mongodb.user>admin</mongodb.user>-->
-<!--                    <mongodb.password>FuqFej8_</mongodb.password>-->
+<!--                    <mongodb.password>...</mongodb.password>-->
                   </systemPropertyVariables>
                 </configuration>
               </execution>
