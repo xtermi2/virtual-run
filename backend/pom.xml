@@ -99,7 +99,7 @@
       <!--newer versions have some strange compile issues -->
       <!-- https://youtrack.jetbrains.com/issue/KT-48975/Type-mismatch-inferred-type-is-X-but-Nothing-was-expected-with-the-AssertJ-latest-version -->
       <!-- https://youtrack.jetbrains.com/issue/KT-53113/AssertJ-323-tests-dont-compile-with-describedAs-anyMatch -->
-      <version>3.20.2 </version>
+      <version>3.24.0 </version>
       <scope>test</scope>
     </dependency>
   </dependencies>
