@@ -38,7 +38,7 @@
         <querydsl.version>5.0.0</querydsl.version>
 
         <slf4j.version>2.0.6</slf4j.version>
-        <spring.version>5.3.23</spring.version>
+        <spring.version>6.0.6</spring.version>
         <spring-data-releasetrain.version>Moore-SR13</spring-data-releasetrain.version>
         <spring.security.version>5.7.3</spring.security.version>
 
